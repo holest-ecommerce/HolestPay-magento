@@ -5,7 +5,9 @@
     </head>
     <body>
         <referenceContainer name="after.body.start">
-            <block class="Magento\Framework\View\Element\Template" name="holestpay.frontend.inject" template="HolestPay_HolestPay::inject/frontend.phtml" />
+            <block class="Magento\\Framework\\View\\Element\\Template" name="holestpay.frontend.inject" template="HolestPay_HolestPay::inject/frontend.phtml">
+                <block class="Magento\\Framework\\View\\Element\\Template" name="holestpay.context.data" template="HolestPay_HolestPay::inject/context.phtml" />
+            </block>
         </referenceContainer>
     </body>
     

@@ -1,4 +1,23 @@
 <div id="holestpay-admin-area" style="display:none"></div>
 <!-- HolestPayAdmin.getPageContext() returns body classes to infer page type. -->
+<?php
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$request = $objectManager->get(\Magento\Framework\App\RequestInterface::class);
+$orderId = (int)$request->getParam('order_id');
+$customerEmail = null;
+if ($orderId) {
+    $order = $objectManager->create(\Magento\Sales\Model\Order::class)->load($orderId);
+    if ($order && $order->getId()) {
+        $customerEmail = (string)$order->getCustomerEmail();
+    }
+}
+?>
+<script>
+window.HolestPayAdmin = window.HolestPayAdmin || {};
+window.HolestPayAdmin.context = Object.assign({ orderId: null, customerEmail: null }, window.HolestPayAdmin.context || {}, {
+  orderId: <?= $orderId ?: 'null' ?>,
+  customerEmail: <?= $customerEmail ? ('"' . $block->escapeHtml($customerEmail) . '"') : 'null' ?>
+});
+</script>
 
 

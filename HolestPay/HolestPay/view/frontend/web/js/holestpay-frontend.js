@@ -7,6 +7,8 @@
             // console.log('HolestPayCheckout initialized');
         }
     };
+    // Ensure a mutable context to store order/customer info
+    obj.context = obj.context || { orderId: null, customerEmail: null };
     // Expose only the correctly spelled global
     window.HolestPayCheckout = obj;
 
