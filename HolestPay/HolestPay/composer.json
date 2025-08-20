@@ -1,0 +1,21 @@
+{
+    "name": "holestpay/module-holestpay",
+    "description": "HolestPay payment module skeleton",
+    "type": "magento2-module",
+    "license": ["MIT"],
+    "require": {
+        "php": ">=7.4",
+        "magento/framework": ">=103.0.0"
+    },
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "HolestPay\\HolestPay\\": ""
+        }
+    },
+    "version": "1.0.0"
+}
+
+

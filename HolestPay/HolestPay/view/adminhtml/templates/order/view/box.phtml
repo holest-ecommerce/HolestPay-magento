@@ -1,0 +1,16 @@
+<div class="holestpay-order-box" style="padding:12px;border:1px solid #ddd;margin-bottom:16px;">
+    <h2 style="margin-top:0;">HolestPay</h2>
+    <div id="holestpay-admin-order-box-content">
+        <!-- Fill this box via JavaScript with order-related content. -->
+    </div>
+    <small><?php /* @escapeNotVerified */ echo __('Page context:'); ?> <span id="holestpay-admin-page-context"></span></small>
+</div>
+<script>
+require(['jquery'], function ($) {
+    $(function () {
+        try { $('#holestpay-admin-page-context').text(window.HolestPayAdmin.getPageContext()); } catch (e) {}
+    });
+});
+</script>
+
+
