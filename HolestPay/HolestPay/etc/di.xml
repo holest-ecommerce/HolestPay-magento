@@ -7,6 +7,7 @@
             </argument>
         </arguments>
     </type>
+    <preference for="HolestPay\HolestPay\Api\DataManagerInterface" type="HolestPay\HolestPay\Model\DataManager" />
 </config>
 
 
