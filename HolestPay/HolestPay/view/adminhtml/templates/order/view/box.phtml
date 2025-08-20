@@ -9,6 +9,16 @@
 require(['jquery'], function ($) {
     $(function () {
         try { $('#holestpay-admin-page-context').text(window.HolestPayAdmin.getPageContext()); } catch (e) {}
+        // Bind charge button if available
+        try {
+            var btn = document.getElementById('holestpay-order-charge');
+            if (btn) {
+                var orderId = <?php echo (int)$block->getRequest()->getParam('order_id'); ?>;
+                btn.addEventListener('click', function () {
+                    location.href = '<?php /* @escapeNotVerified */ echo $block->getUrl('holestpayadmin/order/charge', ['order_id' => $block->getRequest()->getParam('order_id')]); ?>';
+                });
+            }
+        } catch (e) {}
     });
 });
 </script>
