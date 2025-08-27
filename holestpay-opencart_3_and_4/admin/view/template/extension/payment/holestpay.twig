@@ -1,0 +1,140 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+        <button type="submit" form="form-payment" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+        <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a></div>
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+        <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+    {% if error_warning %}
+    <div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> {{ error_warning }} <button type="button" class="close" data-dismiss="alert">&times;</button></div>
+    {% endif %}
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_edit }}</h3>
+      </div>
+      <div class="panel-body">
+        <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-payment" class="form-horizontal">
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-status">{{ entry_status }}</label>
+            <div class="col-sm-10">
+              <select name="payment_holestpay_status" id="input-status" class="form-control">
+                {% if payment_holestpay_status %}
+                <option value="1" selected="selected">{{ text_enabled }}</option>
+                <option value="0">{{ text_disabled }}</option>
+                {% else %}
+                <option value="1">{{ text_enabled }}</option>
+                <option value="0" selected="selected">{{ text_disabled }}</option>
+                {% endif %}
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-title">{{ entry_title }}</label>
+            <div class="col-sm-10">
+              <input type="text" name="payment_holestpay_title" value="{{ payment_holestpay_title }}" placeholder="{{ entry_title }}" id="input-title" class="form-control" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-environment">{{ entry_environment }}</label>
+            <div class="col-sm-10">
+              <select name="payment_holestpay_environment" id="input-environment" class="form-control">
+                <option value="sandbox"{% if payment_holestpay_environment == 'sandbox' %} selected="selected"{% endif %}>{{ text_sandbox }}</option>
+                <option value="live"{% if payment_holestpay_environment == 'live' %} selected="selected"{% endif %}>{{ text_live }}</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group required">
+            <label class="col-sm-2 control-label" for="input-merchant-site-uid">{{ entry_merchant_site_uid }}</label>
+            <div class="col-sm-10">
+              <input type="text" name="payment_holestpay_merchant_site_uid" value="{{ payment_holestpay_merchant_site_uid }}" placeholder="{{ entry_merchant_site_uid }}" id="input-merchant-site-uid" class="form-control" />
+              {% if error_merchant_site_uid %}
+              <div class="text-danger">{{ error_merchant_site_uid }}</div>
+              {% endif %}
+            </div>
+          </div>
+          <div class="form-group required">
+            <label class="col-sm-2 control-label" for="input-secret-key">{{ entry_secret_key }}</label>
+            <div class="col-sm-10">
+              <input type="text" name="payment_holestpay_secret_key" value="{{ payment_holestpay_secret_key }}" placeholder="{{ entry_secret_key }}" id="input-secret-key" class="form-control" />
+              {% if error_secret_key %}
+              <div class="text-danger">{{ error_secret_key }}</div>
+              {% endif %}
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-order-status">{{ entry_order_status }}</label>
+            <div class="col-sm-10">
+              <select name="payment_holestpay_order_status" id="input-order-status" class="form-control">
+                {% for order_status in order_statuses %}
+                {% if order_status.order_status_id == payment_holestpay_order_status %}
+                <option value="{{ order_status.order_status_id }}" selected="selected">{{ order_status.name }}</option>
+                {% else %}
+                <option value="{{ order_status.order_status_id }}">{{ order_status.name }}</option>
+                {% endif %}
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-sort-order">{{ entry_sort_order }}</label>
+            <div class="col-sm-10">
+              <input type="text" name="payment_holestpay_sort_order" value="{{ payment_holestpay_sort_order }}" placeholder="{{ entry_sort_order }}" id="input-sort-order" class="form-control" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-allowspecific">{{ entry_allowspecific }}</label>
+            <div class="col-sm-10">
+              <select name="payment_holestpay_allowspecific" id="input-allowspecific" class="form-control">
+                <option value="0"{% if payment_holestpay_allowspecific == '0' %} selected="selected"{% endif %}>{{ text_all_countries }}</option>
+                <option value="1"{% if payment_holestpay_allowspecific == '1' %} selected="selected"{% endif %}>{{ text_specific_countries }}</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group" id="specific-country-group" style="display: none;">
+            <label class="col-sm-2 control-label" for="input-specificcountry">{{ entry_specificcountry }}</label>
+            <div class="col-sm-10">
+              <select name="payment_holestpay_specificcountry[]" id="input-specificcountry" class="form-control" multiple="multiple">
+                {% for country in countries %}
+                <option value="{{ country.country_id }}"{% if payment_holestpay_specificcountry and country.country_id in payment_holestpay_specificcountry %} selected="selected"{% endif %}>{{ country.name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-min-order-total">{{ entry_min_order_total }}</label>
+            <div class="col-sm-10">
+              <input type="text" name="payment_holestpay_min_order_total" value="{{ payment_holestpay_min_order_total }}" placeholder="{{ entry_min_order_total }}" id="input-min-order-total" class="form-control" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-max-order-total">{{ entry_max_order_total }}</label>
+            <div class="col-sm-10">
+              <input type="text" name="payment_holestpay_max_order_total" value="{{ payment_holestpay_max_order_total }}" placeholder="{{ entry_max_order_total }}" id="input-max-order-total" class="form-control" />
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+$('#input-allowspecific').on('change', function() {
+    if ($(this).val() == '1') {
+        $('#specific-country-group').show();
+    } else {
+        $('#specific-country-group').hide();
+    }
+});
+
+$('#input-allowspecific').trigger('change');
+</script>
+{{ footer }}

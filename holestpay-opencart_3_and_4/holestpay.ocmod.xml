@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>
+    <name>HolestPay Payment Extension</name>
+    <version>1.0.0</version>
+    <author>HolestPay</author>
+    <link>https://holestpay.com</link>
+    <description>HolestPay Payment Gateway for OpenCart 3 and 4</description>
+    
+    <!-- Add HolestPay to payment methods -->
+    <file path="catalog/controller/checkout/payment_method.php">
+        <operation>
+            <search><![CDATA[public function index() {]]></search>
+            <add position="after"><![CDATA[
+        // Add HolestPay payment method
+        if ($this->config->get('payment_holestpay_status')) {
+            $this->load->model('extension/payment/holestpay');
+            $holestpay_data = $this->model_extension_payment_holestpay->getMethod($this->session->data['payment_address']);
+            
+            if ($holestpay_data) {
+                $method_data['holestpay'] = $holestpay_data;
+            }
+        }
+            ]]></add>
+        </operation>
+    </file>
+    
+    <!-- Add HolestPay to checkout confirmation -->
+    <file path="catalog/controller/checkout/confirm.php">
+        <operation>
+            <search><![CDATA[if ($this->request->server['REQUEST_METHOD'] == 'POST') {]]></search>
+            <add position="after"><![CDATA[
+        // Handle HolestPay payment
+        if (isset($this->request->post['payment_method']) && $this->request->post['payment_method'] == 'holestpay') {
+            $this->load->model('extension/payment/holestpay');
+            $result = $this->model_extension_payment_holestpay->processPayment($this->session->data['order_id']);
+            
+            if ($result['success']) {
+                $this->response->redirect($result['redirect_url']);
+                return;
+            } else {
+                $this->session->data['error'] = $result['error'];
+                $this->response->redirect($this->url->link('checkout/checkout'));
+                return;
+            }
+        }
+            ]]></add>
+        </operation>
+    </file>
+    
+    <!-- Add HolestPay to admin order list -->
+    <file path="admin/controller/sale/order.php">
+        <operation>
+            <search><![CDATA[protected function getList() {]]></search>
+            <add position="after"><![CDATA[
+        // Add HolestPay status column
+        $this->load->model('extension/payment/holestpay');
+        $data['holestpay_statuses'] = $this->model_extension_payment_holestpay->getOrderStatuses();
+            ]]></add>
+        </operation>
+    </file>
+</modification>

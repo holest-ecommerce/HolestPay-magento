@@ -1,0 +1,53 @@
+INSTALLATION
+
+- Unpack archive
+
+- Copy HEC folder from unpacked archive to <your magento2 site root>/app/code (if /app/code does not exist simply create it)
+(HEC should end up on path <your magento2 site root>/app/code/HEC)
+
+- From SSH console, navigate to your magento2 site root
+
+- Run these commands:
+
+php bin/magento module:enable HEC_HolestPay
+php bin/magento setup:upgrade
+php bin/magento setup:di:compile
+php bin/magento setup:static-content:deploy -f
+php bin/magento cache:flush
+
+***
+
+- If you haven't done so already:
+
+- Create an account on https://sandbox.pay.holest.com/ or https://pay.holest.com/ depending on your environment. 
+***(For payments in test mode, you need to use https://sandbox.pay.holest.com/ first, then swap to https://pay.holest.com/ when the bank allows you into production. If you go straight to https://pay.holest.com and you have payment parameters in TEST mode, our firewalls may block payments.)
+- Add company data
+- Add a new POS (site) of type standard
+- Add your payment methods (if you need HolestPay payment methods) on the HPay panel
+- Add your shipping methods (if you need HolestPay shipping methods) on the HPay panel
+- Add your fiscal/integration methods (if you need HolestPay fiscal/integration methods) on the HPay panel
+
+***
+
+- You need to connect your site to the HolestPay environment.
+
+Go to Magento admin, **Stores** -> **Configuration** -> **SALES** -> **Payment Methods**.
+
+Scroll down to HolestPay.
+
+- Choose environment
+- Enter **Merchant Site UID** (you can see this on the HPay panel in Site settings **POS UID**)
+- Enter **Secret Key** (you can see this on the HPay panel in Site settings **POS Secret Key**, reveal with the eye button)
+- Note that this title is not used as the visible payment method title. The one you configure for each individual method is used.
+- Below the **Enabled** parameter, you will see a link you need to set on the HPay panel for the "I(P|S|F|I)N - Instant payment/shipping/fiscal/integration notification url" parameter. It will look like this: https://yoursite.com/holestpay/result/webhook.
+- Save Magento payment settings.
+- Then, save the site (POS) settings on the HPay panel.
+- If you go again to the Magento admin, **Stores** -> **Configuration** -> **SALES** -> **Payment Methods**, the URL https://yoursite.com/holestpay/result/webhook should be green if the connection is successful.
+
+***
+
+- If you use holestpay shipping, go to Magento admin, **Stores** -> **Configuration** -> **SALES** -> **Delivery Methods**.
+
+Set a title to something better as this text does appear on checkout in the shipping methods selection after the shipping cost and method name that is fetched from HPay.
+
+This is the basic Magento setup. Refer to other manuals to see how to configure payment, shipping, or fiscal/integration methods.
