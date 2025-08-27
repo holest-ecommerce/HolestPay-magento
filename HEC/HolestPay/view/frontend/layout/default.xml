@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <script src="HEC_HolestPay::js/holestpay-frontend.js"/>
+        <css src="HEC_HolestPay::css/holestpay.css"/>
+        <css src="HEC_HolestPay::css/footer-logotypes.css"/>
+    </head>
+    <body>
+        <referenceContainer name="after.body.start">
+            <block class="HEC\HolestPay\Block\Frontend\NonceBlock" name="holestpay.frontend.inject" template="HEC_HolestPay::inject/frontend.phtml">
+                <block class="HEC\HolestPay\Block\Frontend\CheckoutContext" name="holestpay.checkout.context" />
+                <block class="Magento\Framework\View\Element\Template" name="holestpay.context.data" template="HEC_HolestPay::inject/context.phtml" />
+            </block>
+        </referenceContainer>
+        <referenceContainer name="footer">
+            <block class="HEC\HolestPay\Block\Frontend\FooterLogotypes" name="holestpay.footer.logotypes" template="HEC_HolestPay::footer-logotypes.phtml" />
+        </referenceContainer>
+    </body>
+</page>
+
+

@@ -1,0 +1,54 @@
+<div id="holestpay-admin-area" style="display:none"></div>
+<!-- HolestPayAdmin.getPageContext() returns body classes to infer page type. -->
+<?php
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$request = $objectManager->get(\Magento\Framework\App\RequestInterface::class);
+$orderId = (int)$request->getParam('order_id');
+$customerEmail = null;
+if ($orderId) {
+    $order = $objectManager->create(\Magento\Sales\Model\Order::class)->load($orderId);
+    if ($order && $order->getId()) {
+        $customerEmail = (string)$order->getCustomerEmail();
+    }
+}
+?>
+<script nonce="<?= $block->getNonce() ?>">
+window.HolestPayAdmin = window.HolestPayAdmin || {};
+window.HolestPayAdmin.admin_base_url = <?= json_encode($block->getAdminBaseUrl()) ?>;
+window.HolestPayAdmin.frontend_base_url = <?= json_encode($block->getFrontendBaseUrl()) ?>;
+
+// Create settings object with all configuration
+window.HolestPayAdmin.settings = {
+    ...<?= json_encode($block->getConfiguration()) ?>,
+    environment: <?= json_encode($block->getEnvironment()) ?>,
+    merchant_site_uid: <?= json_encode($block->getMerchantSiteUid()) ?>
+};
+
+// Transform configuration keys to append "POS" suffix
+const originalConfig = <?= json_encode($block->getConfiguration()) ?>;
+Object.keys(originalConfig).forEach(key => {
+    if (key === 'sandbox' || key === 'production') {
+        window.HolestPayAdmin.settings[key + 'POS'] = originalConfig[key];
+        delete window.HolestPayAdmin.settings[key];
+    }
+});
+
+// Create environment-specific settings object
+const posKey = window.HolestPayAdmin.settings.environment + "POS";
+if (window.HolestPayAdmin.settings[posKey]) {
+    window.HolestPayAdmin.settings[window.HolestPayAdmin.settings.environment] = {
+        company_id: window.HolestPayAdmin.settings[posKey].company?.HPayCompanyId,
+        site_id: window.HolestPayAdmin.settings[posKey].HPaySiteId,
+        merchant_site_uid: window.HolestPayAdmin.settings.merchant_site_uid,
+        main_url: window.HolestPayAdmin.settings[posKey].valid_urls?.[0],
+        secret_token: <?= json_encode($block->getSecretKey()) ?>
+    };
+}
+
+window.HolestPayAdmin.context = Object.assign({ orderId: null, customerEmail: null }, window.HolestPayAdmin.context || {}, {
+  orderId: <?= $orderId ?: 'null' ?>,
+  customerEmail: <?= $customerEmail ? ('"' . $block->escapeHtml($customerEmail) . '"') : 'null' ?>
+});
+</script>
+
+

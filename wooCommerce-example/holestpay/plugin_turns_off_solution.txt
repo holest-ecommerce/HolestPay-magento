@@ -1,0 +1,20 @@
+//PLACE THIS CODE IN YOUR THEME functions.php TO ENSURE HolestPay plugin NEVER GETS TURNED OFF//////////////////
+//THIS CODE IS SAFE. IT WILL NOT CREATE CONFLICH IF YOU DELETE PLUGIN///////////////////////////////////////////
+if(empty($_POST) && !defined( 'DOING_AJAX' )){
+	$active_plugins = get_option("active_plugins", false);
+	if($active_plugins){
+		if(!in_array("holestpay/index.php",$active_plugins)){
+			if(file_exists(WP_PLUGIN_DIR . "/holestpay/index.php")){
+				$_activate_after = get_option("__activate_holest_pay", false);
+				if($_activate_after && $_activate_after < time()){
+					$active_plugins[] = "holestpay/index.php";
+					update_option("active_plugins", $active_plugins, true);
+					delete_option("__activate_holest_pay");
+				}else if(!$_activate_after){
+					update_option("__activate_holest_pay", time() + 30, true);//maybe it is updateing
+				}
+			}
+		}
+	}
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////

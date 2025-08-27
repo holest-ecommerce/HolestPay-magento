@@ -1,0 +1,840 @@
+#hpay_settings_page{
+	background-repeat: no-repeat;
+    background-position: 98% 0%;
+    background-size: 12vh;
+}
+
+#hpay_settings_page *[label]:before{
+	content:attr(label);
+	min-width:190px;
+	max-width:190px;
+	display:inline-block;
+}
+
+#hpay_settings_page *[label].auto-label-width:before{
+	min-width:40px;
+	max-width:70vw;
+}
+
+.hpay-important[label]:before{
+	font-weight:bold;
+}
+
+#hpay_settings_page > p[label]{
+	display:flex;
+}
+
+#hpay_settings_page p[label] > *{
+	margin-right:5px;
+}
+
+#hpay_connection > *{
+	margin:5px;
+}
+
+.flex-column{
+	flex-direction:column;
+}
+
+#cmdConnectHpay, #cmdDisconnectHpay{
+	display:none;
+}
+
+#cmdSaveHpay{
+	padding: 7px 35px
+}
+
+#hpay_settings_page.connected #cmdDisconnectHpay{
+	display:inline-block;
+}
+
+#hpay_settings_page.disconnected #cmdConnectHpay{
+	display:inline-block;
+}
+
+
+#hpay_settings_page.connected .only-when-disconnected{
+	display:none!important;
+}
+
+#hpay_settings_page.disconnected .only-when-connected{
+	display:none!important;
+}
+
+#hpay_panel{
+	display:none;
+}
+
+#hpay_settings_page.connected #hpay_panel{
+	display:block;
+}
+
+.hpay-wc-method-setup-page .woocommerce form .woocommerce-save-button{
+	display:none;
+}
+
+.hpay-loader,
+.hpay-loader:before,
+.hpay-loader:after {
+  background: #0b1b6a;
+  -webkit-animation: load1 1s infinite ease-in-out;
+  animation: load1 1s infinite ease-in-out;
+  width: 1em;
+  height: 4em;
+}
+.hpay-loader {
+  color: #0b1b6a;
+  text-indent: -9999em;
+  margin: 88px auto;
+  position: fixed;
+	top: 45vh;
+	left: 45vw;
+  z-index:99;	
+  font-size: 11px;
+  -webkit-transform: translateZ(0);
+  -ms-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-animation-delay: -0.16s;
+  animation-delay: -0.16s;
+}
+.hpay-loader:before,
+.hpay-loader:after {
+  position: absolute;
+  top: 0;
+  content: '';
+}
+.hpay-loader:before {
+  left: -1.5em;
+  -webkit-animation-delay: -0.32s;
+  animation-delay: -0.32s;
+}
+.hpay-loader:after {
+  left: 1.5em;
+}
+@-webkit-keyframes load1 {
+  0%,
+  80%,
+  100% {
+    box-shadow: 0 0;
+    height: 4em;
+  }
+  40% {
+    box-shadow: 0 -2em;
+    height: 5em;
+  }
+}
+@keyframes load1 {
+  0%,
+  80%,
+  100% {
+    box-shadow: 0 0;
+    height: 4em;
+  }
+  40% {
+    box-shadow: 0 -2em;
+    height: 5em;
+  }
+}
+
+.hpay-await-loader {
+  margin: auto;
+  border: 6px solid #EAF0F6;
+  border-radius: 50%;
+  border-top: 6px solid #2271b1;
+  width: 40px;
+  height: 40px;
+  animation: spinner 1s linear infinite;
+}
+
+@keyframes spinner {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.hpay-subscriptions-warning{
+	color:#ff6900;
+	font-style:italic;
+	padding:1px;
+	margin:1px;
+}
+
+.hpay_note,
+.hpay_info_note{
+	font-style:italic;
+	font-size:90%;
+	padding:1px;
+	margin:1px;
+}
+
+.hpay_color_green{
+	color:green;
+}
+
+.hpay_color_red{
+	color:red;
+}
+
+.hpay_color_orange{
+	color:#ff6900;
+}
+
+.hpay_bold{
+	font-weight:bold;
+}
+
+.hpay_hightlight_light{
+	background:#ccdff159;
+}
+
+.hpay_hightlight_medium{
+	background:#9baab87a;
+}
+
+.hpay_hightlight_strong{
+	background:#5bfeff7a;
+}
+
+.hpay-woocommerce-subscriptions{
+	
+}
+
+.hpay_custom_plugin_support{
+	padding-left:24px;
+}
+
+.hpay-subscriptions-warning,
+.hpay_pci_dss{
+	margin:1px;
+	padding:1px;
+	margin-top:-12px;
+	font-style:italic;
+	text-decoration:none;
+	font-size:90%;
+}
+
+.hpay_supported_plugin{
+	margin: 4px;
+	font-style:italic;
+	padding-left:20px;
+}
+
+.hpay_disabled,
+.hpay_disabled *{
+	color:silver!important;
+	background:none!important;
+	pointer-events:none!important;
+}
+
+.hpay_no_bottom_space{
+	padding-bottom: 1px;
+	margin-bottom: 1px;	
+}
+
+.hpay_no_top_space{
+	padding-top: 1px;
+	margin-top: 1px;	
+}
+
+.hpay_light_border{
+	border: 1px solid silver;
+    border-style: dotted;
+	padding:5px;
+}
+
+div.hpay_popup{
+	position:fixed;
+	top:0;
+	left:0;
+	width:100%;
+	height:100%;
+	background:rgba(0,0,0,0.4);
+	display: flex;
+	align-items: end;
+	z-index:9999;
+	justify-content: stretch;
+	align-items: stretch;
+}
+
+div.hpay_popup > .hpay_popup_wrapper{
+	margin: 0 auto;
+	background:rgba(255,255,255,1);
+	border-radius:6px;
+	padding: 20px;
+	padding-top:8px;
+	display:inline-block;
+	padding-bottom: 1px;
+} 
+
+div.hpay_popup > .hpay_popup_wrapper{
+	max-width:90vw;
+	display: flex;
+	flex-direction: column;
+	justify-content: stretch;
+	align-items: stretch;
+}
+
+div.hpay_popup > .hpay_popup_wrapper{
+	min-width: 78%;
+	margin-bottom: 5vh;
+	margin-top: 8vh;
+	max-height: 80vh;
+	margin-right: 3vw;
+}
+
+
+
+div.hpay_popup > .hpay_popup_wrapper .popup_inner{
+	overflow:hidden;
+	padding:0;
+	display: flex;
+	justify-content: stretch;
+	align-items: stretch;
+	flex-direction: column;
+	width: 100%;
+	height: 100%;
+}
+
+div.hpay_popup > .hpay_popup_wrapper .popup_inner > *{
+	display: block;
+	width: 100%;
+	height: 98%;
+	overflow-y:auto;
+}
+
+div.hpay_popup.hpay_liquid_popup > .hpay_popup_wrapper{
+	width:1280px;
+	max-width:90vw; 
+}
+
+div.hpay_popup.md-popup > .hpay_popup_wrapper{
+	max-height: 70vh;
+	width: 1024px;
+	min-width:60%;
+	margin-right: 15vw;
+	margin-top: 12vh;
+}
+
+@media(max-width:1280px){
+	div.hpay_popup.md-popup > .hpay_popup_wrapper{
+		margin-right:2vw;
+	}
+}
+
+div.hpay_popup.sm-popup > .hpay_popup_wrapper{
+	max-height: 50vh;
+	width: 768px;
+	min-width:40%;
+	margin-right: 25vw;
+	margin-top: 20vh;
+}
+
+@media(max-width:1024px){
+	div.hpay_popup.sm-popup > .hpay_popup_wrapper{
+		margin-right:2vw;
+	}
+}
+
+div.hpay_popup.xs-popup > .hpay_popup_wrapper{
+	width: 512px;
+	min-width:30%;
+	margin-right: 33vw;
+	margin-top: 30vh;
+	height: fit-content;
+}
+
+@media(max-width:768px){
+	div.hpay_popup.xs-popup > .hpay_popup_wrapper{
+		margin-right:2vw;
+	}
+}
+
+@media(max-height:768px){
+	div.hpay_popup.md-popup > .hpay_popup_wrapper,
+	div.hpay_popup.sm-popup > .hpay_popup_wrapper,
+	div.hpay_popup.xs-popup > .hpay_popup_wrapper{
+		max-height: 90vh;
+	}
+}
+
+div.hpay_popup .hpay_popup_top{
+	display:flex;
+	justify-content:space-between;
+}
+
+div.hpay_popup .hpay_popup_top *{
+	margin:1px -5px;
+	padding:1px;
+}
+
+div.hpay_popup .hpay_popup_top a.hpay_popup_close:before{
+	content: "\00D7";
+	font-size:24px;
+	position:absolute;
+	margin-top:-6px;
+	margin-left:-4px;
+	color:gray;
+	cursor:pointer;
+}
+
+div.hpay_popup .hpay_popup_top a.hpay_popup_close:hover:before{
+	color:black;
+}
+
+div.hpay_popup .hpay_popup_content{
+	display:flex;
+	align-content:stretch;
+	justify-content:stretch;
+	align-items: stretch;
+	flex-direction: column;
+	width: 100%;
+	height: 95%;
+}
+
+div.hpay_popup textarea{
+	resize:none;
+	width:100%;
+	min-height:60px;
+}
+
+.hpay_popup .hpay_popup_footer{
+	display:flex;
+	justify-content:space-between;
+}
+
+.hpay_popup .hpay_popup_footer{
+	padding:5px;
+	display:flex;
+	justify-content:end;
+	background: rgba(255,255,255,1);
+	margin: 0 -20px;
+	border-radius: 0 0 5px 5px;
+}
+
+.hpay_popup .hpay_popup_footer button{
+	padding:5px;
+	margin: 0 5px;
+	min-width:80px;
+}
+
+.hpay_popup #consent_text{
+	width:100%;
+	min-height:50px;
+}
+
+.hpay_popup #cmdAcceptLiquid{
+	padding:3px 30px
+}
+
+
+div.hpay_popup.liquid_objects_picker > .hpay_popup_wrapper{
+	width:1280px;
+	max-width:90vw; 
+}
+
+div.hpay_popup .object_prop_select{
+	max-height:70vh;
+	overflow-y:auto;   
+	font-style:italic;
+	color:#7d7c7c;
+}
+
+div.hpay_popup .object_prop_select prop{
+	color:black;
+	font-style:normal;
+}
+
+div.hpay_popup .object_prop_select prop:hover{
+	background:yellow;
+	cursor:pointer;
+}
+
+div.hpay_popup .object_prop_select p{
+	padding:0;
+	margin:0
+}
+
+body.hpay-popup-shown{
+	overflow:hidden;
+}
+
+.hpay_full_width{
+	width:96%;
+}
+
+
+.hpay_object_explorer_data{
+	background: rgba(0,0,0,0.4);
+}
+
+.hpay_object_explorer_data span,
+.hpay_object_explorer_data value
+{
+	display:block;
+}
+
+.hpay_object_explorer_data span{
+	padding-left:25px;
+	
+}
+
+.hpay_object_explorer_data span[property_type='simple']{
+	display:flex;
+}
+
+.hpay_object_explorer_data span value{
+	color:silver!important;
+	font-style:italic;
+	font-size:13px;
+	line-height:16px;
+}
+
+.hpay_object_explorer_data prop{
+	padding:0px 8px;
+	font-weight:bold;
+}
+
+.hpay_object_explorer_data prop:after{
+	content:": ";
+}
+
+
+.hpay_object_explorer_data span[property_type='array'] > prop:after{
+	content:": [ ";
+}
+
+.hpay_object_explorer_data > span[property_type='array'] > prop:after{
+	content:"[ ";
+}
+
+.hpay_object_explorer_data span[property_type='array']:after{
+	content:" ],";
+	padding-left:8px;
+}
+
+.hpay_object_explorer_data span[property_type='array']:last-child:after{
+	content:" ]";
+}	
+
+.hpay_object_explorer_data span[property_type='object'] > prop:after{
+	content:": { ";
+}
+
+.hpay_object_explorer_data > span[property_type='object'] > prop:after{
+	content:"{ ";
+}
+
+.hpay_object_explorer_data span[property_type='object']:after{
+	content:" },";
+	padding-left:8px;
+}
+
+.hpay_object_explorer_data span[property_type='object']:last-child:after{
+	content:" }";
+}
+
+.hpay_object_explorer_data span[property_type='simple']:after{
+	content:",";
+}
+
+.hpay_object_explorer_data span[property_type='simple']:last-child:after{
+	content:"";
+}
+
+.hpay_object_explorer_data prop.prop-selected{
+    background:#ffffdd;
+    cursor:pointer;
+	color:black;
+}
+
+.hpay_object_explorer_data prop:hover{
+    background:#f8f894;
+    cursor:pointer;
+	color:black;
+}
+
+
+.hpay_clear_input_form{
+	
+}
+
+.hpay_clear_input_form table{
+	width:100%;
+}
+
+.hpay_clear_input_form table tbody tr:nth-child(odd){
+	background:rgba(0,0,0,0.05);
+}
+
+.hpay_clear_input_form table tbody tr:hover{
+	background:rgb(93 118 160 / 25%);
+}
+
+.hpay_clear_input_form table tbody td{
+	padding:8px;
+	cursor:pointer;
+}
+
+.hpay_flex_row{
+	display:flex;
+	justify-content: space-evenly;
+}
+
+.hpay_smart_tool_bindings_wrapper,
+.hpay_smart_tool_refs{
+	width:50%;
+}
+
+.hpay_smart_tool_bindings_wrapper input{
+	width:100%;
+	border-radius:0;
+}
+
+.hpay_smart_tool_wizzard th{
+	text-align:left;
+}
+
+.hpay_smart_tool_detected_meta h6{
+	margin:0;
+	background:rgba(0,0,0,0.1);
+	font-weight: bold;
+	font-size: 1.1em;
+	font-style: italic;
+}
+
+.hpay_smart_tool_detected_meta .hpay_field_relation_data{
+	display:flex;
+	justify-content:stretch;
+}
+
+.hpay_smart_tool_detected_meta .hpay_field_relation_data > span{
+	padding:2px;
+	min-width:160px;
+	line-height:1em;
+}
+
+.hpay_smart_tool_detected_meta .hpay_field_relation_data span[prop='value']{
+	font-style:italic;
+	position:relative;
+	top:+2px;
+	font-weight:bold;
+	display:block;
+}
+
+select.hpay_this_field_is:not([selectedvalue='']){
+	color:green;
+	font-weight:bold;
+}
+
+.hpay_smart_tool_bindings input:not(:placeholder-shown) {
+    color: green;
+    font-weight:bold;
+}
+
+.hpay_smart_tool_bindings input[required]:placeholder-shown{
+	border-color: red;
+}
+
+.hpay_smart_tool_popup[wizzard_step="1"] .hpay_popup_footer > div{
+	display:none;
+}
+
+.hpay_smart_tool_invoke_renewal{
+	display:none;
+}
+
+.hpay_smart_tool_wizzard pre{
+	background:aliceblue;
+	padding:10px;
+	max-width:100%;
+	overflow-y:visible;
+	overflow-x:scroll;
+	font-family:monospace;
+	
+}
+
+
+.hpay-remove-cmd{
+	display:inline-block;
+	background:rgba(0,0,0,0.2);
+	width:20px;
+	height:20px;
+	text-align:center;
+	border-radius:15px;
+	color:red;
+	cursor:pointer;
+	float:right;
+	line-height: 17px;
+}
+
+.hpay-remove-cmd:hover{
+	background:rgba(0,0,0,0.1);
+	color:#a10d0d;
+}
+
+.hpay_custom_integrations > p{
+	background:white;
+	padding:4px;
+	font-style:italic;
+	font-weight:bold;
+}
+
+.hpay_custom_integrations > p:hover{
+	background:#e4fef8;
+}
+
+.hpay-wc-pending-warning{
+	display:none;
+	color:#ff6500;
+	background: rgba(255,255,255,0.6);
+}
+
+.hpay_bottom_bar{
+	position:fixed;
+	bottom:0;
+	text-align:center;
+	width: 100%;
+	background: #d6e0d166;
+	padding: 0px;
+}
+
+.hpay_bottom_bar > *{
+	margin:5px;
+}
+
+.hpay-transaction-info{
+	padding:5px;
+	font-size:90%;
+	background:rgb(229 226 181 / 10%);
+	font-style:italic;
+}
+
+.hpay-vault-options{
+    display:flex;
+    font-size:80%;
+    justify-content:end;
+}
+
+.hpay-vault-options > a{
+    margin-left:8px;
+    text-decoration:none;
+    color:red;
+    cursor:pointer;
+}
+
+.hpay-vault-tokens{
+    margin-left:15px;
+	list-style:none;
+	padding-left: 0;
+}
+
+.hpay-vault-tokens > li{
+    padding:4px 8px;
+    font-size:85%;
+}
+
+.hpay-vault-tokens > li{
+    background:rgba(0,0,0,0.03);
+}
+
+.hpay-vault-tokens > li label{
+	font-style:italic;
+	opacity:0.7;
+}
+
+.hpay-vault-tokens > li:nth-child(odd){
+    background:rgba(0,0,0,0.06);
+}
+
+.hpay-detafult-vault .hpay-set-default-vault{
+    display:none;
+}
+
+.hpay-vault:after{
+	content:'/ ' attr(token_time);
+	position:absolute;
+	margin-top:-8px;
+	font-size:9px;
+	font-style:italic;
+	display:inline-block;
+}
+
+.hpay-connect-popup-message{
+	color:#b15608;
+	font-weight:bold;
+}
+
+#hpay_inlist_order_panel button,
+#hpay_shop_order_meta_box div[hpay_order_action_toolbox] button{
+	margin-right:5px;
+}
+
+.hpay-order-status{
+	margin:1px 0;
+	background:aliceblue;
+	font-weight:bold;
+	padding:3px;
+	font-style:italic;
+}
+
+span[hpay_order_list_info] {
+	line-height:95%;
+	display:inline-block;
+}
+
+span[hpay_order_list_info] span{
+	font-size:80%;
+	line-height:95%;
+	margin:0;
+	padding:2px 1px;
+	word-wrap: normal;
+	display:block;
+	color: #466784;
+}
+
+span[hpay_order_list_info] span:nth-child(odd){
+	background:rgba(0,0,0,0.03)
+}
+
+span[hpay_order_list_info].hpay-status-empty:before{
+	content:"  -- / -- ";
+}
+
+.hpay-blind {
+  animation: blinker 1s linear infinite;
+}
+
+.hpay-status-with-error,
+.hpay-status-with-error *{
+  color:red;		
+}
+
+@keyframes blinker {
+  60% {
+    color:#a70101;
+  }
+}
+
+.hpay-push{
+	font-size: 16px;
+    line-height: 10px;
+    display: inline-block;
+    border: 1px solid silver;
+    padding: 6px;
+    border-radius: 15px;
+    color: silver;
+	cursor: pointer;
+}
+
+.hpay-push:hover{
+	background: aliceblue;
+}
+
+.hpay-list-order-toolbox{
+	display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+#_billing_is_company{
+	width:auto!important;
+}

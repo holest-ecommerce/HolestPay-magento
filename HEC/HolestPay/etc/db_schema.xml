@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="sales_order" resource="sales" engine="innodb" comment="Sales Order">
+        <column xsi:type="varchar" name="hpay_status" nullable="true" length="1024" comment="HolestPay Status"/>
+        <column xsi:type="varchar" name="holestpay_uid" nullable="true" length="255" comment="HolestPay Order UID"/>
+        <column xsi:type="mediumtext" name="hpay_data" nullable="true" comment="HolestPay Order Data (JSON)"/>
+    </table>
+    <table name="sales_order_grid" resource="sales" engine="innodb" comment="Sales Order Grid">
+        <column xsi:type="varchar" name="hpay_status" nullable="true" length="1024" comment="HolestPay Status"/>
+        <column xsi:type="varchar" name="holestpay_uid" nullable="true" length="255" comment="HolestPay Order UID"/>
+    </table>
+    <table name="customer_entity" resource="default" engine="innodb" comment="Customer Entity">
+        <column xsi:type="mediumtext" name="hpay_data" nullable="true" comment="HolestPay Customer Data (JSON)"/>
+    </table>
+    <table name="holestpay_configuration" resource="default" engine="innodb" comment="HolestPay Configuration Data">
+        <column xsi:type="int" name="config_id" unsigned="true" nullable="false" identity="true" comment="Configuration ID"/>
+        <column xsi:type="varchar" name="environment" nullable="false" length="32" comment="Environment (sandbox/production)"/>
+        <column xsi:type="mediumtext" name="data" nullable="true" comment="Configuration Data (JSON)"/>
+        <column xsi:type="timestamp" name="updated_at" nullable="false" default="CURRENT_TIMESTAMP" on_update="true" comment="Updated At"/>
+        <column xsi:type="timestamp" name="created_at" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="config_id"/>
+        </constraint>
+        <constraint xsi:type="unique" referenceId="HOLESTPAY_CONFIG_ENVIRONMENT">
+            <column name="environment"/>
+        </constraint>
+    </table>
+    <table name="holestpay_order_locks" resource="default" engine="innodb" comment="HolestPay Order Locks">
+        <column xsi:type="varchar" name="order_uid" nullable="false" length="255" comment="Order UID"/>
+        <column xsi:type="int" name="lock_timestamp" unsigned="true" nullable="false" comment="Lock Timestamp"/>
+        <column xsi:type="timestamp" name="created_at" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="order_uid"/>
+        </constraint>
+        <index referenceId="HOLESTPAY_ORDER_LOCKS_TIMESTAMP" indexType="btree">
+            <column name="lock_timestamp"/>
+        </index>
+    </table>
+</schema>
+
+

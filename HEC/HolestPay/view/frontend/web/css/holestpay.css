@@ -1,0 +1,168 @@
+/* HolestPay Payment Method Styles */
+
+.holestpay-suboptions {
+    margin: 0;
+    display: block !important;
+}
+
+.holestpay-suboptions ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.holestpay-suboptions li {
+    margin: 0;
+    padding: 0;
+    border: none;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    transition: none;
+    position: relative;
+    cursor: pointer;
+}
+
+.holestpay-suboptions li:hover {
+    background: transparent;
+}
+
+.holestpay-suboptions li input[type="radio"]:checked + .method-title {
+    font-weight: 600;
+}
+
+.holestpay-suboptions label {
+    display: block;
+    cursor: pointer;
+    font-weight: normal;
+    margin: 0;
+}
+
+.holestpay-suboptions input[type="radio"] {
+    margin-right: 8px;
+    float: left;
+}
+
+.method-title {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 4px;
+}
+
+.method-description {
+    display: block;
+    margin-top: 2px;
+    font-size: 0.9em;
+    color: #666;
+    font-style: italic;
+    margin-left: 24px;
+}
+
+.cof-tokens {
+    margin-top: 15px;
+    padding: 15px;
+    background: #f0f8ff;
+    border-radius: 4px;
+    border-left: 3px solid #007cba;
+}
+
+.cof-tokens p {
+    margin: 0 0 10px 0;
+    font-weight: bold;
+    color: #333;
+}
+
+.token-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.token-list li {
+    margin: 8px 0;
+    padding: 8px;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+}
+
+.token-list label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0;
+}
+
+.token-actions {
+    margin-top: 8px;
+    display: flex;
+    gap: 8px;
+}
+
+.token-actions button {
+    padding: 4px 8px;
+    font-size: 0.8em;
+    border: 1px solid #ccc;
+    background: #f8f8f8;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.token-actions button:hover {
+    background: #e8e8e8;
+}
+
+.default-badge {
+    background: #28a745;
+    color: white;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 0.7em;
+    font-weight: bold;
+    margin-left: 8px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .token-actions {
+        flex-direction: column;
+        gap: 4px;
+    }
+    
+    .token-list label {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+
+.payment-method.holestpay .payment-method-content{
+    padding:0;
+}
+
+.payment-method.holestpay .payment-method-content li{
+    padding-top:10px;
+}
+
+.payment-method.holestpay .payment-method-content{
+    padding:0;
+}
+
+.payment-method.holestpay .payment-method-content li{
+    padding-top:10px;
+}
+
+.payment-method.holestpay,
+.payment-method.holestpay .payment-method-content{
+    display:block!important;
+}
+
+.payment-actions-holestpay{
+    display: flex;
+    justify-content: center;
+    margin: 10px;
+}
+
+.holestpay-pay-button{
+    padding: 15px 50px;
+}

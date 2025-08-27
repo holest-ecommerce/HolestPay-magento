@@ -1,0 +1,10 @@
+<?php
+/**
+ * HolestPay Footer Logotypes Template
+ *
+ * Renders HolestPay logotypes in the footer when enabled
+ */
+?>
+<?php if ($block->shouldDisplayFooterLogotypes()): ?>
+    <?php echo $block->getFooterLogotypesHtml(); ?>
+<?php endif; ?>

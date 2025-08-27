@@ -1,0 +1,696 @@
+<div class="holestpay-order-box">
+                    <h2><?= /* @escapeNotVerified */ __('HolestPay') ?></h2>
+    <div id="holestpay-admin-order-box-content">
+        <!-- HPayStatus will be displayed here first -->
+        <div id="holestpay-status-display"></div>
+        
+        <!-- HolestPay admin commands will be rendered here if holestpay_uid is set -->
+        <div id="holestpay-admin-commands" style="display:none;">
+            <h4><?= /* @escapeNotVerified */ __('HolestPay Admin Commands') ?></h4>
+            <div id="holestpay-order-toolbox">
+                <div class="hpay-await-loader" style="text-align: center; padding: 20px; color: #6c757d;">
+                    <div><?= /* @escapeNotVerified */ __('Loading HolestPay commands...') ?></div>
+                </div>
+            </div>
+            
+            <!-- Additional HolestPay Actions -->
+            <div id="holestpay-additional-actions" style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #dee2e6;">
+                <div class="holestpay-action-buttons">
+                    <!-- Manage on HolestPay Button -->
+                    <button class="button button-primary hpayopen" id="holestpay-manage-button" style="margin-right: 10px;">
+                        <?= /* @escapeNotVerified */ __('Manage on HolestPay...') ?>
+                    </button>
+                    
+                    <!-- Store Order Button -->
+                    <button class="button button-secondary hpay_store_order" id="holestpay-store-button">
+                        <?= /* @escapeNotVerified */ __('Store Order') ?>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Pass order data to JavaScript -->
+<script type="text/javascript">
+    window.HolestPayOrderData = <?php echo $block->getOrderDataJson(); ?>;
+</script>
+
+<script nonce="<?= $block->getNonce() ?>">
+require(['jquery'], function ($) {
+    $(function () {
+                 try { 
+             // Get order data first
+             var orderData = window.HolestPayOrderData || {};
+             
+                           // Only initialize HolestPay if holestpay_uid is set OR if we have admin config for Store Order button
+              if (orderData.holestpay_uid || (window.HolestPayAdmin && window.HolestPayAdmin.settings.environment && 
+                  window.HolestPayAdmin.settings.merchant_site_uid && window.HolestPayAdmin.settings[window.HolestPayAdmin.settings.environment]?.secret_token)) {
+                 
+                                   // Load HolestPay script
+                  var scriptUrl = "https://" + (window.HolestPayAdmin.settings.environment === "production" ? "" : "sandbox.") + "pay.holest.com/clientpay/cscripts/hpay.js";
+                 
+                 // Function to load script and initialize
+                 function loadScriptAndInitialize() {
+                     if (!document.querySelector('script[src="' + scriptUrl + '"]')) {
+                         var script = document.createElement('script');
+                         script.src = scriptUrl;
+                         script.onload = function() {
+                             initializeHolestPay();
+                         };
+                         script.onerror = function() {
+                             console.error("<?= /* @escapeNotVerified */ __('Failed to load HolestPay script') ?>");
+                         };
+                         document.head.appendChild(script);
+                     } else {
+                         // Script already loaded, initialize directly
+                         initializeHolestPay();
+                     }
+                 }
+                 
+                 // Initialize HolestPay (can be called multiple times safely)
+                 function initializeHolestPay() {
+                     if (typeof HPayInit !== "undefined") {
+                         HPayInit(
+                             window.HolestPayAdmin.settings.merchant_site_uid,
+                             String(window.HolestPayAdmin.language || "en").substring(0, 2),
+                             window.HolestPayAdmin.settings.environment,
+                             window.HolestPayAdmin.settings[window.HolestPayAdmin.settings.environment].secret_token
+                         ).then(function(client) {
+                             console.log("<?= /* @escapeNotVerified */ __('HolestPay Admin initialized successfully') ?>");
+                             
+                             // Load HolestPay UI before proceeding
+                             return client.loadHPayUI().then(function(ui_loaded) {
+                                console.log("<?= /* @escapeNotVerified */ __('HolestPay UI loaded successfully') ?>");
+                                
+                                // NOW the UI library is fully loaded, safe to call UI-dependent functions
+                                if (orderData.holestpay_uid) {
+                                    // Only display order info if we have a holestpay_uid
+                                    displayHolestPayOrderInfo(client);
+                                } else {
+                                    // Just initialize the Store Order button functionality
+                                    initializeStoreOrderButton();
+                                }
+                             }).catch(function(error) {
+                                console.error("<?= /* @escapeNotVerified */ __('Failed to initialize HolestPay Admin(1):') ?>", error);
+                             });
+                         }).catch(function(error) {
+                                console.error("<?= /* @escapeNotVerified */ __('Failed to initialize HolestPay Admin(2):') ?>", error);
+                             });
+                     }
+                 }
+                 
+                 // Start loading script
+                 loadScriptAndInitialize();
+             } else {
+                 // Debug: Log what's available
+                                   console.log('<?= /* @escapeNotVerified */ __('HolestPayAdmin configuration:') ?>', {
+                      exists: !!window.HolestPayAdmin,
+                      environment: window.HolestPayAdmin ? window.HolestPayAdmin.settings.environment : 'undefined',
+                      merchant_site_uid: window.HolestPayAdmin ? window.HolestPayAdmin.settings.merchant_site_uid : '<?= /* @escapeNotVerified */ __('undefined') ?>',
+                      secret_key: window.HolestPayAdmin ? (window.HolestPayAdmin.settings[window.HolestPayAdmin.settings.environment]?.secret_token ? '<?= /* @escapeNotVerified */ __('set') ?>' : '<?= /* @escapeNotVerified */ __('not set') ?>') : '<?= /* @escapeNotVerified */ __('undefined') ?>'
+                  });
+                 
+                 console.log('<?= /* @escapeNotVerified */ __('HolestPayOrderData:') ?>', window.HolestPayOrderData);
+                 
+                 // Show basic order data without HolestPay functionality
+                 var statusDisplay = document.getElementById('holestpay-status-display');
+                 if (statusDisplay) {
+                     if (window.HolestPayOrderData) {
+                         var orderData = window.HolestPayOrderData;
+                         var basicInfo = '<div style="margin-top: 15px; padding: 10px; background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 4px;">';
+                         basicInfo += '<p><strong><?= /* @escapeNotVerified */ __('Order ID:') ?></strong> ' + (orderData.order_id || '<?= /* @escapeNotVerified */ __('N/A') ?>') + '</p>';
+                         basicInfo += '<p><strong><?= /* @escapeNotVerified */ __('HPay Status:') ?></strong> ' + (orderData.hpay_status || '<?= /* @escapeNotVerified */ __('Not yet received') ?>') + '</p>';
+                         basicInfo += '<p><strong><?= /* @escapeNotVerified */ __('HolestPay UID:') ?></strong> ' + (orderData.holestpay_uid || '<?= /* @escapeNotVerified */ __('Not set') ?>') + '</p>';
+                         basicInfo += '</div>';
+                         statusDisplay.innerHTML = basicInfo;
+                     } else {
+                         statusDisplay.innerHTML = '<p style="color: #dc3545;"><strong><?= /* @escapeNotVerified */ __('Error:') ?></strong> <?= /* @escapeNotVerified */ __('Order data not found.') ?></p>';
+                     }
+                 }
+                 
+                                   // Initialize Store Order button functionality for orders without holestpay_uid
+                  if (window.HolestPayAdmin && window.HolestPayAdmin.settings.environment && 
+                      window.HolestPayAdmin.settings.merchant_site_uid && window.HolestPayAdmin.settings[window.HolestPayAdmin.settings.environment]?.secret_token) {
+                      initializeStoreOrderButton();
+                  }
+             }
+             
+             // Bind charge button if available
+             try {
+                 var btn = document.getElementById('holestpay-order-charge');
+                 if (btn) {
+                     var orderId = <?php echo (int)$block->getRequest()->getParam('order_id'); ?>;
+                     btn.addEventListener('click', function () {
+                         location.href = '<?php /* @escapeNotVerified */ echo $block->getUrl('holestpayadmin/order/charge', ['order_id' => $block->getRequest()->getParam('order_id')]); ?>';
+                     });
+                 }
+             } catch (e) {}
+         } catch (e) {
+             console.error('<?= /* @escapeNotVerified */ __('Error in HolestPay initialization:') ?>', e);
+         }
+        
+        /**
+         * Display HolestPay order information and admin commands
+         */
+        function displayHolestPayOrderInfo(client) {
+            try {
+                var orderId = <?php echo (int)$block->getRequest()->getParam('order_id'); ?>;
+                if (!orderId) {
+                                         console.error('<?= /* @escapeNotVerified */ __('Order ID not found') ?>');
+                    return;
+                }
+                
+                // Get order data from the block
+                var orderData = window.HolestPayOrderData || {};
+                if (!orderData) {
+                                         console.error('<?= /* @escapeNotVerified */ __('Order data not found') ?>');
+                    return;
+                }
+                
+                // Display HPay Status first (bolded)
+                var statusDisplay = document.getElementById('holestpay-status-display');
+                if (statusDisplay) {
+                                         var hpayStatus = orderData.hpay_status || '<?= /* @escapeNotVerified */ __('Not yet received') ?>';
+                    statusDisplay.innerHTML = '<p><strong>HPay Status:</strong> <span class="hpay-status">' + hpayStatus + '</span></p>';
+                }
+                
+                // Check if holestpay_uid is set
+                if (orderData.holestpay_uid) {
+                    // Show admin commands section
+                    var adminCommands = document.getElementById('holestpay-admin-commands');
+                    if (adminCommands) {
+                        adminCommands.style.display = 'block';
+                        
+                        // Show loading state
+                        var orderToolbox = document.getElementById('holestpay-order-toolbox');
+                        if (orderToolbox) {
+                            orderToolbox.innerHTML = '<div class="hpay-await-loader"><div><?= /* @escapeNotVerified */ __('Loading HolestPay commands...') ?></div></div>';
+                        }
+                        
+                                                 // Initialize admin order toolbox - UI library is already loaded from the promise chain
+                         refreshAdminOrderToolbox(client, orderData.holestpay_uid);
+                    }
+                } else {
+                    // Hide admin commands if no holestpay_uid
+                    var adminCommands = document.getElementById('holestpay-admin-commands');
+                    if (adminCommands) {
+                        adminCommands.style.display = 'none';
+                    }
+                }
+                
+            } catch (e) {
+                                     console.error('<?= /* @escapeNotVerified */ __('Error displaying HolestPay order info:') ?>', e);
+            }
+        }
+        
+        /**
+         * Refresh admin order toolbox with HolestPay commands
+         */
+        function refreshAdminOrderToolbox(client, orderUid) {
+            try {
+                var orderToolbox = document.getElementById('holestpay-order-toolbox');
+                if (!orderToolbox) {
+                    return;
+                }
+                
+                orderToolbox.innerHTML = '';
+                
+                // Get order from HolestPay
+                client.getOrder(orderUid).then(function(order) {
+                    console.log('HolestPay order data:', order);
+                    
+                    // Store order in global orders object (like WooCommerce sample)
+                    if (typeof window._orders === 'undefined') {
+                        window._orders = {};
+                    }
+                    window._orders[orderUid] = order;
+                    
+                    // Display order status
+                                         var statusElement = $('<p class="hpay-order-status"></p>').html(order.Status || '<?= /* @escapeNotVerified */ __('Unknown Status') ?>');
+                    orderToolbox.appendChild(statusElement[0]);
+                    
+                    var hasActions = false;
+                    
+                    // 1. Payment Method Actions
+                    if (client.POS && client.POS.payment && client.POS.payment.length) {
+                        client.POS.payment.forEach(function(paymentMethod) {
+                            try {
+                                // Initialize actions if available
+                                if (paymentMethod.initActions) {
+                                    if (typeof paymentMethod.initActions === "string") {
+                                        try {
+                                            paymentMethod.initActions = eval('(' + paymentMethod.initActions + ')');
+                                        } catch (e) {
+                                            console.warn('Failed to parse payment initActions for payment method:', e);
+                                        }
+                                    }
+                                    if (typeof paymentMethod.initActions === "function") {
+                                        paymentMethod.initActions();
+                                    }
+                                }
+                                
+                                // Get order actions
+                                if (paymentMethod.orderActions) {
+                                    if (typeof paymentMethod.orderActions === "string") {
+                                        try {
+                                            paymentMethod.orderActions = eval('(' + paymentMethod.orderActions + ')');
+                                        } catch (e) {
+                                            console.warn('Failed to parse payment orderActions for payment method:', e);
+                                        }
+                                    }
+                                    
+                                    if (typeof paymentMethod.orderActions === "function") {
+                                        var orderActions = paymentMethod.orderActions(order);
+                                        
+                                        if (orderActions && orderActions.length) {
+                                            hasActions = true;
+                                            // Add payment method title
+                                            var methodTitle = $('<h6></h6>').html(paymentMethod["Backend Name"] || (paymentMethod.SystemTitle + " " + paymentMethod.Name));
+                                            orderToolbox.appendChild(methodTitle[0]);
+                                            
+                                            // Add action buttons
+                                            orderActions.forEach(function(action) {
+                                                if (action.Run) {
+                                                    var button = $('<button class="button button-primary"></button>')
+                                                        .html(action.Caption)
+                                                        .click(function(e) {
+                                                            e.preventDefault();
+                                                            action.Run(order);
+                                                        });
+                                                    orderToolbox.appendChild(button[0]);
+                                                } else if (action.actions) {
+                                                    var actionGroup = $('<p></p>').html(action.Caption);
+                                                    orderToolbox.appendChild(actionGroup[0]);
+                                                    
+                                                    action.actions.forEach(function(subAction) {
+                                                        var subButton = $('<button class="button button-primary"></button>')
+                                                            .html(subAction.Caption)
+                                                            .click(function(e) {
+                                                                e.preventDefault();
+                                                                subAction.Run(order);
+                                                            });
+                                                        actionGroup.append(subButton);
+                                                    });
+                                                }
+                                            });
+                                        }
+                                    }
+                                }
+                            } catch (ex) {
+                                console.error('<?= /* @escapeNotVerified */ __('Error processing payment method actions:') ?>', ex);
+                            }
+                        });
+                    }
+                    
+                    // 2. Fiscal Method Actions
+                    if (client.POS && client.POS.fiscal && client.POS.fiscal.length) {
+                        client.POS.fiscal.forEach(function(fiscalMethod) {
+                            try {
+                                // Initialize actions if available
+                                if (fiscalMethod.initActions) {
+                                    if (typeof fiscalMethod.initActions === "string") {
+                                        try {
+                                            fiscalMethod.initActions = eval('(' + fiscalMethod.initActions + ')');
+                                        } catch (e) {
+                                            console.warn('Failed to parse fiscal initActions for fiscal method:', e);
+                                        }
+                                    }
+                                    if (typeof fiscalMethod.initActions === "function") {
+                                        fiscalMethod.initActions();
+                                    }
+                                }
+                                
+                                // Get order actions
+                                if (fiscalMethod.orderActions) {
+                                    if (typeof fiscalMethod.orderActions === "string") {
+                                        try {
+                                            fiscalMethod.orderActions = eval('(' + fiscalMethod.orderActions + ')');
+                                        } catch (e) {
+                                            console.warn('Failed to parse fiscal orderActions for fiscal method:', e);
+                                        }
+                                    }
+                                    
+                                    if (typeof fiscalMethod.orderActions === "function") {
+                                        var orderActions = fiscalMethod.orderActions(order);
+                                        
+                                        if (orderActions && orderActions.length) {
+                                            hasActions = true;
+                                            // Add fiscal method title
+                                            var methodTitle = $('<h6></h6>').html(fiscalMethod["Backend Name"] || (fiscalMethod.SystemTitle + " " + fiscalMethod.Name));
+                                            orderToolbox.appendChild(methodTitle[0]);
+                                            
+                                            // Add action buttons
+                                            orderActions.forEach(function(action) {
+                                                if (action.Run) {
+                                                    var button = $('<button class="button button-primary"></button>')
+                                                        .html(action.Caption)
+                                                        .click(function(e) {
+                                                            e.preventDefault();
+                                                            action.Run(order);
+                                                        });
+                                                    orderToolbox.appendChild(button[0]);
+                                                } else if (action.actions) {
+                                                    var actionGroup = $('<p></p>').html(action.Caption);
+                                                    orderToolbox.appendChild(actionGroup[0]);
+                                                    
+                                                    action.actions.forEach(function(subAction) {
+                                                        var subButton = $('<button class="button button-primary"></button>')
+                                                            .html(subAction.Caption)
+                                                            .click(function(e) {
+                                                                e.preventDefault();
+                                                                subAction.Run(order);
+                                                            });
+                                                        actionGroup.append(subButton);
+                                                    });
+                                                }
+                                            });
+                                        }
+                                    }
+                                }
+                            } catch (ex) {
+                                console.error('<?= /* @escapeNotVerified */ __('Error processing fiscal method actions:') ?>', ex);
+                            }
+                        });
+                    }
+                    
+                    // 3. Shipping Method Actions
+                    if (client.POS && client.POS.shipping && client.POS.shipping.length) {
+                        client.POS.shipping.forEach(function(shippingMethod) {
+                            try {
+                                // Initialize actions if available
+                                if (shippingMethod.initActions) {
+                                    if (typeof shippingMethod.initActions === "string") {
+                                        try {
+                                            shippingMethod.initActions = eval('(' + shippingMethod.initActions + ')');
+                                        } catch (e) {
+                                            console.warn('Failed to parse shipping initActions for shipping method:', e);
+                                        }
+                                    }
+                                    if (typeof shippingMethod.initActions === "function") {
+                                        shippingMethod.initActions();
+                                    }
+                                }
+                                
+                                // Get order actions
+                                if (shippingMethod.orderActions) {
+                                    if (typeof shippingMethod.orderActions === "string") {
+                                        try {
+                                            shippingMethod.orderActions = eval('(' + shippingMethod.orderActions + ')');
+                                        } catch (e) {
+                                            console.warn('Failed to parse shipping orderActions for shipping method:', e);
+                                        }
+                                    }
+                                    
+                                    if (typeof shippingMethod.orderActions === "function") {
+                                        var orderActions = shippingMethod.orderActions(order);
+                                        
+                                        if (orderActions && orderActions.length) {
+                                            hasActions = true;
+                                            // Add shipping method title
+                                            var methodTitle = $('<h6></h6>').html(shippingMethod["Backend Name"] || (shippingMethod.SystemTitle + " " + shippingMethod.Name));
+                                            orderToolbox.appendChild(methodTitle[0]);
+                                            
+                                            // Add action buttons
+                                            orderActions.forEach(function(action) {
+                                                if (action.Run) {
+                                                    var button = $('<button class="button button-primary"></button>')
+                                                        .html(action.Caption)
+                                                        .click(function(e) {
+                                                            e.preventDefault();
+                                                            action.Run(order);
+                                                        });
+                                                    orderToolbox.appendChild(button[0]);
+                                                } else if (action.actions) {
+                                                    var actionGroup = $('<p></p>').html(action.Caption);
+                                                    orderToolbox.appendChild(actionGroup[0]);
+                                                    
+                                                    action.actions.forEach(function(subAction) {
+                                                        var subButton = $('<button class="button button-primary"></button>')
+                                                            .html(subAction.Caption)
+                                                            .click(function(e) {
+                                                                e.preventDefault();
+                                                                subAction.Run(order);
+                                                            });
+                                                        actionGroup.append(subButton);
+                                                    });
+                                                }
+                                            });
+                                        }
+                                    }
+                                }
+                            } catch (ex) {
+                                console.error('<?= /* @escapeNotVerified */ __('Error processing shipping method actions:') ?>', ex);
+                            }
+                        });
+                    }
+                    
+                    // If no actions available, show message
+                    if (!hasActions) {
+                                                 var noActionsMsg = $('<p style="text-align: center; color: #6c757d; font-style: italic; padding: 20px;"></p>')
+                             .html('<?= /* @escapeNotVerified */ __('No admin commands available for this order') ?>');
+                        orderToolbox.appendChild(noActionsMsg[0]);
+                    }
+                    
+                }).catch(function(error) {
+                                         console.error('<?= /* @escapeNotVerified */ __('Failed to get HolestPay order:') ?>', error);
+                                         orderToolbox.innerHTML = '<p style="text-align: center; color: #dc3545; padding: 20px;"><?= /* @escapeNotVerified */ __('Error loading HolestPay order data') ?></p>';
+                });
+                
+            } catch (e) {
+                                 console.error('<?= /* @escapeNotVerified */ __('Error refreshing admin order toolbox:') ?>', e);
+                var orderToolbox = document.getElementById('holestpay-order-toolbox');
+                if (orderToolbox) {
+                                         orderToolbox.innerHTML = '<p style="text-align: center; color: #dc3545; padding: 20px;"><?= /* @escapeNotVerified */ __('Error refreshing admin toolbox') ?></p>';
+                }
+            }
+        }
+        
+        // Listen for HolestPay order operation events
+        document.addEventListener('onHPayOrderOpExecuted', function(evt) {
+                         console.log('<?= /* @escapeNotVerified */ __('HolestPay order operation executed:') ?>', evt);
+            
+            // Refresh the admin toolbox
+            if (window.HolestPayAdmin && window.HolestPayAdmin.settings.environment && 
+                window.HolestPayAdmin.settings.merchant_site_uid && window.HolestPayAdmin.settings[window.HolestPayAdmin.settings.environment]?.secret_token) {
+                
+                HPayInit(
+                    window.HolestPayAdmin.settings.merchant_site_uid,
+                    String(window.HolestPayAdmin.language || "en").substring(0, 2),
+                    window.HolestPayAdmin.settings.environment,
+                    window.HolestPayAdmin.settings[window.HolestPayAdmin.settings.environment].secret_token
+                ).then(function(client) {
+                    console.log("<?= /* @escapeNotVerified */ __('HolestPay Admin reinitialized for toolbox refresh') ?>");
+                    
+                    // Load HolestPay UI before proceeding
+                    return client.loadHPayUI().then(function(ui_loaded) {
+                        console.log("<?= /* @escapeNotVerified */ __('HolestPay UI reloaded successfully') ?>");
+    
+                                // Only call refreshAdminOrderToolbox after UI is fully loaded
+                                var orderData = window.HolestPayOrderData || {};
+                                if (orderData && orderData.holestpay_uid) {
+                                    refreshAdminOrderToolbox(client, orderData.holestpay_uid);
+                                }
+                            }).catch(function(error) {
+                                        console.error("<?= /* @escapeNotVerified */ __('Failed to reinitialize HolestPay Admin for toolbox refresh(1):') ?>", error);
+                                });
+                }).catch(function(error) {
+                    console.error("<?= /* @escapeNotVerified */ __('Failed to reinitialize HolestPay Admin for toolbox refresh(2):') ?>", error);
+                });
+            }
+        });
+        
+                 // Initialize Store Order button functionality (when no holestpay_uid)
+         function initializeStoreOrderButton() {
+             var orderData = window.HolestPayOrderData || {};
+             
+             // Bind Store Order button
+             var storeButton = document.getElementById('holestpay-store-button');
+             if (storeButton) {
+                 storeButton.addEventListener('click', function(e) {
+                     e.preventDefault();
+                     
+                     // If HolestPay API is not loaded yet, load it first
+                     if (typeof HPayInit === 'undefined') {
+                         loadScriptAndInitialize();
+                     } else {
+                         showStoreOrderModal();
+                     }
+                 });
+             }
+         }
+         
+         // Initialize additional action buttons
+         function initializeAdditionalActions() {
+            var orderData = window.HolestPayOrderData || {};
+            if (!orderData.holestpay_uid) {
+                return;
+            }
+            
+            // Set hpayopen attribute for Manage on HolestPay button
+            var manageButton = document.getElementById('holestpay-manage-button');
+            if (manageButton) {
+                manageButton.setAttribute('hpayopen', 'orders/Uid:' + orderData.holestpay_uid);
+            }
+            
+            // Bind Store Order button
+            var storeButton = document.getElementById('holestpay-store-button');
+            if (storeButton) {
+                storeButton.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    showStoreOrderModal(orderData.holestpay_uid);
+                });
+            }
+        }
+        
+                 // Show Store Order Modal
+         function showStoreOrderModal(orderUid) {
+             // Check if HolestPay external functions are available
+             if (typeof hpay_confirm_dialog === 'undefined') {
+                 console.error('<?= /* @escapeNotVerified */ __('HolestPay client admin UI not loaded') ?>');
+                 alert('<?= /* @escapeNotVerified */ __('HolestPay admin functions not available. Please refresh the page.') ?>');
+                 return;
+             }
+             
+             var orderData = window.HolestPayOrderData || {};
+             var isUpdate = orderData.holestpay_uid ? true : false;
+            
+                         // Build status change options HTML
+             var statusOptions = '<option value=""><?= /* @escapeNotVerified */ __('-- No Change --') ?></option>';
+             var statuses = ["PAID", "PAYING", "AWAITING", "RESERVED", "REFUNDED", "PARTIALLY-REFUNDED", "VOID", "OVERDUE", "EXPIRED", "OBLIGATED", "REFUSED", "FAILED", "CANCELED"];
+             statuses.forEach(function(status) {
+                 statusOptions += '<option value="' + status + '">' + status + '</option>';
+             });
+             
+             // Create status change select if this is an update
+             var statusChangeHtml = '';
+             if (isUpdate) {
+                 statusChangeHtml = '<div class="hpay-status-option" style="margin-top: 15px;">' +
+                     '<label for="hpay-status-change"><?= /* @escapeNotVerified */ __('Set Payment Status (Optional):') ?></label>' +
+                     '<select id="hpay-status-change" style="margin-left: 10px; padding: 5px;">' + statusOptions + '</select>' +
+                     '</div>';
+             }
+             
+             // Use HolestPay's external confirm dialog
+             hpay_confirm_dialog(
+                 (isUpdate ? '<?= /* @escapeNotVerified */ __('Push update to HolestPay') ?>' : '<?= /* @escapeNotVerified */ __('Push to HolestPay') ?>') + statusChangeHtml,
+                 'small',
+                 '<?= /* @escapeNotVerified */ __('Yes') ?>',
+                 '<?= /* @escapeNotVerified */ __('Cancel') ?>'
+             ).then(function(yes) {
+                 if (yes) {
+                     executeStoreOrder(orderUid);
+                 }
+             });
+        }
+        
+        // Execute Store Order
+        function executeStoreOrder(orderUid) {
+            var statusChange = '';
+            var statusSelect = document.getElementById('hpay-status-change');
+            if (statusSelect) {
+                statusChange = statusSelect.value;
+            }
+            
+            var orderData = window.HolestPayOrderData || {};
+            
+            // Prepare request data
+            var requestData = {
+                order_id: orderData.order_id,
+                action: 'holestpay_store_order'
+            };
+            
+            if (statusChange) {
+                requestData.with_status = statusChange;
+            }
+            
+                         // Show loading state using HolestPay's external functions if available
+             if (typeof hpay_alert_dialog !== 'undefined') {
+                 hpay_alert_dialog('<?= /* @escapeNotVerified */ __('Storing order to HolestPay...') ?>', 'small');
+             }
+            
+            // Make AJAX request to store order
+            fetch(window.location.href, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                body: JSON.stringify(requestData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                                         // Use HolestPay's external alert dialog if available
+                     if (typeof hpay_alert_dialog !== 'undefined') {
+                         hpay_alert_dialog('<?= /* @escapeNotVerified */ __('✓ Order stored successfully! HolestPay UID:') ?> ' + (data.holestpay_uid || '<?= /* @escapeNotVerified */ __('N/A') ?>'), 'small');
+                     } else {
+                         alert('<?= /* @escapeNotVerified */ __('✓ Order stored successfully! HolestPay UID:') ?> ' + (data.holestpay_uid || '<?= /* @escapeNotVerified */ __('N/A') ?>'));
+                     }
+                    
+                    // Update order data if new UID received
+                    if (data.holestpay_uid && !orderData.holestpay_uid) {
+                        orderData.holestpay_uid = data.holestpay_uid;
+                        window.HolestPayOrderData = orderData;
+                        
+                        // Refresh the page to show new data
+                        setTimeout(function() {
+                            window.location.reload();
+                        }, 2000);
+                    }
+                                 } else {
+                     // Use HolestPay's external alert dialog if available
+                     if (typeof hpay_alert_dialog !== 'undefined') {
+                         hpay_alert_dialog('<?= /* @escapeNotVerified */ __('✗ Error storing order:') ?> ' + (data.message || '<?= /* @escapeNotVerified */ __('Unknown error') ?>'), 'small');
+                     } else {
+                         alert('<?= /* @escapeNotVerified */ __('✗ Error storing order:') ?> ' + (data.message || '<?= /* @escapeNotVerified */ __('Unknown error') ?>'));
+                     }
+                 }
+            })
+                         .catch(error => {
+                 console.error('<?= /* @escapeNotVerified */ __('Error storing order:') ?>', error);
+                 // Use HolestPay's external alert dialog if available
+                 if (typeof hpay_alert_dialog !== 'undefined') {
+                     hpay_alert_dialog('<?= /* @escapeNotVerified */ __('✗ Network error: Failed to connect to server') ?>', 'small');
+                 } else {
+                     alert('<?= /* @escapeNotVerified */ __('✗ Network error: Failed to connect to server') ?>');
+                 }
+             });
+        }
+        
+        // Handle hpayopen clicks (Manage on HolestPay) - use HolestPay's external function if available
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('hpayopen') || e.target.hasAttribute('hpayopen')) {
+                e.preventDefault();
+                
+                var hpayopenPath = e.target.getAttribute('hpayopen');
+                if (hpayopenPath) {
+                    // Use HolestPay's external manageOnHolestPay function if available
+                    if (typeof window.manageOnHolestPay === 'function') {
+                        window.manageOnHolestPay(hpayopenPath, 1024);
+                    } else {
+                        // Fallback to opening in new window
+                                                 var environment = window.HolestPayAdmin ? window.HolestPayAdmin.settings.environment : 'sandbox';
+                        var baseUrl = environment === 'production' ? 'https://pay.holest.com' : 'https://sandbox.pay.holest.com';
+                        var fullUrl = baseUrl + '/' + hpayopenPath;
+                        
+                        var newWindow = window.open(fullUrl, 'holestpay_admin', 'width=1024,height=768,scrollbars=yes,resizable=yes');
+                        if (newWindow) {
+                            newWindow.focus();
+                        }
+                    }
+                }
+            }
+        });
+        
+        // Initialize additional actions when admin commands are displayed
+        var originalDisplayHolestPayOrderInfo = displayHolestPayOrderInfo;
+        displayHolestPayOrderInfo = function(client) {
+            originalDisplayHolestPayOrderInfo.call(this, client);
+            initializeAdditionalActions();
+        };
+    });
+});
+</script>
+
+

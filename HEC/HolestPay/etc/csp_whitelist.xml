@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<csp_whitelist xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Csp:etc/csp_whitelist.xsd">
+    <policies>
+        <!-- Allow HolestPay scripts to load -->
+        <policy id="script-src">
+            <values>
+                <value id="holestpay-wildcard" type="host">*.holest.com</value>
+                <value id="holestpay-cloudfront" type="host">d3hqo5epsodxzz.cloudfront.net</value>
+            </values>
+        </policy>
+        
+        <!-- Allow HolestPay iframes to load (essential for payment forms) -->
+        <policy id="frame-src">
+            <values>
+                <value id="holestpay-wildcard-frame" type="host">*.holest.com</value>
+                <value id="holestpay-cloudfront-frame" type="host">d3hqo5epsodxzz.cloudfront.net</value>
+            </values>
+        </policy>
+        
+        <!-- Allow connections to HolestPay APIs -->
+        <policy id="connect-src">
+            <values>
+                <value id="holestpay-wildcard-connect" type="host">*.holest.com</value>
+                <value id="holestpay-cloudfront-connect" type="host">d3hqo5epsodxzz.cloudfront.net</value>
+            </values>
+        </policy>
+        
+        <!-- Allow images from HolestPay (for logotypes) -->
+        <policy id="img-src">
+            <values>
+                <value id="holestpay-wildcard-img" type="host">*.holest.com</value>
+                <value id="holestpay-cloudfront-img" type="host">d3hqo5epsodxzz.cloudfront.net</value>
+            </values>
+        </policy>
+        
+        <!-- Allow form submissions to HolestPay -->
+        <policy id="form-action">
+            <values>
+                <value id="holestpay-wildcard-form" type="host">*.holest.com</value>
+                <value id="holestpay-cloudfront-form" type="host">d3hqo5epsodxzz.cloudfront.net</value>
+            </values>
+        </policy>
+    </policies>
+</csp_whitelist>

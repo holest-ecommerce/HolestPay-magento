@@ -1,0 +1,90 @@
+/**
+ * HolestPay Footer Logotypes Styles
+ */
+
+.hpay_footer_branding {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 8px 0;
+    background-color: #f8f9fa;
+    border-top: 1px solid #e9ecef;
+    margin-top: 20px;
+}
+
+.hpay-footer-branding-cards,
+.hpay-footer-branding-bank,
+.hpay-footer-branding-3ds {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.hpay-footer-branding-cards img {
+    height: 30px;
+    width: auto;
+    opacity: 0.8;
+    transition: opacity 0.2s ease;
+}
+
+.hpay-footer-branding-bank img,
+.hpay-footer-branding-3ds img {
+    height: 32px;
+    width: auto;
+    opacity: 0.8;
+    transition: opacity 0.2s ease;
+}
+
+.hpay-footer-branding-cards a:hover img,
+.hpay-footer-branding-bank a:hover img,
+.hpay-footer-branding-3ds a:hover img {
+    opacity: 1;
+}
+
+.hpay-footer-branding-cards a,
+.hpay-footer-branding-bank a,
+.hpay-footer-branding-3ds a {
+    padding: 0 5px;
+    text-decoration: none;
+    display: inline-block;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .hpay_footer_branding {
+        flex-direction: column;
+        gap: 15px;
+        padding: 15px 0;
+    }
+    
+    .hpay-footer-branding-cards,
+    .hpay-footer-branding-bank,
+    .hpay-footer-branding-3ds {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    
+    .hpay-footer-branding-cards img {
+        height: 25px;
+    }
+    
+    .hpay-footer-branding-bank img,
+    .hpay-footer-branding-3ds img {
+        height: 28px;
+    }
+}
+
+@media (max-width: 480px) {
+    .hpay_footer_branding {
+        padding: 10px 0;
+    }
+    
+    .hpay-footer-branding-cards img {
+        height: 22px;
+    }
+    
+    .hpay-footer-branding-bank img,
+    .hpay-footer-branding-3ds img {
+        height: 25px;
+    }
+}

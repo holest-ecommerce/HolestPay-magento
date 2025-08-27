@@ -1,0 +1,223 @@
+/* HolestPay Admin Order Box Styles */
+.holestpay-order-box {
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    margin-bottom: 20px;
+}
+
+.holestpay-order-box h2 {
+    color: #333;
+    font-size: 18px;
+    margin-bottom: 15px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #007bff;
+}
+
+.holestpay-order-box h4 {
+    color: #495057;
+    font-size: 14px;
+    margin: 15px 0 10px 0;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #dee2e6;
+}
+
+/* HPay Status Display */
+#holestpay-status-display {
+    margin-bottom: 15px;
+}
+
+#holestpay-status-display p {
+    margin: 0;
+    padding: 8px 12px;
+    background-color: #e9ecef;
+    border-radius: 4px;
+    border-left: 4px solid #007bff;
+}
+
+.hpay-status {
+    color: #007bff;
+    font-weight: bold;
+}
+
+/* Admin Commands Section */
+#holestpay-admin-commands {
+    background-color: #ffffff;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    padding: 15px;
+    margin-top: 15px;
+}
+
+/* Loading State */
+.hpay-await-loader {
+    text-align: center;
+    padding: 20px;
+    color: #6c757d;
+}
+
+.hpay-await-loader:before {
+    content: '';
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #dee2e6;
+    border-radius: 50%;
+    border-top-color: #007bff;
+    animation: spin 1s ease-in-out infinite;
+    margin-right: 10px;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Order Status Display */
+.hpay-order-status {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    padding: 8px 12px;
+    margin: 0 0 15px 0;
+    font-weight: 600;
+    color: #495057;
+    text-align: center;
+}
+
+/* Admin Toolbox */
+#holestpay-order-toolbox h6 {
+    color: #495057;
+    font-size: 13px;
+    font-weight: 600;
+    margin: 0px 0 1px 0;
+    padding: 0px 0;
+    border-bottom: 1px solid #f1f3f4;
+}
+
+#holestpay-order-toolbox button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    margin: 2px 5px 2px 0;
+    border-radius: 3px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+#holestpay-order-toolbox button:hover {
+    background-color: #0056b3;
+}
+
+#holestpay-order-toolbox button:active {
+    background-color: #004085;
+}
+
+#holestpay-order-toolbox p {
+    margin: 8px 0;
+    padding: 5px 0;
+}
+
+/* Action Groups */
+#holestpay-order-toolbox p:has(button) {
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 4px;
+    padding: 8px;
+    margin: 5px 0;
+}
+
+/* Method Type Indicators */
+#holestpay-order-toolbox h6:contains("Payment") {
+    border-left: 3px solid #28a745;
+    padding-left: 8px;
+}
+
+#holestpay-order-toolbox h6:contains("Fiscal") {
+    border-left: 3px solid #ffc107;
+    padding-left: 8px;
+}
+
+#holestpay-order-toolbox h6:contains("Shipping") {
+    border-left: 3px solid #17a2b8;
+    padding-left: 8px;
+}
+
+/* Additional Actions Section */
+#holestpay-additional-actions {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #dee2e6;
+}
+
+.holestpay-action-buttons {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+/* HolestPay Status Change Select (for external modal) */
+.hpay-status-option {
+    margin-top: 15px;
+}
+
+.hpay-status-option label {
+    display: inline-block;
+    margin-right: 10px;
+    font-weight: 500;
+    color: #495057;
+}
+
+.hpay-status-option select {
+    padding: 5px 8px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    background-color: #fff;
+    font-size: 14px;
+    color: #495057;
+}
+
+.hpay-status-option select:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* Page Context */
+#holestpay-admin-page-context {
+    color: #6c757d;
+    font-style: italic;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .holestpay-order-box {
+        padding: 8px;
+        margin-bottom: 15px;
+    }
+    
+    .holestpay-order-box h2 {
+        font-size: 16px;
+    }
+    
+    #holestpay-order-toolbox button {
+        display: block;
+        width: 100%;
+        margin: 5px 0;
+    }
+    
+    .hpay-order-status {
+        font-size: 14px;
+        padding: 6px 10px;
+    }
+    
+    .holestpay-action-buttons {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .holestpay-action-buttons button {
+        width: 100%;
+        margin: 5px 0;
+    }
+}

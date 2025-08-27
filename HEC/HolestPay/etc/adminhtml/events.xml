@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="adminhtml_widget_container_html_before">
+        <observer name="holestpay_add_charge_button" instance="HEC\HolestPay\Observer\AddChargeButton" />
+    </event>
+    
+    <!-- Sync HolestPay data to grid table when orders are updated -->
+    <event name="sales_order_save_after">
+        <observer name="holestpay_order_grid_sync" instance="HEC\HolestPay\Observer\OrderGridSync" />
+        <observer name="holestpay_order_update_sync" instance="HEC\HolestPay\Observer\OrderUpdateSync" />
+    </event>
+    
+    <event name="sales_order_status_change">
+        <observer name="holestpay_order_status_change_sync" instance="HEC\HolestPay\Observer\OrderUpdateSync" />
+    </event>
+</config>
+
+

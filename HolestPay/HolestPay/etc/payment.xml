@@ -1,7 +1,0 @@
-<?xml version="1.0"?>
-<payment xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Payment:etc/payment.xsd">
-    <group name="offline" translate="label"/>
-    <method name="holestpay" type="HolestPay\HolestPay\Model\Payment\HolestPay" code="holestpay" active="1" title="HolestPay" group="offline"/>
-</payment>
-
-

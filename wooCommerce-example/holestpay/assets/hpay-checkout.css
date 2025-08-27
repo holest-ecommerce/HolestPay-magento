@@ -1,0 +1,371 @@
+/* HolestPay */
+
+.hpay-vault-options{
+    display:flex;
+    font-size:80%;
+    justify-content:end;
+}
+
+.hpay-vault-options > a{
+    margin-left:8px;
+    text-decoration:none;
+    color:red;
+    cursor:pointer;
+}
+
+.hpay-vault-tokens{
+    margin-left:15px;
+	list-style:none;
+	padding-left: 0;
+}
+
+.hpay-vault-tokens > li{
+    padding:4px 8px;
+    font-size:85%;
+}
+
+.hpay-vault-tokens > li{
+    background:rgba(0,0,0,0.03);
+}
+
+.hpay-vault-tokens > li label{
+	font-style:italic;
+	opacity:0.7;
+}
+
+.hpay-vault-tokens > li:nth-child(odd){
+    background:rgba(0,0,0,0.06);
+}
+
+.hpay-detafult-vault .hpay-set-default-vault{
+    display:none;
+}
+
+.hpay-vault:after{
+	content:'/ ' attr(token_time);
+	position:absolute;
+	margin-top:-8px;
+	font-size:9px;
+	font-style:italic;
+	display:inline-block;
+}
+
+.hpay-note, .hpay-info-note {
+    font-style: italic;
+    font-size: 80%;
+    padding: 1px;
+    margin: 1px;
+}
+
+div.hpay_popup{
+	position:fixed;
+	top:0;
+	left:0;
+	width:100%;
+	height:100%;
+	background:rgba(0,0,0,0.4);
+	display: flex;
+	align-items: end;
+	z-index:9999;
+	justify-content: stretch;
+	align-items: stretch;
+}
+
+div.hpay_popup > .hpay_popup_wrapper{
+	margin: 0 auto;
+	background: rgba(255,255,255,0.9);
+	border-radius:6px;
+	padding: 20px;
+	padding-top:8px;
+	display:inline-block;
+	padding-bottom: 1px;
+} 
+
+div.hpay_popup > .hpay_popup_wrapper{
+	max-width:90vw;
+	display: flex;
+	flex-direction: column;
+	justify-content: stretch;
+	align-items: stretch;
+}
+
+div.hpay_popup > .hpay_popup_wrapper{
+	min-width: 78%;
+	margin-bottom: 5vh;
+	margin-top: 8vh;
+	max-height: 80vh;
+	margin-right: 3vw;
+}
+
+
+
+div.hpay_popup > .hpay_popup_wrapper .popup_inner{
+	/* overflow:hidden; */
+	padding:0;
+	display: flex;
+	/* justify-content: stretch; */
+	align-items: stretch;
+	flex-direction: column;
+	width: 100%;
+	height: 100%;
+}
+
+div.hpay_popup > .hpay_popup_wrapper .popup_inner > *{
+	display: block;
+	width: 100%;
+	height: 98%;
+	overflow-y:auto;
+}
+
+div.hpay_popup.hpay_liquid_popup > .hpay_popup_wrapper{
+	width:1280px;
+	max-width:90vw; 
+}
+
+div.hpay_popup.md-popup > .hpay_popup_wrapper{
+	max-height: 70vh;
+	width: 1024px;
+	min-width:60%;
+	margin-right: 15vw;
+	margin-top: 12vh;
+}
+
+@media(max-width:1280px){
+	div.hpay_popup.md-popup > .hpay_popup_wrapper{
+		margin-right:2vw;
+	}
+}
+
+div.hpay_popup.sm-popup > .hpay_popup_wrapper{
+	max-height: 50vh;
+	width: 768px;
+	min-width:40%;
+	margin-right: 25vw;
+	margin-top: 20vh;
+}
+
+@media(max-width:1024px){
+	div.hpay_popup.sm-popup > .hpay_popup_wrapper{
+		margin-right:2vw;
+	}
+}
+
+div.hpay_popup.xs-popup > .hpay_popup_wrapper{
+	width: 512px;
+	min-width:30%;
+	margin-right: 33vw;
+	margin-top: 30vh;
+	opacity: 0.9;
+	height: fit-content;
+}
+
+@media(max-width:768px){
+	div.hpay_popup.xs-popup > .hpay_popup_wrapper{
+		margin-right:2vw;
+	}
+}
+
+@media(max-height:768px){
+	div.hpay_popup.md-popup > .hpay_popup_wrapper,
+	div.hpay_popup.sm-popup > .hpay_popup_wrapper,
+	div.hpay_popup.xs-popup > .hpay_popup_wrapper{
+		max-height: 90vh;
+	}
+}
+
+div.hpay_popup .hpay_popup_top{
+	display:flex;
+	justify-content:space-between;
+}
+
+div.hpay_popup .hpay_popup_top *{
+	margin:1px -5px;
+	padding:1px;
+}
+
+div.hpay_popup .hpay_popup_top a.hpay_popup_close:before{
+	content: "\00D7";
+	font-size:24px;
+	position:absolute;
+	margin-top:-6px;
+	margin-left:-4px;
+	color:gray;
+	cursor:pointer;
+}
+
+div.hpay_popup .hpay_popup_top a.hpay_popup_close:hover:before{
+	color:black;
+}
+
+div.hpay_popup .hpay_popup_content{
+	display:flex;
+	align-content:stretch;
+	justify-content:stretch;
+	align-items: stretch;
+	flex-direction: column;
+	width: 100%;
+	/* height: 95%; */
+}
+
+div.hpay_popup textarea{
+	resize:none;
+	width:100%;
+	min-height:60px;
+}
+
+.hpay_popup .hpay_popup_footer{
+	display:flex;
+	justify-content:space-between;
+}
+
+.hpay_popup .hpay_popup_footer{
+	padding:5px;
+	display:flex;
+	justify-content:end;
+	background: rgba(255,255,255,0.8);
+	margin: 0 -20px;
+	border-radius: 0 0 5px 5px;
+}
+
+.hpay_popup .hpay_popup_footer button{
+	padding:5px;
+	margin: 0 5px;
+	min-width:80px;
+}
+
+body.hpay-popup-shown{
+	overflow:hidden;
+}
+
+.hpay_full_width{
+	width:96%;
+}
+
+.hpay-variant-columns-layout{
+	display:flex;
+	width:100%;
+	justify-content:center;
+	flex-wrap: wrap;
+}
+
+.hpay-variant-columns-layout > *{
+	background-size: auto 121px;
+	background-repeat:no-repeat;
+	background-position:50% 10px;
+	padding-top:130px;
+	cursor:pointer;
+	margin:5px;
+	max-width:220px;
+	min-width:180px;
+	border-radius:3px;
+	box-shadow:2px 1px 5px rgba(0,0,0,0.1);
+	background-color:#f6f7f8;
+	transition-property:background-color;
+	transition-duration:0.5s;
+}
+
+.hpay-variant-columns-layout > *:nth-child(odd){
+	background-color:#fafdff;
+}
+
+.hpay-variant-columns-layout > .selected{
+	background-color:#fcfef0;
+}
+
+.hpay-variant-columns-layout > *:hover{
+	background-color:#f1f5d6;
+}
+
+.hpay-variant-columns-layout p{
+	text-align:center;
+	font-weight:bold;
+}
+
+.hpay-variant-columns-layout .price,
+.hpay-variant-columns-layout .price *{
+	text-align:center;
+}
+
+.hpay-variant-columns-layout *[label]:before{
+	content:attr(label);
+	width:100%;
+	display:block;
+	font-weight:normal;
+	
+}
+
+
+.hpay_popup.payreq-error .hpay_popup_title,
+.hpay_popup.payreq-error .popup_inner{
+	color:#500000;
+}
+
+.hpay_footer_branding img{
+    max-height:5vw
+}
+
+.hpay_sm_description_wrapper:after{
+	content: attr(hpay_sm_description);
+	font-size:80%;
+	font-style:italic;
+	display: block;
+} 
+
+.hpay_billing_is_company .woocommerce-input-wrapper{
+	display:flex;
+	align-content: flex-start;
+	justify-content: flex-start;
+	align-items: center;
+	flex-wrap: wrap;
+	flex-direction: row;
+}
+
+.hpay_billing_is_company .woocommerce-input-wrapper > *{
+	padding:8px!important;
+	min-width:30px;
+	margin:0;
+}
+
+.hpay_billing_is_company .woocommerce-input-wrapper input[type='radio']{
+	opacity:0;
+	position:absolute;
+}
+
+.hpay_billing_is_company .woocommerce-input-wrapper > label[for]{
+	background:rgba(0,0,0,0.05);
+	opacity:0.4;
+	cursor:pointer;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.hpay_billing_is_company .woocommerce-input-wrapper > input:checked + label{
+	background:rgba(0,0,0,0.1);
+	opacity:1;
+}
+
+.is-company-order-no *:has(> #billing_is_company_field) *:has(*[hpay_checkout_field='company'],*[hpay_checkout_field='company_tax_id'],*[hpay_checkout_field='company_reg_id']){
+	display:none;
+}
+
+.is-company-order-yes *:has(> #billing_is_company_field) *:has(*[hpay_checkout_field='company'],*[hpay_checkout_field='company_tax_id'],*[hpay_checkout_field='company_reg_id']) .optional{
+	font-size:0.1px;
+}
+
+.is-company-order-yes *:has(> #billing_is_company_field) *:has(*[hpay_checkout_field='company'],*[hpay_checkout_field='company_tax_id'],*[hpay_checkout_field='company_reg_id']) .optional:after{
+	content:"*";
+	font-size:16px;
+	color:red;
+	color:var(--hpay-wc-red,--wc-red,red);	
+}
+
+.hpay-not-required .optional:after{
+	display:none;
+}
+
+#billing_is_company_field span.optional{
+	display:none;
+}
+
+.hpay-sm-options:empty{position:relative;padding-left:40px}.hpay-sm-options:empty:after{content:"";display:block;width:26px;height:26px;border-radius:50%;border:2px solid #ccc;border-top-color:#1b414b;position:absolute;left:0;top:50%;transform:translateY(-50%);animation:1s linear infinite spin;margin-left:50%;margin-top:-12px}@keyframes spin{to{transform:translateY(-50%) rotate(360deg)}}

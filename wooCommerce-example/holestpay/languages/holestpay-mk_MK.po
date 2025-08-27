@@ -1,0 +1,1631 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: HolestPay Payments Plugin WooCommerce or Standalone\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-12-28 15:00+0000\n"
+"PO-Revision-Date: 2024-12-28 15:32+0000\n"
+"Last-Translator: \n"
+"Language-Team: Macedonian\n"
+"Language: mk_MK\n"
+"Plural-Forms: nplurals=2; plural=( n % 10 == 1 && n % 100 != 11 ) ? 0 : 1;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Loco https://localise.biz/\n"
+"X-Loco-Version: 2.6.14; wp-6.7.1\n"
+"X-Domain: holestpay"
+
+#: hpay_woo.php:755
+msgid "(hpay) Unexpected status change by a external plugin. Corrected back:"
+msgstr ""
+"(hpay) Неочекувана промена на статусот од страна на надворешен приклучок. "
+"Исправено назад:"
+
+#: hpay_checkout.php:289
+msgid "(if multiple split with ,)"
+msgstr "(ако повеќе се поделени со ,)"
+
+#: lib/hpay_admin.php:1613
+msgid "(natively supported)"
+msgstr "(родно поддржано)"
+
+#: lib/hpay_admin.php:1635
+msgid ""
+"* by default all methods are available for subscriptions. Tick this to limit "
+"only to no-customer-presence charges (recurring, card-on-file, mit) capable "
+"methods."
+msgstr ""
+"* по подразбирање сите методи се достапни за претплати. Одберете го ова за "
+"да го ограничите само на начини на плаќање без присуство на клиент "
+"(рекурентни, картичка на датотека, mit) способни методи."
+
+#: lib/hpay_admin.php:1335 lib/hpay_admin.php:1351 lib/hpay_admin.php:1370
+msgid "--none--"
+msgstr "--никој--"
+
+#: lib/hpay_front.php:137
+msgid "406 Not accepatable"
+msgstr "406 Неприфатливо"
+
+#: lib/hpay_admin.php:1377
+msgid "add a company registry ID field"
+msgstr "додај поле за матичен број на компанијата"
+
+#: lib/hpay_admin.php:1359
+msgid "add a company TAX ID field"
+msgstr "додај поле за ДДВ идентификациски број на компанијата"
+
+#: lib/hpay_admin.php:1343
+msgid "add a is-company field"
+msgstr "додај поле за дали е компанија"
+
+#: lib/hpay_admin.php:1385
+msgid ""
+"Add customer CC mail address(es) for order status updates field on the "
+"checkout"
+msgstr ""
+"Додајте ги е-маил адресите на клиентот за ажурирања на статусот на нарачката "
+"во полето за нарачка"
+
+#: lib/hpay_admin.php:1638
+msgid ""
+"Add HolestPay subsciptions support to my products/variants (if you don't "
+"have other subscription plugin): "
+msgstr ""
+"Додајте поддршка за претплати на HolestPay на моите производи/варијанти (ако "
+"немате друг приклучок за претплата): "
+
+#: lib/hpay_admin.php:1828
+msgid "Allow re-schedule by client"
+msgstr "Дозволете прераспоредување од страна на клиентот"
+
+#: lib/hpay_admin.php:1831
+msgid "Allow subscription item(s) update by client"
+msgstr "Дозволете ажурирање на ставка/и на претплата од страна на клиентот"
+
+#: lib/hpay_admin.php:1565
+msgid "Allways store orders to HPay"
+msgstr "Секогаш зачувај ги нарачките во HPay"
+
+#: lib/hpay_admin.php:1427
+msgid "Alter this setting if needed..."
+msgstr "Променете ја оваа поставка доколку е потребно..."
+
+#: lib/hpay_admin.php:1420
+msgid "Always"
+msgstr "Секогаш"
+
+#: lib/hpay_admin.php:1603
+msgid "Always require payment token vault refernce save"
+msgstr ""
+"Секогаш побарувајте зачувување на референцата на складиштето на токенот за "
+"плаќање"
+
+#: hpay_woo_gui.php:314
+msgid "amount"
+msgstr "износ"
+
+#: lib/hpay_front.php:219
+msgid "Amount in order currency"
+msgstr "Износ во валута на нарачката"
+
+#: lib/hpay_front.php:220
+msgid "Amount in payment currency"
+msgstr "Износ во валута на плаќање"
+
+#: lib/hpay_admin.php:1772
+msgid "Amount stays same yes|no"
+msgstr "Износот останува ист да|не"
+
+#: lib/hpay_admin.php:1396
+msgid "Append order id"
+msgstr "Додај ID на нарачката"
+
+#: lib/hpay_admin.php:1834
+msgid "Assigned user role(s)"
+msgstr "Доделена(и) улога(и) на корисникот"
+
+#: lib/hpay_admin.php:1533
+msgid ""
+"ATTENTION: invoking default actions from site corresponds to manual calls "
+"(if you use this, then in most cases settings on HPay panel should be set as "
+"for manuall invokation)."
+msgstr ""
+"ВНИМАНИЕ: повикувањето на дефалтните акции од сајтот одговара на рачните "
+"повици (ако го користите ова, тогаш во повеќето случаи поставките на HPay "
+"панелот треба да се постават како за рачно повикување)."
+
+#: lib/hpay_front.php:213
+msgid "Authorization Code"
+msgstr "Авторизационен код"
+
+#: lib/hpay_admin.php:527
+msgid "Available user charge tokens"
+msgstr "Достапни токени за полнење на корисникот"
+
+#: hpay_checkout.php:127
+msgid "Awaiting payment"
+msgstr "Се чека плаќање"
+
+#: lib/hpay_admin.php:1175
+msgid "Back"
+msgstr "Назад"
+
+#: hpay_class.php:2076
+msgid "BAD_ORDER_DATA"
+msgstr "BAD_ORDER_DATA"
+
+#: integrations/init_integrations.php:40 integrations/init_integrations.php:51
+msgid "BAM"
+msgstr "BAM"
+
+#: lib/hpay_admin.php:1389
+msgid "BCC for all customer emails (comma separated for multiple)"
+msgstr "BCC за сите е-маил пораки на клиентот (одделени со запирка за повеќе)"
+
+#: lib/hpay_admin.php:1650
+msgid ""
+"Before running smart tool make sure you have at least one product defined as "
+"an subscription from your plugin."
+msgstr ""
+"Пред да го стартувате паметниот алат, проверете дали имате барем еден "
+"производ дефиниран како претплата од вашиот приклучок."
+
+#: lib/hpay_admin.php:1170
+msgid ""
+"Can not contact HolestPay. Maybe popup blocker prevents connection dialog - "
+"if you saw no pupup appear then please check right side of browser address "
+"bar for warning!"
+msgstr ""
+"Не може да се контактира со HolestPay. Можеби блокаторот на поп-ап прозорци "
+"го спречува дијалогот за поврзување - ако не сте виделе поп-ап прозорец, "
+"проверете ја десната страна на адресната лента на пребарувачот за "
+"предупредување!"
+
+#: lib/hpay_admin.php:1189
+msgid "Cancel"
+msgstr "Откажи"
+
+#: hpay_class.php:2111 hpay_class.php:2118
+msgid "CANNOT_GET_ORDER_LOCK"
+msgstr "CANNOT_GET_ORDER_LOCK"
+
+#: lib/hpay_front.php:222
+msgid "Captured amount"
+msgstr "Наплатен износ"
+
+#: class/class-wc-hpay-shipping-method.php:92
+#: class/class-wc-hpay-payment-gateway.php:150
+msgid "Change Enabled/Disabled on HolestPay"
+msgstr "Променете овозможено/оневозможено на HolestPay"
+
+#: lib/hpay_admin.php:534
+#, php-format
+msgid "Charge %s now"
+msgstr "Наплати %s сега"
+
+#: lib/hpay_admin.php:527
+msgid "Charge customer for this order"
+msgstr "Наплати од клиентот за оваа нарачка"
+
+#: lib/hpay_admin.php:1767
+msgid "Charged renewal amount"
+msgstr "Наплатен износ за продолжување"
+
+#: lib/hpay_admin.php:1779
+msgid "Charged renewal amount currency"
+msgstr "Валута на наплатениот износ за продолжување"
+
+#: lib/hpay_admin.php:1565
+msgid ""
+"Check this if you want HPay to record all orders no matter if HPay payment, "
+"shipping, integration or fiscal operation take place"
+msgstr ""
+"Одберете го ова ако сакате HPay да ги забележи сите нарачки без оглед на тоа "
+"дали се одвива плаќање, достава, интеграција или фискална операција преку "
+"HPay"
+
+#: lib/hpay_admin.php:1566
+msgid ""
+"Check this if you want that all HPay results information intended for "
+"customers get embeded into WC mails. You can then turn off default HPay "
+"notifications."
+msgstr ""
+"Одберете го ова ако сакате сите информации за резултатите на HPay наменети "
+"за клиенти да бидат вградени во е-пораките на WC. Потоа можете да ги "
+"исклучите стандардните известувања на HPay."
+
+#: lib/hpay_admin.php:1368
+msgid "Checkout billing company registry ID field"
+msgstr "Поле за матичен број на компанијата за фактурирање при наплата"
+
+#: lib/hpay_admin.php:1349
+msgid "Checkout billing company TAX ID field"
+msgstr ""
+"Поле за ДДВ идентификациски број на компанијата за фактурирање при наплата"
+
+#: lib/hpay_admin.php:1333
+msgid "Checkout billing is company field"
+msgstr "Поле за дали е компанија за фактурирање при наплата"
+
+#: hpay_woo_gui.php:395 hpay_woo_gui.php:516
+msgid "Client names the price"
+msgstr "Клиентот го нарекува цената"
+
+#: hpay_woo_gui.php:464 hpay_woo_gui.php:488
+msgid "Client names the price - min/max"
+msgstr "Клиентот го нарекува цената - мин/макс"
+
+#: lib/hpay_admin.php:1750
+msgid "Common product subscription fileds"
+msgstr "Општи полиња за претплата на производи"
+
+#: lib/hpay_front.php:240
+msgid "Company Name"
+msgstr "Име на компанијата"
+
+#: hpay_checkout.php:270 lib/hpay_front.php:239
+msgid "Company Register ID"
+msgstr "Матичен број на компанијата"
+
+#: hpay_checkout.php:254 lib/hpay_front.php:238
+msgid "Company Tax ID"
+msgstr "ДДВ идентификациски број на компанијата"
+
+#: class/class-wc-hpay-shipping-method.php:90
+#: class/class-wc-hpay-payment-gateway.php:148
+msgid "Configure on HolestPay portal"
+msgstr "Конфигурирајте на порталот на HolestPay"
+
+#: class/class-wc-hpay-payment-gateway.php:143
+#, php-format
+msgid "Configure this payment method on %s"
+msgstr "Конфигурирајте го овој начин на плаќање на %s"
+
+#: class/class-wc-hpay-shipping-method.php:83
+#, php-format
+msgid "Configure this shipping method on %s"
+msgstr "Конфигурирајте го овој начин на достава на %s"
+
+#: lib/hpay_admin.php:1282
+msgid "Connect"
+msgstr "Поврзи"
+
+#: lib/hpay_admin.php:1515
+msgid "Considered as paid if status is"
+msgstr "Се смета за платено ако статусот е"
+
+#: lib/hpay_admin.php:335
+msgid "Copy link to memory"
+msgstr "Копирај ја врската во меморијата"
+
+#: lib/hpay_admin.php:710
+msgid "Could not delete user vault payment token!"
+msgstr "Не може да се избрише токенот за плаќање од складиштето на корисникот!"
+
+#: lib/hpay_admin.php:733
+msgid "Could not set default user vault payment token!"
+msgstr ""
+"Не може да се постави стандарден токен за плаќање од складиштето на "
+"корисникот!"
+
+#: lib/hpay_admin.php:1877
+msgid "Create renewal order to payment try delay days"
+msgstr "Создај нарачка за продолжување на плаќањето со одложување во денови"
+
+#: lib/hpay_admin.php:1661
+msgid "Create renwal order to payment delay"
+msgstr "Создај одложување на нарачката за продолжување на плаќањето"
+
+#: lib/hpay_admin.php:1180
+msgid "Custom integration"
+msgstr "Прилагодена интеграција"
+
+#: lib/hpay_admin.php:1848
+msgid "Data references"
+msgstr "Референци на податоци"
+
+#: lib/hpay_admin.php:1664
+msgid "Days"
+msgstr "Денови"
+
+#: lib/hpay_admin.php:1616 lib/hpay_admin.php:1624
+msgid "DETECTED"
+msgstr "ДЕТЕКТИРАНО"
+
+#: lib/hpay_admin.php:1856
+msgid "Detected sample value"
+msgstr "Откриена примерочна вредност"
+
+#: lib/hpay_admin.php:1814
+msgid "Different inital payment enable"
+msgstr "Овозможено различно првобитно плаќање"
+
+#: lib/hpay_admin.php:219
+msgid "Direct purchase link offer for"
+msgstr "Понуда за директна врска за купување за"
+
+#: lib/hpay_admin.php:1283
+msgid "Disconnect"
+msgstr "Одврзи"
+
+#: lib/hpay_admin.php:1172
+msgid "Disconnect HolestPay?"
+msgstr "Одврзете го HolestPay?"
+
+#: lib/hpay_admin.php:1192
+msgid "Discount of %s% is applied to this offer link."
+msgstr "Понижување од %s% се применува на оваа врска за понуда."
+
+#: lib/hpay_admin.php:172
+msgid "Discount percent (using coupon)"
+msgstr "Процент на попуст (користејќи купон)"
+
+#: lib/hpay_admin.php:173
+msgid "Discount validity days"
+msgstr "Денови на валидност на попустот"
+
+#: lib/hpay_admin.php:1293
+msgid "Edit company info"
+msgstr "Уреди информации за компанијата"
+
+#: lib/hpay_admin.php:1294
+msgid "Edit site info"
+msgstr "Уреди информации за сајтот"
+
+#: lib/hpay_admin.php:1566
+msgid "Embed results into WC mails"
+msgstr "Вгради резултати во е-пораките на WC"
+
+#: hpay_class.php:2062
+msgid "EMPTY_OUTCOME_DATA"
+msgstr "EMPTY_OUTCOME_DATA"
+
+#: lib/hpay_admin.php:1678
+msgid "Enable fast checkout QR codes"
+msgstr "Овозможи QR кодови за брза наплата"
+
+#: lib/hpay_admin.php:1563
+msgid "Enable I(P/F-I/S)N log"
+msgstr "Овозможи I(P/F-I/S)N дневник"
+
+#: lib/hpay_admin.php:1564
+msgid ""
+"enable if you want to first send customer to the 'thank you' page (by "
+"default payment runs straight at the checkout page)"
+msgstr ""
+"овозможете ако сакате прво да го испратите клиентот на страницата „Ви "
+"благодариме“ (по подразбирање плаќањето се извршува директно на страницата "
+"за наплата)"
+
+#: lib/hpay_admin.php:1625
+msgid "Enable integration"
+msgstr "Овозможи интеграција"
+
+#: lib/hpay_admin.php:1315
+msgid "Enable on frontend"
+msgstr "Овозможи на предниот крај"
+
+#: hpay_woo_gui.php:396 hpay_woo_gui.php:515
+msgid "Enables HolestPay 'name your price' feature"
+msgstr "Овозможува функција „наречете ја вашата цена“ на HolestPay"
+
+#: hpay_woo_gui.php:388
+msgid "Enables HolestPay column layout for variable products"
+msgstr "Овозможува распоред на колони на HolestPay за варијабилни производи"
+
+#: hpay_woo_gui.php:314
+msgid "Enter Amount"
+msgstr "Внесете износ"
+
+#: hpay_woo_gui.php:312
+#, php-format
+msgid "Enter amount (%s)"
+msgstr "Внесете износ (%s)"
+
+#: lib/hpay_admin.php:402
+msgid "Enter reciptient email!"
+msgstr "Внесете е-пошта на примачот!"
+
+#: lib/hpay_admin.php:409
+msgid "Enter valid email(s)!"
+msgstr "Внесете валидна(и) е-пошта(и)!"
+
+#: lib/hpay_front.php:210
+msgid "Error"
+msgstr "Грешка"
+
+#: lib/hpay_admin.php:1186
+msgid "Error during operation!"
+msgstr "Грешка за време на операцијата!"
+
+#: hpay_class.php:1343
+msgid "Error exception on HPAY charge try"
+msgstr "Грешка во исклучокот при обид за полнење на HPAY"
+
+#: hpay_class.php:1048
+msgid "Error exception on HPAY store order try"
+msgstr "Грешка во исклучокот при обид за складирање на нарачката на HPAY"
+
+#: lib/hpay_front.php:231
+msgid "Error in payment request. Please check your email and contact us!"
+msgstr ""
+"Грешка во барањето за плаќање. Ве молиме проверете ја вашата е-пошта и "
+"контактирајте нè!"
+
+#: lib/hpay_admin.php:1171
+msgid "Error saving settings"
+msgstr "Грешка при зачувување на поставките"
+
+#: lib/hpay_front.php:208
+msgid "Error, please contact us for assitance. "
+msgstr "Грешка, ве молиме контактирајте нè за помош."
+
+#: lib/hpay_admin.php:436 lib/hpay_admin.php:442
+msgid "Error: Mail not sent!"
+msgstr "Грешка: Пораката не е испратена!"
+
+#: lib/hpay_admin.php:1196
+msgid "ERROR: mail sending failed"
+msgstr "ГРЕШКА: Испраќањето на порака не успеа"
+
+#: hpay_class.php:2730
+msgid "ERROR_EXCEPTION"
+msgstr "ERROR_EXCEPTION"
+
+#: hpay_class.php:621
+msgid "Failed: no valid payment info response"
+msgstr "Неуспешно: нема валиден одговор за информации за плаќање"
+
+#: lib/hpay_admin.php:1682
+msgid "Fast checkout QR codes - clear basket"
+msgstr "QR кодови за брза наплата - исчистете ја кошничката"
+
+#: lib/hpay_admin.php:1708
+msgid ""
+"Find & select a sample subsciption product/variant you have set up in your "
+"custom/3rd-party subscription plugin ..."
+msgstr ""
+"Пронајдете и изберете примерок на производ/варијанта на претплата што сте го "
+"поставиле во вашиот прилагоден/приклучок на трета страна за претплата..."
+
+#: lib/hpay_admin.php:1177
+msgid "Finish"
+msgstr "Заврши"
+
+#: lib/hpay_admin.php:518
+#, php-format
+msgid ""
+"First auto-charge attempt will be tried on this order beween 15 and 60 min "
+"after %s. You can run charge immediately. If you wish to change/remove/add "
+"something to order do it soon as possoble. If you want to prevent auto-"
+"charge change order status to something else than 'pending'."
+msgstr ""
+"Првиот обид за автоматско полнење ќе се обиде на оваа нарачка помеѓу 15 и 60 "
+"минути по %s. Можете веднаш да го извршите полнењето. Ако сакате да "
+"промените/отстраните/додадете нешто во нарачката, направете го тоа што е "
+"можно поскоро. Ако сакате да спречите автоматско полнење, променете го "
+"статусот на нарачката во нешто друго освен 'чекање'."
+
+#: lib/hpay_admin.php:1786
+msgid "First renewal after"
+msgstr "Прво продолжување по"
+
+#: lib/hpay_admin.php:1792
+msgid "First renewal after unit day/week/month/year"
+msgstr "Прво продолжување по единица ден/недела/месец/година"
+
+#: lib/hpay_admin.php:1531
+msgid "Fiscal & Integartion methods"
+msgstr "Фискални и интеграциски методи"
+
+#: lib/hpay_admin.php:1568
+msgid "Footer branding template"
+msgstr "Шаблон за брендирање на подножјето"
+
+#: hpay_class.php:2603
+msgid "Full refund"
+msgstr "Враќање на целосната сума"
+
+#: lib/hpay_admin.php:185
+#, php-format
+msgid "Here is the link you can use to directly make order for the product %s:"
+msgstr ""
+"Еве ја врската што можете да ја користите за директно да направите нарачка "
+"за производот %s:"
+
+#: lib/hpay_admin.php:347
+#, php-format
+msgid ""
+"Here is the link you can use to make payment for the order %s that we "
+"prepared for you:"
+msgstr ""
+"Еве ја врската што можете да ја користите за да извршите плаќање за "
+"нарачката %s што ја подготвивме за вас:"
+
+#: lib/hpay_admin.php:178 lib/hpay_admin.php:346
+msgid "Hi,"
+msgstr "Здраво,"
+
+#: lib/hpay_admin.php:678
+msgid "Hide transactions"
+msgstr "Скриј трансакции"
+
+#. Author of the plugin
+msgid "HOLEST E-COMMERCE"
+msgstr "HOLEST E-COMMERCE"
+
+#: lib/hpay_admin.php:282 lib/hpay_admin.php:1236 lib/hpay_admin.php:1236
+msgid "HolestPay"
+msgstr "HolestPay"
+
+#: lib/hpay_admin.php:1885
+msgid ""
+"HolestPay can only create renewal as an normal WooCommerce order with "
+"products detected as subsciptions in the original checkout order. You will "
+"maybe need to adjust other order/subscription data that is specific to your "
+"plugin. Below is the reference of hooks you can add to your theme functions."
+"php that could serve for this purphose. Plugin vendor may help you best "
+"about this. You may also use all other regular wooCommerce hooks/filters."
+msgstr ""
+"HolestPay може да создаде само продолжување како нормална нарачка во "
+"WooCommerce со производи детектирани како претплати во оригиналната нарачка "
+"за наплата. Можеби ќе треба да ги прилагодите другите податоци за "
+"нарачката/претплатата кои се специфични за вашиот приклучок. Подолу е "
+"референцата на куките што можете да ги додадете во вашите функции на тема. "
+"php што би можеле да послужат за оваа цел. Продавачот на приклучокот може "
+"најдобро да ви помогне во врска со ова. Можете исто така да ги користите "
+"сите други редовни куки/филтри на wooCommerce."
+
+#: lib/hpay_admin.php:1273
+msgid "HolestPay environment"
+msgstr "Околина на HolestPay"
+
+#: lib/hpay_admin.php:1647
+msgid ""
+"HolestPay may invoke renewal order creation in behalf of your custom plugin -"
+" but its better that your plugin performs that becuse usually additional "
+"data will need to be set or you will have to add code using hooks/filters. "
+"Plugin vendors sometimes explicitly block checkout for payment methods that "
+"are not pre-defined/pre-allowed by them. In that case you will have to "
+"contact them."
+msgstr ""
+"HolestPay може да повика создавање на нарачка за продолжување во име на "
+"вашиот прилагоден приклучок - но подобро е вашиот приклучок да го изврши тоа "
+"бидејќи обично ќе треба да се постават дополнителни податоци или ќе треба да "
+"додадете код користејќи ги куките/филтрите. Продавачите на приклучоци "
+"понекогаш експлицитно го блокираат наплатата за начини на плаќање кои не се "
+"предефинирани/претходно дозволени од нив. Во тој случај ќе мора да ги "
+"контактирате."
+
+#. Description of the plugin
+msgid ""
+"HolestPay payment system supports integration with most of the banks in the "
+"Adriatic region. Ovaj softver je vlasnistvo HOLEST E-COMMERCE D.O.O. "
+"Neovlašćenim korišćenjem ovog softver-a podležete riziku od zakonske kazne."
+msgstr ""
+"Системот за плаќање HolestPay ја поддржува интеграцијата со повеќето банки "
+"во Адријатскиот регион. Овој софтвер е во сопственост на HOLEST E-COMMERCE D."
+"O.O. Со неовластено користење на овој софтвер сте изложени на ризик од "
+"законска казна."
+
+#. Name of the plugin
+msgid "HolestPay Payments Plugin WooCommerce or Standalone"
+msgstr "HolestPay Плаќања Приклучок за WooCommerce или Самостоен"
+
+#: lib/hpay_admin.php:1173
+msgid "Hooks/coding reference"
+msgstr "Референца за куки/кодирање"
+
+#: lib/hpay_admin.php:1665
+msgid "Hours"
+msgstr "Часови"
+
+#: hpay_class.php:288
+msgid "HPAY aborted payment response"
+msgstr "HPAY прекинат одговор за плаќање"
+
+#: hpay_class.php:1514
+msgid "HPAY bad response"
+msgstr "HPAY лош одговор"
+
+#: hpay_class.php:1517
+msgid "HPAY bad response object"
+msgstr "HPAY лош објект на одговор"
+
+#: hpay_class.php:1537
+msgid "HPAY can not lock the order!"
+msgstr "HPAY не може да ја заклучи нарачката!"
+
+#: hpay_woo.php:172
+msgid "HPay Cart Data"
+msgstr "HPay Податоци за кошничката"
+
+#: lib/hpay_admin.php:765
+msgid "HPAY Charge aleady called for order"
+msgstr "HPAY Полнењето веќе е повикано за нарачката"
+
+#: hpay_class.php:1233
+msgid "HPAY charge error"
+msgstr "Грешка при полнењето на HPAY"
+
+#: hpay_class.php:1239
+msgid "HPAY charge error response"
+msgstr "Одговор за грешка при полнењето на HPAY"
+
+#: hpay_class.php:1241
+msgid "HPAY charge error response object"
+msgstr "Објект на одговор за грешка при полнењето на HPAY"
+
+#: lib/hpay_admin.php:846
+msgid "HPAY Charge Error:"
+msgstr "Грешка при полнењето на HPAY:"
+
+#: hpay_class.php:1243
+msgid "HPAY charge response rejected due incorrect verification string!"
+msgstr ""
+"Одговорот за полнењето на HPAY е одбиен поради неточен стринг за "
+"верификација!"
+
+#: lib/hpay_admin.php:864
+msgid "HPAY Charge: charge failed"
+msgstr "HPAY Полнење: полнењето не успеа"
+
+#: lib/hpay_admin.php:771
+msgid "HPAY Charge: No order for charge provided"
+msgstr "HPAY Полнење: Не е обезбедена нарачка за полнење"
+
+#: lib/hpay_admin.php:856
+msgid "HPAY Charge: No usable payment method found"
+msgstr "HPAY Полнење: Не е пронајден употреблив начин на плаќање"
+
+#: lib/hpay_admin.php:805
+msgid "HPAY Charge: No usable payment token found"
+msgstr "HPAY Полнење: Не е пронајден употреблив токен за плаќање"
+
+#: lib/hpay_admin.php:775 lib/hpay_admin.php:779
+msgid "HPAY Charge: non WC_Order object given for charge"
+msgstr "HPAY Полнење: Даден е објект што не е WC_Order за полнење"
+
+#: lib/hpay_admin.php:787
+msgid "HPAY Charge: Order has no customer set"
+msgstr "HPAY Полнење: Нарачката нема поставен клиент"
+
+#: lib/hpay_admin.php:783
+msgid "HPAY Charge: Order is already paid"
+msgstr "HPAY Полнење: Нарачката веќе е платена"
+
+#: hpay_woo_gui.php:387
+msgid "HPay column layout"
+msgstr "Распоред на колони на HPay"
+
+#: hpay_class.php:926
+msgid "HPAY Fiscal/Integration defaultAction call"
+msgstr "Повик на HPAY Фискална/Интеграција defaultAction"
+
+#: hpay_class.php:1639
+msgid "HPAY payment completed"
+msgstr "HPAY плаќањето е завршено"
+
+#: hpay_class.php:1686
+msgid "HPAY payment failed"
+msgstr "HPAY плаќањето не успеа"
+
+#: hpay_class.php:1734
+msgid "HPAY response rejected due incorrect verification string!"
+msgstr "Одговорот на HPAY е одбиен поради неточен стринг за верификација!"
+
+#: lib/hpay_admin.php:1242
+msgid "HPay Site Setup..."
+msgstr "Поставување на сајтот на HPay ..."
+
+#: hpay_class.php:1172 hpay_class.php:1178
+msgid "HPAY skiped charge because order is already paid"
+msgstr "HPAY го прескокна полнењето бидејќи нарачката веќе е платена"
+
+#: hpay_woo_gui.php:558
+msgid "HPay Status"
+msgstr "Статус на HPay"
+
+#: hpay_class.php:1023
+msgid "HPAY store order error"
+msgstr "Грешка при складирање на нарачката на HPAY"
+
+#: hpay_class.php:1027
+msgid "HPAY store order error response"
+msgstr "Одговор за грешка при складирање на нарачката на HPAY"
+
+#: hpay_class.php:1029
+msgid "HPAY store order error response object"
+msgstr "Објект на одговор за грешка при складирање на нарачката на HPAY"
+
+#: hpay_class.php:1032
+msgid "HPAY store order response rejected due incorrect verification string!"
+msgstr ""
+"Одговорот за складирање на нарачката на HPAY е одбиен поради неточен стринг "
+"за верификација!"
+
+#. Author URI of the plugin
+msgid "https://ecommerce.holest.com"
+msgstr "https://ecommerce.holest.com"
+
+#: lib/hpay_admin.php:1775
+msgid "If charged amount stays after you change prices on the site"
+msgstr "Ако наплатениот износ остане откако ќе ги промените цените на сајтот"
+
+#: lib/hpay_admin.php:1789 lib/hpay_admin.php:1795
+msgid "If first COF charge is not after regular interval"
+msgstr "Ако првото полнење на COF не е по редовен интервал"
+
+#: lib/hpay_admin.php:1659
+msgid ""
+"If smart tool did not work for you, you can always just provide needed data "
+"vai hooks code to HolestPay on checkout, or run some actions on payment "
+"completion..."
+msgstr ""
+"Ако паметниот алат не ви помогна, секогаш можете само да ги обезбедите "
+"потребните податоци преку кодот на куките до HolestPay при наплатата или да "
+"извршите некои акции по завршувањето на плаќањето..."
+
+#: lib/hpay_admin.php:1822
+msgid ""
+"If specified it will be checked otherwise existance of interval, interval "
+"unit and amount will indicate subscription"
+msgstr ""
+"Ако е наведено, ќе се провери, во спротивно ќе се покаже постоењето на "
+"интервал, единица на интервал и износ ќе укажува на претплата"
+
+#: lib/hpay_admin.php:1710
+msgid ""
+"If you have been trying around varius subscription plugins we recommend that "
+"you create fresh subscription product and set it up (make sure you set up "
+"all fields you will need). Then make test subsciption order and renewal "
+"becuse it might happen this tool might relate to data leftovers that stayed "
+"attached to your products from plugins you have tried and abanadoned. Use "
+"fresh product/order data for samples."
+msgstr ""
+"Ако сте пробале со различни приклучоци за претплата, препорачуваме да "
+"создадете свеж производ за претплата и да го поставите (проверете дали ги "
+"поставивте сите полиња што ви се потребни). Потоа направете тест нарачка за "
+"претплата и продолжување бидејќи може да се случи овој алат да се однесува "
+"на остатоците од податоци што останаа поврзани со вашите производи од "
+"приклучоците што сте ги пробале и ги напуштиле. Користете свежи податоци за "
+"производи/нарачки за примероци."
+
+#: lib/hpay_admin.php:1605
+msgid ""
+"if you need to check all renewal orders before charge this may be required"
+msgstr ""
+"ако треба да ги проверите сите нарачки за продолжување пред да се наполнат, "
+"ова може да биде потребно"
+
+#: lib/hpay_admin.php:1346
+msgid "if you use block checkout you must turn on 'company' address field"
+msgstr ""
+"ако користите блокада на наплата, мора да ја вклучите адресата на полето "
+"„компанија“"
+
+#: lib/hpay_admin.php:1279
+msgid ""
+"IMPORTANT: Please un-block connect popup in you browser address bar if "
+"'blocked' notification appears when you click on 'Connect' button!"
+msgstr ""
+"ВАЖНО: Ве молиме, отклучете го поп-ап прозорецот за поврзување во адресната "
+"лента на вашиот пребарувач ако се појави известување за „блокирано“ кога ќе "
+"кликнете на копчето „Поврзи“!"
+
+#: lib/hpay_admin.php:1884
+msgid "In case you enabled HolestPay renewal order creation, then:"
+msgstr ""
+"Во случај да го овозможивте создавањето на нарачка за продолжување на "
+"HolestPay, тогаш:"
+
+#: lib/hpay_admin.php:1758 lib/hpay_admin.php:1764
+msgid "Indicative that this is an subscription"
+msgstr "Индикативно дека ова е претплата"
+
+#: lib/hpay_admin.php:1769
+msgid ""
+"Indicative that this is an subscription. First payment will just take "
+"checkout amount."
+msgstr ""
+"Индикативно дека ова е претплата. Првото плаќање ќе ја земе само сумата за "
+"наплата."
+
+#: lib/hpay_admin.php:1817
+msgid "Inital payment amount"
+msgstr "Износ на првобитно плаќање"
+
+#: lib/hpay_front.php:223
+msgid "Installments"
+msgstr "Рати"
+
+#: lib/hpay_front.php:224
+msgid "Installments grace months"
+msgstr "Грациозни месеци за рати"
+
+#: lib/hpay_admin.php:1756
+msgid "Interval"
+msgstr "Интервал"
+
+#: lib/hpay_admin.php:1761
+msgid "Interval unit day/week/month/year"
+msgstr "Единица на интервал ден/недела/месец/година"
+
+#: lib/hpay_admin.php:1872
+msgid "Invoke renewal order creation (if your plugin does not do that itself)"
+msgstr ""
+"Повикајте создавање на нарачка за продолжување (ако вашиот приклучок не го "
+"прави тоа сам)"
+
+#: lib/hpay_admin.php:1820
+msgid "Is subscription indicator"
+msgstr "Индикатор за претплата"
+
+#: lib/hpay_admin.php:1182
+msgid "It is required to use HTTPS on sites that process payments!"
+msgstr "Потребно е да се користи HTTPS на сајтови кои обработуваат плаќања!"
+
+#: lib/hpay_admin.php:1805
+msgid "Limited duration enable"
+msgstr "Овозможено ограничено траење"
+
+#: lib/hpay_admin.php:1808
+msgid "Limited duration interval - number"
+msgstr "Интервал на ограничено траење - број"
+
+#: lib/hpay_admin.php:1811
+msgid "Limited duration interval unit day/week/month/year"
+msgstr "Единица на интервал на ограничено траење ден/недела/месец/година"
+
+#: lib/hpay_admin.php:1311
+msgid "Local site settings"
+msgstr "Локални поставки на сајтот"
+
+#: lib/hpay_admin.php:1563
+msgid "log dir is /wp-content/uploads/hpay-logs/"
+msgstr "дневникот на директориумот е /wp-content/uploads/hpay-logs/"
+
+#: lib/hpay_admin.php:1195
+msgid "Mail sent successfully"
+msgstr "Пораката е успешно испратена"
+
+#: lib/hpay_admin.php:434
+msgid "Mail sent successfully!"
+msgstr "Пораката е успешно испратена!"
+
+#: lib/hpay_admin.php:1297
+msgid "Manage fiscal/e-invoice/integration methods"
+msgstr "Управувајте со фискални/е-фактури/методи за интеграција"
+
+#: lib/hpay_admin.php:1229
+msgid "Manage HolestPay payment methods..."
+msgstr "Управувајте со начините на плаќање на HolestPay..."
+
+#: lib/hpay_admin.php:1222
+msgid "Manage HolestPay shiping methods..."
+msgstr "Управувајте со начините на достава на HolestPay..."
+
+#: lib/hpay_admin.php:1183
+msgid "Manage on HolestPay"
+msgstr "Управувајте на HolestPay"
+
+#: lib/hpay_admin.php:470 lib/hpay_admin.php:480
+msgid "Manage on HolestPay..."
+msgstr "Управувајте на HolestPay..."
+
+#: lib/hpay_admin.php:1295
+msgid "Manage payment methods"
+msgstr "Управувајте со начините на плаќање"
+
+#: lib/hpay_admin.php:1296
+msgid "Manage shipping methods"
+msgstr "Управувајте со начините на достава"
+
+#: hpay_woo_gui.php:467 hpay_woo_gui.php:490
+msgid "max"
+msgstr "макс"
+
+#: hpay_woo_gui.php:466 hpay_woo_gui.php:489
+msgid "min"
+msgstr "мин"
+
+#: hpay_woo_gui.php:487
+msgid "Minimum/Maximum for HolestPay 'name your price' feature"
+msgstr ""
+"Минимално/Максимално за функцијата „наречете ја вашата цена“ на HolestPay"
+
+#: integrations/init_integrations.php:41 integrations/init_integrations.php:54
+msgid "MKD"
+msgstr "МКД"
+
+#: lib/hpay_admin.php:1176
+msgid "Next"
+msgstr "Следно"
+
+#: lib/hpay_admin.php:1188 lib/hpay_admin.php:1319
+msgid "No"
+msgstr "Не"
+
+#: lib/hpay_admin.php:1605
+msgid "No automatic charges"
+msgstr "Без автоматски полнења"
+
+#: lib/hpay_admin.php:1433 lib/hpay_admin.php:1444 lib/hpay_admin.php:1455
+#: lib/hpay_admin.php:1466 lib/hpay_admin.php:1477 lib/hpay_admin.php:1488
+#: lib/hpay_admin.php:1499
+msgid "No change leave as is"
+msgstr "Без промена оставете го како што е"
+
+#: lib/hpay_front.php:232
+msgid "No valid payment respose was received. You can try again!"
+msgstr "Не е применет валиден одговор за плаќање. Можете да обидете повторно!"
+
+#: lib/hpay_admin.php:1508
+msgid "Non-HPay payment method orders/payment status "
+msgstr "Нарачки/статус на плаќање со начин на плаќање што не е HPay"
+
+#: lib/hpay_admin.php:1395
+msgid "None"
+msgstr "Ништо"
+
+#: lib/hpay_admin.php:1618 lib/hpay_admin.php:1628
+msgid "NOT DETECTED"
+msgstr "НЕ Е ДЕТЕКТИРАНО"
+
+#: lib/hpay_admin.php:1570
+msgid "Not used"
+msgstr "Не се користи"
+
+#: lib/hpay_front.php:34
+msgid ""
+"NOTE: Information needed for card payment can not be reconstructed form a "
+"vault reference, instead this data is stored with ceritied payment providers "
+"and banks. Vault reference is just a permit ticket for particular merchant "
+"to charge your card."
+msgstr ""
+"БЕЛЕШКА: Информациите потребни за плаќање со картичка не можат да се "
+"реконструираат од референцата на складиштето, наместо тоа, овие податоци се "
+"складираат кај сертифицираните провајдери на плаќања и банки. Референцата на "
+"складиштето е само дозвола за билет за одреден трговец да ја наполни вашата "
+"картичка."
+
+#: lib/hpay_admin.php:1862
+msgid "Nothing"
+msgstr "Ништо"
+
+#: lib/hpay_admin.php:1419
+msgid "Once for each of the mappings"
+msgstr "Само еднаш за секое од мапирањата"
+
+#: hpay_woo_gui.php:542
+msgid "one-time payment (added by HolestPay)"
+msgstr "еднократно плаќање (додадено од HolestPay)"
+
+#: lib/hpay_admin.php:1633
+msgid ""
+"Only card-on-file|mit|recurring capable payment methods for subscriptions"
+msgstr ""
+"Само начини на плаќање способни за картичка на датотека|mit|рекурентни за "
+"претплати"
+
+#: lib/hpay_admin.php:1318
+msgid "Only for administrators (when testing)"
+msgstr "Само за администратори (при тестирање)"
+
+#: lib/hpay_admin.php:1418
+msgid "Only once"
+msgstr "Само еднаш"
+
+#: lib/hpay_admin.php:1825
+msgid "Only one product per cart"
+msgstr "Само еден производ по кошничка"
+
+#: lib/hpay_admin.php:1285
+msgid "Open HolestPay panel..."
+msgstr "Отворете го панелот на HolestPay..."
+
+#: lib/hpay_admin.php:1393
+msgid "Order key modification"
+msgstr "Модификација на клучот на нарачката"
+
+#: class/class-wc-hpay-payment-gateway.php:409
+msgid "Order not found"
+msgstr "Нарачката не е пронајдена"
+
+#: lib/hpay_admin.php:201
+msgid "Order Now"
+msgstr "Нарачај сега"
+
+#: lib/hpay_front.php:212
+msgid "Order UID"
+msgstr "UID на нарачката"
+
+#: hpay_class.php:2100
+msgid "ORDER_ID_NOT_FOUND"
+msgstr "ORDER_ID_NOT_FOUND"
+
+#: hpay_class.php:2136
+msgid "ORDER_NOT_FOUND"
+msgstr "ORDER_NOT_FOUND"
+
+#: hpay_checkout.php:243
+msgid "Ordering as a company"
+msgstr "Нарачување како компанија"
+
+#: hpay_checkout.php:237 lib/hpay_front.php:237
+msgid "Ordering as a company?"
+msgstr "Нарачувате како компанија?"
+
+#: hpay_checkout.php:242
+msgid "Ordering as a individual"
+msgstr "Нарачување како поединец"
+
+#: lib/hpay_admin.php:1646
+msgid "Other custom WooCommerce plugins integrations"
+msgstr "Други интеграции на приклучоци за WooCommerce"
+
+#: lib/hpay_admin.php:1323
+msgid "Override site language"
+msgstr "Препиши ја јазикот на сајтот"
+
+#: lib/hpay_admin.php:1719
+msgid "Parent ID"
+msgstr "ИД на родител"
+
+#: hpay_class.php:2469
+msgid "Partial refund"
+msgstr "Парцијално враќање на сумата"
+
+#: hpay_class.php:2384
+msgid "Partial reserved amount capture/post-authorization"
+msgstr "Парцијално резервирано зафаќање/пост-авторизација на износот"
+
+#: class/class-wc-hpay-payment-gateway.php:301
+msgid "Pay"
+msgstr "Плати"
+
+#: hpay_woo.php:94
+msgid "Pay for Order No."
+msgstr "Плати за нарачка бр."
+
+#: lib/hpay_admin.php:350
+msgid "Pay Now"
+msgstr "Плати сега"
+
+#: lib/hpay_admin.php:1564
+msgid "Payment at 'thank you' page"
+msgstr "Плаќање на страницата „Ви благодариме“"
+
+#: hpay_checkout.php:129
+msgid "Payment canceled"
+msgstr "Плаќањето е откажано"
+
+#: lib/hpay_front.php:236
+msgid "Payment error"
+msgstr "Грешка при плаќање"
+
+#: hpay_checkout.php:138 lib/hpay_front.php:235
+msgid "Payment failed"
+msgstr "Плаќањето не успеа"
+
+#: lib/hpay_front.php:230
+msgid "Payment failed, you can try again..."
+msgstr "Плаќањето не успеа, можете да обидете повторно..."
+
+#: lib/hpay_front.php:233
+msgid "Payment has failed. You can try again!"
+msgstr "Плаќањето не успеа. Можете да обидете повторно!"
+
+#: lib/hpay_admin.php:427
+#, php-format
+msgid "Payment link for order %s"
+msgstr "Врска за плаќање за нарачка %s"
+
+#: hpay_checkout.php:131
+msgid "Payment partially refunded"
+msgstr "Плаќањето е делумно вратено"
+
+#: hpay_checkout.php:133
+msgid "Payment refunded"
+msgstr "Плаќањето е вратено"
+
+#: hpay_checkout.php:135 lib/hpay_front.php:234
+msgid "Payment refused"
+msgstr "Плаќањето е одбиено"
+
+#: lib/hpay_front.php:229
+msgid "Payment refused, you can try again..."
+msgstr "Плаќањето е одбиено, можете да обидете повторно..."
+
+#: lib/hpay_front.php:214
+msgid "Payment Status"
+msgstr "Статус на плаќање"
+
+#: hpay_checkout.php:123
+msgid "Payment successful"
+msgstr "Плаќањето е успешно"
+
+#: hpay_checkout.php:125
+msgid "Payment successful, pending amount capture"
+msgstr "Плаќањето е успешно, се чека зафаќање на износот"
+
+#: hpay_checkout.php:145
+msgid ""
+"Payment unsuccessful, your account has not been debited. The most common "
+"cause is an incorrect card number, expiration date, or security code. Try "
+"again, and in case of repeated errors, contact your bank."
+msgstr ""
+"Плаќањето не е успешно, вашата сметка не е олеснета. Најчеста причина е "
+"погрешен број на картичката, датум на истек или безбедносен код. Обидете се "
+"повторно, а во случај на повторени грешки, контактирајте ја вашата банка."
+
+#: lib/hpay_admin.php:1272
+msgid "PCI DSS COMPLIANT PAYMENT SERVICE PRIVIDER"
+msgstr "PCI DSS СОГЛАСЕН ПРОВАЈДЕР НА УСЛУГИ ЗА ПЛАЌАЊЕ"
+
+#: lib/hpay_front.php:209
+msgid ""
+"Please confirm you want to remove payment token vault reference. If you have "
+"subscriptions with us they might get terminated if we fail to charge you for "
+"the next billing period."
+msgstr ""
+"Ве молиме потврдете дека сакате да ја отстраните референцата на складиштето "
+"на токенот за плаќање. Ако имате претплати кај нас, тие може да бидат "
+"раскинати ако не успееме да ви наплатиме за следниот период на фактурирање."
+
+#: lib/hpay_admin.php:1194
+msgid "Please enter valid email!"
+msgstr "Ве молиме внесете валидна е-пошта!"
+
+#: lib/hpay_admin.php:742
+msgid "Please select a customer vault payment token reference!"
+msgstr ""
+"Ве молиме изберете референца на токенот за плаќање од складиштето на "
+"корисникот!"
+
+#: lib/hpay_admin.php:1179
+msgid "Please set all required fields!"
+msgstr "Ве молиме поставете ги сите потребни полиња!"
+
+#: lib/hpay_admin.php:1725
+msgid "Post type"
+msgstr "Тип на објава"
+
+#: lib/hpay_admin.php:1276
+msgid "Production / Live"
+msgstr "Производство / Во живо"
+
+#: lib/hpay_admin.php:1185
+msgid "Push order data to HPay?"
+msgstr "Испратете ги податоците за нарачката до HPay?"
+
+#: lib/hpay_admin.php:144
+msgid "Quantity:"
+msgstr "Количина:"
+
+#: lib/hpay_front.php:225
+msgid "Reccuring interval"
+msgstr "Рекурентен интервал"
+
+#: lib/hpay_front.php:226
+msgid "Reccuring interval value"
+msgstr "Вредност на рекурентниот интервал"
+
+#: lib/hpay_front.php:227
+msgid "Reccuring total payments"
+msgstr "Вкупно рекурентни плаќања"
+
+#: lib/hpay_front.php:221
+msgid "Refunded amount"
+msgstr "Вратена сума"
+
+#: lib/hpay_admin.php:1178
+msgid "Remove"
+msgstr "Отстрани"
+
+#: hpay_checkout.php:57
+msgid "remove"
+msgstr "отстрани"
+
+#: lib/hpay_admin.php:1838
+msgid "remove assigned by default"
+msgstr "отстрани доделено по подразбирање"
+
+#: lib/hpay_admin.php:1837
+msgid "Remove assigned user role(s) on expiration"
+msgstr "Отстрани доделени улоги на корисникот при истекот"
+
+#: lib/hpay_admin.php:1181
+msgid "Remove custom integration?"
+msgstr "Отстранете ја прилагодената интеграција?"
+
+#: lib/hpay_admin.php:687
+msgid ""
+"Remove customer payment token vault reference? If you lose this vault "
+"reference you will no longer be able to charge the client by it."
+msgstr ""
+"Отстранете ја референцата на складиштето на токенот за плаќање на клиентот? "
+"Ако ја изгубите оваа референца на складиштето, повеќе нема да можете да го "
+"наполните клиентот со неа."
+
+#: lib/hpay_front.php:211
+msgid "result"
+msgstr "резултат"
+
+#: hpay_class.php:2304
+msgid "RESULT_ALREADY_ACCEPTED"
+msgstr "RESULT_ALREADY_ACCEPTED"
+
+#: integrations/init_integrations.php:39 integrations/init_integrations.php:48
+msgid "RSD"
+msgstr "RSD"
+
+#: lib/hpay_admin.php:1649
+msgid "Run smart subscription plugin integration tool..."
+msgstr "Извршете го алатот за интеграција на паметен приклучок за претплата..."
+
+#: lib/hpay_admin.php:1275
+msgid "Sandbox / Testing"
+msgstr "Песочник / Тестирање"
+
+#: lib/hpay_admin.php:1701
+msgid "Save"
+msgstr "Зачувај"
+
+#: lib/hpay_admin.php:329
+msgid "Save order to get 'Pay by link' link"
+msgstr "Зачувајте ја нарачката за да ја добиете врската „Плати со врска“"
+
+#: lib/hpay_admin.php:1709
+msgid "search subsciption product by title or ID"
+msgstr "пребарај производ за претплата по наслов или ИД"
+
+#: lib/hpay_admin.php:1658
+msgid "See code/hooks integration reference..."
+msgstr "Погледнете ја референцата за интеграција на код/куки..."
+
+#: lib/hpay_admin.php:1763 lib/hpay_admin.php:1794 lib/hpay_admin.php:1803
+#: lib/hpay_admin.php:1809 lib/hpay_admin.php:1812 lib/hpay_admin.php:1818
+#: lib/hpay_admin.php:1821
+msgid "select bound ref or enter fixed value"
+msgstr "Изберете поврзана реф. или внесете фиксна вредност"
+
+#: lib/hpay_admin.php:1835
+msgid "select bound ref or enter fixed value (comma separated)"
+msgstr ""
+"Изберете поврзана реф. или внесете фиксна вредност (одделени со запирка)"
+
+#: lib/hpay_admin.php:1781
+msgid "select bound ref or enter fixed value - currency code or num code"
+msgstr ""
+"Изберете поврзана реф. или внесете фиксна вредност - код на валута или "
+"нумерички код"
+
+#: lib/hpay_admin.php:1757 lib/hpay_admin.php:1768 lib/hpay_admin.php:1788
+#: lib/hpay_admin.php:1800
+msgid "select bound ref or enter fixed value - number"
+msgstr "Изберете поврзана реф. или внесете фиксна вредност - број"
+
+#: lib/hpay_admin.php:1806 lib/hpay_admin.php:1815 lib/hpay_admin.php:1826
+#: lib/hpay_admin.php:1829 lib/hpay_admin.php:1832
+msgid "select bound ref or enter fixed value - yes|no"
+msgstr "Изберете поврзана реф. или внесете фиксна вредност - да|не"
+
+#: lib/hpay_admin.php:398 lib/hpay_admin.php:1191
+msgid "Send"
+msgstr "Испрати"
+
+#: lib/hpay_admin.php:334 lib/hpay_admin.php:397
+msgid "Send 'Pay by link' link to the customer..."
+msgstr "Испратете ја врската „Плати со врска“ до клиентот..."
+
+#: hpay_checkout.php:286
+msgid "Send order notifications also to these email addresses"
+msgstr "Испратете ги известувањата за нарачката и на овие е-маил адреси"
+
+#: hpay_woo_gui.php:453
+msgid "Send quick-buy link to the customer..."
+msgstr "Испратете ја врската за брзо купување до клиентот..."
+
+#: lib/hpay_admin.php:143 lib/hpay_admin.php:342
+msgid "Send to:"
+msgstr "Испрати до:"
+
+#: hpay_static.php:16
+msgid "Serbian"
+msgstr "Српски"
+
+#: hpay_checkout.php:57
+msgid "set default"
+msgstr "поставете како стандардно"
+
+#: lib/hpay_admin.php:1324
+msgid "set if diffrent form site language"
+msgstr "поставете ако е различно од јазикот на сајтот"
+
+#: lib/hpay_admin.php:1878
+msgid ""
+"set number of days if you need delay to adjust something or pre-inform "
+"customer"
+msgstr ""
+"поставете број на денови ако ви треба одложување за да прилагодите нешто или "
+"да го претходно известите клиентот"
+
+#: lib/hpay_admin.php:1782
+msgid "Set only if it defers from the WooCommerce currency"
+msgstr "Поставете само ако се разликува од валутата на WooCommerce"
+
+#: lib/hpay_admin.php:1362 lib/hpay_admin.php:1380
+msgid "set required"
+msgstr "поставете како задолжително"
+
+#: lib/hpay_admin.php:1486
+msgid "Set status for orders when partialy refunded"
+msgstr "Поставете статус за нарачките кога се делумно вратени"
+
+#: lib/hpay_admin.php:1475
+msgid "Set status for orders when refunded"
+msgstr "Поставете статус за нарачките кога се вратени"
+
+#: lib/hpay_admin.php:1497
+msgid ""
+"Set status for orders when shipped (only if HolestPay shipping method is "
+"used)"
+msgstr ""
+"Поставете статус за нарачките кога се испорачани (само ако се користи "
+"методот на достава на HolestPay)"
+
+#: lib/hpay_admin.php:1442
+msgid "Set status for orders/renewals when amount is pre-authorised/reserved"
+msgstr ""
+"Поставете статус за нарачките/продолжувањата кога износот е претходно "
+"одобрен/резервиран"
+
+#: lib/hpay_admin.php:1453
+msgid ""
+"Set status for orders/renewals when awaiting payment (...like bank transfer, "
+"passive IPS, crypto-await...)"
+msgstr ""
+"Поставете статус за нарачките/продолжувањата кога се чека плаќањето (...како "
+"банкарски трансфер, пасивен IPS, крипто-чекање...)"
+
+#: lib/hpay_admin.php:1431
+msgid "Set status for orders/renewals when paid"
+msgstr "Поставете статус за нарачките/продолжувањата кога се платени"
+
+#: lib/hpay_admin.php:1464
+msgid "Set status for orders/renewals when VOID-ed"
+msgstr "Поставете статус за нарачките/продолжувањата кога се поништени"
+
+#: lib/hpay_admin.php:1532
+msgid ""
+"Set wooCommerce order status to trigger default fiscal/integartion method "
+"action from the site (if you have some other sort of automation configured "
+"on HPay double check if you need this)"
+msgstr ""
+"Поставете го статусот на нарачката на WooCommerce за да се активира "
+"дејството на дефалтниот фискален/интеграциски метод од сајтот (ако имате "
+"некоја друга форма на автоматизација конфигурирана на HPay, проверете "
+"двапати дали ви треба ова)"
+
+#: lib/hpay_admin.php:1237
+msgid "Setup"
+msgstr "Поставување"
+
+#: lib/hpay_admin.php:548 lib/hpay_admin.php:675
+msgid "Show transactions"
+msgstr "Прикажи трансакции"
+
+#: lib/hpay_admin.php:1416
+msgid "Site order status may be changed:"
+msgstr "Статусот на нарачката на сајтот може да се промени:"
+
+#: lib/hpay_admin.php:1174
+msgid "Smart custom plugins product subscription detection setup"
+msgstr ""
+"Поставување на детекција на претплата на производи за паметни прилагодени "
+"приклучоци"
+
+#: lib/hpay_front.php:218
+msgid "Status code for the 3D transaction"
+msgstr "Код на статус за 3D трансакцијата"
+
+#: lib/hpay_admin.php:1601
+msgid "Subscriptions"
+msgstr "Претплати"
+
+#: lib/hpay_admin.php:538
+msgid ""
+"There are no customer vault payment tokens awailable for merchant initiated "
+"charges."
+msgstr ""
+"Нема достапни токени за плаќање од складиштето на корисникот за полнења "
+"иницирани од страна на трговецот."
+
+#: lib/hpay_admin.php:1738
+msgid "This is a good sample"
+msgstr "Ова е добар примерок"
+
+#: lib/hpay_admin.php:1193
+#, php-format
+msgid "This offer in link is limited to %s days."
+msgstr "Оваа понуда во врската е ограничена на %s дена."
+
+#: lib/hpay_admin.php:1184
+msgid ""
+"This order is not stored on HPay. Push it now so you could manage it from "
+"HPay?"
+msgstr ""
+"Оваа нарачка не е складирана на HPay. Испратете ја сега за да можете да ја "
+"управувате од HPay?"
+
+#: lib/hpay_admin.php:1722
+msgid "Title"
+msgstr "Наслов"
+
+#: lib/hpay_admin.php:1594
+msgid "to alter or make a new template, see "
+msgstr "за да го промените или да направите нов шаблон, видете"
+
+#: lib/hpay_front.php:216
+msgid "Transaction ID"
+msgstr "ИД на трансакција"
+
+#: lib/hpay_admin.php:548
+msgid "Transaction log"
+msgstr "Дневник на трансакции"
+
+#: lib/hpay_front.php:215
+msgid "Transaction Status Code"
+msgstr "Код на статус на трансакција"
+
+#: lib/hpay_front.php:217
+msgid "Transaction Time"
+msgstr "Време на трансакција"
+
+#: lib/hpay_admin.php:1799
+msgid "Trial duration/Schedule delay"
+msgstr "Траење на пробното користење/Одложување на распоредот"
+
+#: lib/hpay_admin.php:1802
+msgid "Trial/Schedule delay unit day/week/month/year"
+msgstr ""
+"Единица на одложување на пробното користење/распоредот "
+"ден/недела/месец/година"
+
+#: lib/hpay_admin.php:1545
+msgid ""
+"Trigger for each of this statuses (otherwise once for the first to happen)"
+msgstr "Тригер за секој од овие статуси (инаку еднаш за првиот што се случи)"
+
+#: lib/hpay_front.php:228
+msgid "Try to pay again..."
+msgstr "Обидете се да платите повторно..."
+
+#: hpay.php:526
+msgid "Unfortunately the payment has failed. Please try agian."
+msgstr "За жал, плаќањето не успеа. Ве молиме обидете се повторно."
+
+#: hpay_class.php:2702
+msgid "UNVERIFIED_RESULT"
+msgstr "UNVERIFIED_RESULT"
+
+#: lib/hpay_admin.php:1399
+msgid "Use order id / not recommended"
+msgstr "Користете го ИД на нарачката / не се препорачува"
+
+#: lib/hpay_admin.php:1401
+msgid "Use order number / not recommended"
+msgstr "Користете го бројот на нарачката / не се препорачува"
+
+#: hpay_checkout.php:67
+msgid "Use other ..."
+msgstr "Користете друго..."
+
+#: class/class-wc-hpay-payment-gateway.php:277
+msgid "Use saved payment token vault reference"
+msgstr "Користете ја зачуваната референца на складиштето на токенот за плаќање"
+
+#: hpay_woo_gui.php:96
+#, php-format
+msgid "Usual amount %s %s"
+msgstr "Вообичаен износ %s %s"
+
+#: lib/hpay_admin.php:1688
+msgid ""
+"WARNING (if you use subscriptions) You have not enabled any HolestPay "
+"payment method that allows an direct subscription charges or payment "
+"recurrance. If your customers use non-true subsciption payment method to pay "
+"the HolestPay can only notify them by e-mail to make a renewal payment "
+"before a subsciption period expiration."
+msgstr ""
+"ПРЕДУПРЕДУВАЊЕ (ако користите претплати) Не сте овозможиле ниту еден начин "
+"на плаќање на HolestPay кој дозволува директни полнења на претплата или "
+"повторување на плаќање. Ако вашите клиенти користат начин на плаќање што не "
+"е вистинска претплата за да платат, HolestPay може само да ги извести преку "
+"е-пошта за да извршат плаќање за продолжување пред истекот на периодот на "
+"претплата."
+
+#: lib/hpay_admin.php:1426
+#, php-format
+msgid ""
+"Warning: WooCommerce is set to cancel orders in '%s' status after %s minutes."
+" Make sure timeout is sufficiant for you for non-instant payment methods."
+msgstr ""
+"Предупредување: WooCommerce е поставен да ги откаже нарачките во статусот "
+"„%s“ по %s минути. Уверете се дека временското ограничување е доволно за вас "
+"за начини на плаќање што не се моментални."
+
+#: hpay_woo_gui.php:357 hpay_woo_gui.php:362
+msgid "We can't accept amount you specified!"
+msgstr "Не можеме да го прифатиме износот што го наведовте!"
+
+#: lib/hpay_admin.php:1860
+msgid "What is this regarding subscription?"
+msgstr "Што е ова во врска со претплатата?"
+
+#: lib/hpay_admin.php:1190
+msgid "With payment status change"
+msgstr "Со промена на статусот на плаќање"
+
+#: lib/hpay_admin.php:1611
+msgid "WooCommerce & WooCommerce plugins integration"
+msgstr "Интеграција на WooCommerce & приклучоци за WooCommerce"
+
+#: lib/hpay_admin.php:1413
+msgid "WooCommerce order status mappings"
+msgstr "Мапирања на статус на нарачката на WooCommerce"
+
+#: lib/hpay_admin.php:1603
+msgid "works only if the user is logged in"
+msgstr "работи само ако корисникот е најавен"
+
+#: hpay_static.php:16 lib/hpay_admin.php:1187 lib/hpay_admin.php:1317
+msgid "Yes"
+msgstr "Да"
+
+#: lib/hpay_admin.php:1774
+msgid "yes or 1 | no or 0 or not set"
+msgstr "да или 1 | не или 0 или не е поставено"
+
+#: lib/hpay_admin.php:205 lib/hpay_admin.php:353
+msgid ""
+"You can load same url from your phone easily by scanning bellow QR code from "
+"your smarthone default camera app:"
+msgstr ""
+"Можете лесно да ја вчитате истата URL адреса од вашиот телефон со скенирање "
+"на QR кодот подолу од апликацијата за камера по подразбирање на вашиот "
+"смартфон:"
+
+#: lib/hpay_admin.php:1272
+msgid ""
+"you don't need to perform quarter penetration testings, fill up SAQ "
+"questionnaires or adapt server to be PCI DSS complient merchant - all this "
+"is transfered/handled for you by HolestPay"
+msgstr ""
+"нема потреба да вршите тестирања на четвртинско продирање, да ги пополнувате "
+"прашалниците SAQ или да го прилагодите серверот за да бидете трговец во "
+"согласност со PCI DSS - сето ова се пренесува/ракува за вас од страна на "
+"HolestPay"
+
+#: lib/hpay_front.php:32
+msgid "Your have no saved payment token vault references for this site"
+msgstr ""
+"Немате зачувани референци на складиштето на токенот за плаќање за овој сајт"
+
+#: lib/hpay_front.php:30
+msgid "Your saved payment token vault references"
+msgstr "Вашите зачувани референци на складиштето на токенот за плаќање"
+
+#: lib/hpay_admin.php:1397
+msgid "YYMMDD-order_id"
+msgstr ""
+
+#: lib/hpay_admin.php:1400
+msgid "yymmdd-order_number / not recommended"
+msgstr ""
+
+#: lib/hpay_admin.php:1398
+msgid "YYMMDDNNN-order_id"
+msgstr ""

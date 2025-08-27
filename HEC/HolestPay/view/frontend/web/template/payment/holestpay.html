@@ -1,0 +1,85 @@
+<div class="payment-method holestpay" data-bind="css: {'_active': (getCode() == isChecked())}">
+    <!-- Hidden master method checkbox -->
+    <input type="radio" 
+           name="payment[method]" 
+           class="radio" 
+           style="display: none;"
+           data-bind="attr: {id: getCode()}, value: getCode(), checked: isChecked, click: selectPaymentMethod"/>
+    
+    <div class="payment-method-content" data-bind="visible: areSubmethodsVisible">
+        <div class="holestpay-suboptions">
+            <ul data-bind="foreach: getSubOptions()">
+                <li>
+                    <label>
+                        <input type="radio" 
+                               name="payment_holestpay_method_id" 
+                               data-bind="value: code, checked: $parent.selectedSubMethod"/> 
+                        <span class="method-title" data-bind="text: label"></span>
+                        <!-- ko if: description -->
+                        <div class="method-description" data-bind="html: description"></div>
+                        <!-- /ko -->
+                    </label>
+                    
+                                         <!-- ko if: supportsCOF && $parent.isCustomerLoggedIn() && $parent.getCustomerTokensForMethod(code).length > 0 -->
+                     <div class="cof-tokens">
+                         <p data-bind="text: $t('Use saved card:')"></p>
+                         <ul class="token-list">
+                             <li>
+                                 <label>
+                                     <input type="radio" 
+                                            name="holestpay_token_' + code + '" 
+                                            value="new" 
+                                            data-bind="checked: $parent.selectedTokenForMethod"/> 
+                                     <span data-bind="text: $t('-- Use new card --')"></span>
+                                 </label>
+                             </li>
+                             <!-- ko foreach: $parent.getCustomerTokensForMethod(code) -->
+                             <li>
+                                 <label>
+                                     <input type="radio" 
+                                            name="holestpay_token_' + code + '" 
+                                            data-bind="value: token_value, checked: $parent.selectedTokenForMethod"/> 
+                                     <span data-bind="text: $t('Card ending in') + ' ' + masked_pan + ' (' + $t('expires') + ': ' + expiration + ')'"></span>
+                                     <!-- ko if: is_default -->
+                                     <span class="default-badge" data-bind="text: $t('Default')"></span>
+                                     <!-- /ko -->
+                                 </label>
+                                 <div class="token-actions">
+                                     <button type="button" 
+                                             class="action secondary small" 
+                                             data-bind="click: $parent.removeToken.bind($parent, token_value), text: $t('Remove')">
+                                     </button>
+                                     <!-- ko if: !is_default -->
+                                     <button type="button" 
+                                             class="action secondary small" 
+                                             data-bind="click: $parent.setDefaultToken.bind($parent, token_value), text: $t('Make Default')">
+                                     </button>
+                                     <!-- /ko -->
+                                 </div>
+                             </li>
+                             <!-- /ko -->
+                         </ul>
+                     </div>
+                     <!-- /ko -->
+                </li>
+            </ul>
+                 </div>
+         
+         <!-- HolestPay Dock -->
+         <div class="hpay-dock" 
+              data-hpay-dock-payment="1" 
+              data-bind="visible: isChecked() && getSelectedSubMethod() && getSelectedPaymentMethodPayInputUrl()">
+         </div>
+         
+         <!-- Pay Button -->
+         <div class="payment-actions payment-actions-holestpay" data-bind="visible: isChecked() && getSelectedSubMethod()">
+            <button type="button" 
+                    class="action primary checkout holestpay-pay-button" 
+                    data-bind="click: initPayment, 
+                               text: $t('Pay')">
+            </button>
+        </div>
+    </div>
+</div>
+
+

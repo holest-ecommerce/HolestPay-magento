@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>HolestPay Payment Request</title>
+<style>
+  body {
+    font-family: sans-serif;
+  }
+  .form-group {
+    margin-bottom: 25px;
+  }
+  label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  input[type="text"],
+  input[type="number"],
+  input[type="email"],
+  input[type="tel"],
+  select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  button:hover {
+    background-color: #0056b3;
+  }
+  fieldset {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 15px;
+    margin-bottom: 25px;
+  }
+  legend {
+    font-weight: bold;
+    padding: 0 10px;
+  }
+  .item-group {
+    margin-bottom: 10px;
+    background-color: #f9f9f9;
+    padding-bottom: 15px;
+    border-radius: 5px;
+  }
+  .item-group label {
+    font-weight: normal;
+  }
+  #add-item-button {
+    margin-top: 10px;
+    background-color: #28a745; /* Green */
+  }
+  #add-item-button:hover {
+    background-color: #218838;
+  }
+  .remove-item-button {
+    background-color: #dc3545; /* Red */
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    margin-left: 10px;
+  }
+  .remove-item-button:hover {
+    background-color: #c82333;
+  }
+
+  /* Styles for the table */
+  #items-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 10px;
+  }
+  #items-table th, #items-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  #items-table th {
+    background-color: #f0f0f0;
+  }
+  #items-table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  #items-table .remove-item-button {
+    margin-left: 0; /* Remove left margin for buttons in table */
+  }
+  .optional-label {
+    font-weight: normal;
+    font-size: 0.9em;
+    color: #666;
+  }
+  #holest-logo {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 150px;
+    margin-bottom: 20px;
+  }
+  .input-description {
+    font-size: 0.8em;
+    color: #666;
+    margin-top: 3px;
+    display: block;
+  }
+
+  .hidden {
+    display: none;
+  }
+  .show {
+    display: block;
+  }
+
+  #generated-code {
+    background-color: #e0e0e0;
+    padding: 15px;
+    border-radius: 5px;
+    margin-top: 20px;
+    overflow-x: auto; /* Add horizontal scrollbar for long code */
+    font-family: monospace;
+    white-space: pre-wrap; /* Preserve line breaks and spaces */
+    word-break: break-all;  /* Handle very long words */
+  }
+  #generated-code-title{
+    margin-top: 20px;
+  }
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+</head>
+<body>
+  <img id="holest-logo" src="https://pay.holest.com/static/logo.svg" alt="HolestPay Logo">
+  <h1>HolestPay Payment Request</h1>
+
+
+<div class="form-group" style='background:red'>
+    <label for="secret_key">Secret Key:<span class="optional-label" style='color:white'> (THIS IS DEMO! - DO NOT EXPOSE THIS KEY ON REAL FRONTEND)</span></label>
+    <input type="text" id="secret_key" name="secret_key" value="g8qK6kpklJA6Bby4ep7rwdf5WUyAvADB" style='font-weight:bold;color:red'>
+</div>
+
+<form id="paymentForm">
+  <div class="form-group">
+    <label for="hpaylang">Language: <span class="optional-label">(Optional)</span></label>
+    <select id="hpaylang" name="hpaylang">
+      <option value="rs">rs</option>
+      <option value="rs-cyr" >rs-cyr</option>
+      <option value="en">en</option>
+      <option value="bs">bs</option>
+      <option value="hr">hr</option>
+      <option value="si">si</option>
+      <option value="mk">mk</option>
+      <option value="it">it</it>
+      <option value="de" selected>de</de>
+      <option value="es">es</es>
+      <option value="pt">pt</option>
+      <option value="nl">nl</nl>
+      <option value="fr">fr</fr></option>
+    </select>
+    <span class="input-description">pay_request.hpaylang</span>
+  </div>
+
+  <div class="form-group">
+    <label for="merchant_site_uid">Merchant Site UID:</label>
+    <input type="text" id="merchant_site_uid" style="font-weight:bold;" name="merchant_site_uid" value="b829cca8-b762-4bee-9ebb-ca5a6665618e">
+    <span class="input-description">pay_request.merchant_site_uid</span>
+  </div>
+
+  <div class="form-group">
+    <label for="order_uid">Order UID:</label>
+    <input type="text" id="order_uid" name="order_uid" value="">
+    <span class="input-description">pay_request.order_uid</span>
+  </div>
+
+  <div class="form-group">
+    <label for="order_name">Order Name: <span class="optional-label">(Optional)</span></label>
+    <input type="text" id="order_name" name="order_name" value="">
+    <span class="input-description">pay_request.order_name</span>
+  </div>
+
+  <div class="form-group">
+    <label for="order_amount">Order Amount:</label>
+    <input type="number" id="order_amount" name="order_amount" value="15000">
+    <span class="input-description">pay_request.order_amount</span>
+  </div>
+
+  <div class="form-group">
+    <label for="order_currency">Order Currency:</label>
+    <select id="order_currency" name="order_currency">
+      <option value="RSD" selected>RSD</option>
+      <option value="MKD">MKD</option>
+      <option value="BAM">BAM</option>
+      <option value="EUR">EUR</option>
+      <option value="USD">USD</option>
+      <option value="CHF">CHF</option>
+      <option value="TRY">TRY</option>
+      <option value="HUF">HUF</option>
+    </select>
+    <span class="input-description">pay_request.order_currency</span>
+  </div>
+
+  <div class="form-group">
+    <input type="checkbox" id="show_billing_info">
+    <label for="show_billing_info">Billing Information <span class="optional-label">(Optional)</span></label>
+  </div>
+  <fieldset id="billing-fieldset" class="hidden">
+    <legend>Billing Information <span class="optional-label">(Optional)</span></legend>
+    <div class="form-group">
+      <label for="billing_email">Email: <span class="optional-label">(Optional)</span></label>
+      <input type="email" id="billing_email" name="Data[billing][email]" value="john.doe@example.com">
+      <span class="input-description">pay_request.order_billing.email</span>
+    </div>
+    <div class="form-group">
+      <label for="billing_first_name">First Name: <span class="optional-label">(Optional)</span></label>
+      <input type="text" id="billing_first_name" name="Data[billing][first_name]" value="John">
+      <span class="input-description">pay_request.order_billing.first_name</span>
+    </div>
+    <div class="form-group">
+      <label for="billing_last_name">Last Name: <span class="optional-label">(Optional)</span></label>
+      <input type="text" id="billing_last_name" name="Data[billing][last_name]" value="Doe">
+      <span class="input-description">pay_request.order_billing.last_name</span>
+    </div>
+    <div class="form-group">
+      <label for="billing_phone">Phone: <span class="optional-label">(Optional)</span></label>
+      <input type="tel" id="billing_phone" name="Data[billing][phone]" value="+1234567890">
+       <span class="input-description">pay_request.order_billing.phone</span>
+    </div>
+    <div class="form-group">
+      <label for="billing_is_company">Is Company: <span class="optional-label">(Optional)</span></label>
+      <select id="billing_is_company" name="Data[billing][is_company]">
+        <option value="0" selected>No</option>
+        <option value="1">Yes</option>
+      </select>
+      <span class="input-description">pay_request.order_billing.is_company</span>
+    </div>
+    <div class="form-group">
+      <label for="billing_company">Company: <span class="optional-label">(Optional)</span></label>
+      <input type="text" id="billing_company" name="Data[billing][company]" value="">
+      <span class="input-description">pay_request.order_billing.company</span>
+    </div>
+    <div class="form-group">
+      <label for="billing_company_tax_id">Company Tax ID: <span class="optional-label">(Optional)</span></label>
+      <input type="text" id="billing_company_tax_id" name="Data[billing][company_tax_id]" value="">
+      <span class="input-description">pay_request.order_billing.company_tax_id</span>
+    </div>
+    <div class="form-group">
+      <label for="billing_company_reg_id">Company Reg ID: <span class="optional-label">(Optional)</span></label>
+      <input type="text" id="billing_company_reg_id" name="Data[billing][company_reg_id]" value="">
+      <span class="input-description">pay_request.order_billing.company_reg_id</span>
+    </div>
+    <div class="form-group">
+      <label for="billing_address">Address: <span class="optional-label">(Optional)</span></label>
+      <input type="text" id="billing_address" name="Data[billing][address]" value="123 Main St">
+      <span class="input-description">pay_request.order_billing.address</span>
+    </div>
+    <div class="form-group">
+      <label for="billing_address2">Address 2: <span class="optional-label">(Optional)</span></label>
+      <input type="text" id="billing_address2" name="Data[billing][address2]" value="">
+      <span class="input-description">pay_request.order_billing.address2</span>
+    </div>
+    <div class="form-group">
+      <label for="billing_city">City: <span class="optional-label">(Optional)</span></label>
+      <input type="text" id="billing_city" name="Data[billing][city]" value="Anytown">
+      <span class="input-description">pay_request.order_billing.city</span>
+    </div>
+    <div class="form-group">
+      <label for="billing_country">Country: <span class="optional-label">(Optional)</span></label>
+      <input type="text" id="billing_country" name="Data[billing][country]" value="US">
+      <span class="input-description">pay_request.order_billing.country</span>
+    </div>
+    <div class="form-group">
+      <label for="billing_state">State: <span class="optional-label">(Optional)</span></label>
+      <input type="text" id="billing_state" name="Data[billing][state]" value="CA">
+      <span class="input-description">pay_request.order_billing.state</span>
+    </div>
+    <div class="form-group">
+      <label for="billing_postcode">Postcode: <span class="optional-label">(Optional)</span></label>
+      <input type="text" id="billing_postcode" name="Data[billing][postcode]" value="12345">
+      <span class="input-description">pay_request.order_billing.postcode</span>
+    </div>
+    <div class="form-group">
+      <label for="billing_lang">Language: <span class="optional-label">(Optional)</span></label>
+      <input type="text" id="billing_lang" name="Data[billing][lang]" value="en_US">
+      <span class="input-description">pay_request.order_billing.lang</span>
+    </div>
+  </fieldset>
+
+  <div class="form-group">
+    <input type="checkbox" id="show_items">
+    <label for="show_items">Items <span class="optional-label">(Optional)</span></label>
+  </div>
+  <fieldset id="items-fieldset" class="hidden">
+    <legend>Items <span class="optional-label">(Optional)</span></legend>
+    <table id="items-table">
+      <thead>
+        <tr>
+          <th>POS UID <span class="optional-label">(Optional)</span></th>
+          <th>Type <span class="optional-label">(Optional)</span></th>
+          <th>Name <span class="optional-label">(Optional)</span></th>
+          <th>SKU <span class="optional-label">(Optional)</span></th>
+          <th>Quantity <span class="optional-label">(Optional)</span></th>
+          <th>Price <span class="optional-label">(Optional)</span></th>
+          <th>Subtotal <span class="optional-label">(Optional)</span></th>
+          <th>Refunded <span class="optional-label">(Optional)</span></th>
+          <th>Refunded Qty <span class="optional-label">(Optional)</span></th>
+          <th>Tax Label <span class="optional-label">(Optional)</span></th>
+          <th>Tax Amount <span class="optional-label">(Optional)</span></th>
+          <th>Length <span class="optional-label">(Optional)</span></th>
+          <th>Width <span class="optional-label">(Optional)</span></th>
+          <th>Height <span class="optional-label">(Optional)</span></th>
+          <th>Weight <span class="optional-label">(Optional)</span></th>
+          <th>Split Pay UID <span class="optional-label">(Optional)</span></th>
+          <th>Virtual <span class="optional-label">(Optional)</span></th>
+          <th>Warehouse <span class="optional-label">(Optional)</span></th>
+          <th>Remove</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="item-group">
+          <td><input type="text" name="Data[items][0][posuid]" value="24">
+            <span class="input-description">pay_request.order_items[0].posuid</span>
+          </td>
+          <td><input type="text" name="Data[items][0][type]" value="product">
+            <span class="input-description">pay_request.order_items[0].type</span>
+          </td>
+          <td><input type="text" name="Data[items][0][name]" value="Album">
+            <span class="input-description">pay_request.order_items[0].name</span>
+          </td>
+          <td><input type="text" name="Data[items][0][sku]" value="woo-album">
+            <span class="input-description">pay_request.order_items[0].sku</span>
+          </td>
+          <td><input type="number" name="Data[items][0][qty]" value="1">
+            <span class="input-description">pay_request.order_items[0].qty</span>
+          </td>
+          <td><input type="number" name="Data[items][0][price]" value="15000">
+            <span class="input-description">pay_request.order_items[0].price</span>
+          </td>
+          <td><input type="number" name="Data[items][0][subtotal]" value="15000">
+            <span class="input-description">pay_request.order_items[0].subtotal</span>
+          </td>
+          <td><input type="number" name="Data[items][0][refunded]" value="0">
+            <span class="input-description">pay_request.order_items[0].refunded</span>
+          </td>
+          <td><input type="number" name="Data[items][0][refunded_qty]" value="0">
+            <span class="input-description">pay_request.order_items[0].refunded_qty</span>
+          </td>
+          <td><input type="text" name="Data[items][0][tax_label]" value="reduced-rate">
+            <span class="input-description">pay_request.order_items[0].tax_label</span>
+          </td>
+          <td><input type="number" name="Data[items][0][tax_amount]" value="0">
+            <span class="input-description">pay_request.order_items[0].tax_amount</span>
+          </td>
+          <td><input type="text" name="Data[items][0][length]" value="">
+            <span class="input-description">pay_request.order_items[0].length</span>
+          </td>
+          <td><input type="text" name="Data[items][0][width]" value="">
+             <span class="input-description">pay_request.order_items[0].width</span>
+          </td>
+          <td><input type="text" name="Data[items][0][height]" value="">
+            <span class="input-description">pay_request.order_items[0].height</span>
+          </td>
+          <td><input type="text" name="Data[items][0][weight]" value="">
+            <span class="input-description">pay_request.order_items[0].weight</span>
+          </td>
+          <td><input type="text" name="Data[items][0][split_pay_uid]" value="">
+            <span class="input-description">pay_request.order_items[0].split_pay_uid</span>
+          </td>
+          <td>
+            <select name="Data[items][0][virtual]">
+              <option value="false" selected>False</option>
+              <option value="true">True</option>
+            </select>
+            <span class="input-description">pay_request.order_items[0].virtual</span>
+          </td>
+          <td><input type="text" name="Data[items][0][warehouse]" value="">
+            <span class="input-description">pay_request.order_items[0].warehouse</span>
+          </td>
+          <td><button type="button" class="remove-item-button">Remove</button></td>
+        </tr>
+
+        <tr class="item-group">
+          <td><input type="text" name="Data[items][1][posuid]" value="free_shipping">
+            <span class="input-description">pay_request.order_items[1].posuid</span>
+          </td>
+          <td><input type="text" name="Data[items][1][type]" value="shipping">
+            <span class="input-description">pay_request.order_items[1].type</span>
+          </td>
+          <td><input type="text" name="Data[items][1][name]" value="Бесплатна испорука">
+            <span class="input-description">pay_request.order_items[1].name</span>
+          </td>
+          <td><input type="text" name="Data[items][1][sku]" value="free_shipping">
+            <span class="input-description">pay_request.order_items[1].sku</span>
+          </td>
+          <td><input type="number" name="Data[items][1][qty]" value="1">
+            <span class="input-description">pay_request.order_items[1].qty</span>
+          </td>
+          <td><input type="number" name="Data[items][1][price]" value="0">
+            <span class="input-description">pay_request.order_items[1].price</span>
+          </td>
+          <td><input type="number" name="Data[items][1][subtotal]" value="0">
+            <span class="input-description">pay_request.order_items[1].subtotal</span>
+          </td>
+          <td><input type="number" name="Data[items][1][refunded]" value="0">
+            <span class="input-description">pay_request.order_items[1].refunded</span>
+          </td>
+          <td><input type="number" name="Data[items][1][refunded_qty]" value="0">
+            <span class="input-description">pay_request.order_items[1].refunded_qty</span>
+          </td>
+          <td><input type="text" name="Data[items][1][tax_label]" value="">
+            <span class="input-description">pay_request.order_items[1].tax_label</span>
+          </td>
+          <td><input type="number" name="Data[items][1][tax_amount]" value="0">
+            <span class="input-description">pay_request.order_items[1].tax_amount</span>
+          </td>
+          <td><input type="text" name="Data[items][1][length]" value="">
+            <span class="input-description">pay_request.order_items[1].length</span>
+          </td>
+          <td><input type="text" name="Data[items][1][width]" value="">
+             <span class="input-description">pay_request.order_items[1].width</span>
+          </td>
+          <td><input type="text" name="Data[items][1][height]" value="">
+            <span class="input-description">pay_request.order_items[1].height</span>
+          </td>
+          <td><input type="text" name="Data[items][1][weight]" value="">
+            <span class="input-description">pay_request.order_items[1].weight</span>
+          </td>
+          <td><input type="text" name="Data[items][1][split_pay_uid]" value="">
+            <span class="input-description">pay_request.order_items[1].split_pay_uid</span>
+          </td>
+          <td>
+            <select name="Data[items][1][virtual]">
+              <option value="false">False</option>
+              <option value="true" selected>True</option>
+            </select>
+            <span class="input-description">pay_request.order_items[1].virtual</span>
+          </td>
+          <td><input type="text" name="Data[items][1][warehouse]" value="">
+            <span class="input-description">pay_request.order_items[1].warehouse</span>
+          </td>
+          <td><button type="button" class="remove-item-button">Remove</button></td>
+        </tr>
+      </tbody>
+    </table>
+    <button type="button" id="add-item-button">Add Item</button>
+  </fieldset>
+
+  <div class="form-group">
+    <input type="checkbox" id="show_shipping_info">
+    <label for="show_shipping_info">Shipping Information <span class="optional-label">(Optional)</span></label>
+  </div>
+  <fieldset id="shipping-fieldset" class="hidden">
+    <legend>Shipping Information <span class="optional-label">(Optional)</span></legend>
+    <div class="form-group">
+      <label for="shipping_shippable">Shippable: <span class="optional-label">(Optional)</span></label>
+      <select id="shipping_shippable" name="Data[shipping][shippable]">
+        <option value="true" selected>True</option>
+        <option value="false">False</option>
+      </select>
+      <span class="input-description">pay_request.order_shipping.shippable</span>
+    </div>
+    <div class="form-group">
+      <label for="shipping_is_cod">Is COD: <span class="optional-label">(Optional)</span></label>
+      <select id="shipping_is_cod" name="Data[shipping][is_cod]">
+        <option value="false" selected>False</option>
+        <option value="true">True</option>
+      </select>
+      <span class="input-description">pay_request.order_shipping.is_cod</span>
+    </div>
+    <div class="form-group">
+      <label for="shipping_first_name">First Name: <span class="optional-label">(Optional)</span></label>
+      <input type="text" id="shipping_first_name" name="Data[shipping][first_name]" value="Jane">
+      <span class="input-description">pay_request.order_shipping.first_name</span>
+    </div>
+    <div class="form-group">
+      <label for="shipping_last_name">Last Name: <span class="optional-label">(Optional)</span></label>
+      <input type="text" id="shipping_last_name" name="Data[shipping][last_name]" value="Smith">
+      <span class="input-description">pay_request.order_shipping.last_name</span>
+    </div>
+    <div class="form-group">
+      <label for="shipping_phone">Phone: <span class="optional-label">(Optional)</span></label>
+      <input type="tel" id="shipping_phone" name="Data[shipping][phone]" value="+9876543210">
+      <span class="input-description">pay_request.order_shipping.phone</span>
+    </div>
+    <div class="form-group">
+      <label for="shipping_company">Company: <span class="optional-label">(Optional)</span></label>
+      <input type="text" id="shipping_company" name="Data[shipping][company]" value="">
+      <span class="input-description">pay_request.order_shipping.company</span>
+    </div>
+    <div class="form-group">
+      <label for="shipping_address">Address: <span class="optional-label">(Optional)</span></label>
+      <input type="text" id="shipping_address" name="Data[shipping][address]" value="456 Oak Ave">
+      <span class="input-description">pay_request.order_shipping.address</span>
+    </div>
+    <div class="form-group">
+      <label for="shipping_address2">Address 2: <span class="optional-label">(Optional)</span></label>
+      <input type="text" id="shipping_address2" name="Data[shipping][address2]" value="">
+      <span class="input-description">pay_request.order_shipping.address2</span>
+    </div>
+    <div class="form-group">
+      <label for="shipping_city">City: <span class="optional-label">(Optional)</span></label>
+      <input type="text" id="shipping_city" name="Data[shipping][city]" value="Springfield">
+      <span class="input-description">pay_request.order_shipping.city</span>
+    </div>
+    <div class="form-group">
+      <label for="shipping_country">Country: <span class="optional-label">(Optional)</span></label>
+      <input type="text" id="shipping_country" name="Data[shipping][country]" value="US">
+      <span class="input-description">pay_request.order_shipping.country</span>
+    </div>
+    <div class="form-group">
+      <label for="shipping_state">State: <span class="optional-label">(Optional)</span></label>
+      <input type="text" id="shipping_state" name="Data[shipping][state]" value="IL">
+      <span class="input-description">pay_request.order_shipping.state</span>
+    </div>
+    <div class="form-group">
+      <label for="shipping_postcode">Postcode: <span class="optional-label">(Optional)</span></label>
+      <input type="text" id="shipping_postcode" name="Data[shipping][postcode]" value="62704">
+      <span class="input-description">pay_request.order_shipping.postcode</span>
+    </div>
+  </fieldset>
+
+  <div class="form-group">
+    <label for="order_user_url">Order User URL: <span class="optional-label">(Optional, HPay will not redirect user to this url itself if method is frame based. If so, you will instead have its value to perform that yourself after (you may want to do other actions in that moment). See event handling for document.addEventListener("onHPayResult",function(e){ ... }) when you generate request)</span></label>
+    <input type="text" id="order_user_url" name="order_user_url" value="https://yoursite.com/thankyou">
+    <span class="input-description">pay_request.order_user_url</span>
+  </div>
+  <div class="form-group">
+    <label for="notify_url">Notify URL: <span class="optional-label">(Optional , defaults to Notify url set on HPay panel for POS, check 'topic' query sting parameter)</span></label>
+    <input type="text" id="notify_url" name="notify_url" value="https://yoursite.com/accept_webhook_notification">
+    <span class="input-description">pay_request.notify_url</span>
+  </div>
+
+  <div class="form-group">
+    <label for="cof">COF: <span class="optional-label">(Optional - card save requirement)</span></label>
+    <select id="cof" name="cof">
+	  <option value="" selected></option>
+      <option value="optional">Optional</option>
+      <option value="required">Required</option>
+      <option value="none">None</option>
+    </select>
+    <span class="input-description">pay_request.cof</span>
+  </div>
+  
+   <div class="form-group">
+    <label for="vault_token_uid">Vault token uid: <span class="optional-label">(Optional, providing previously saved pay token here will initiate pay operation but will skip input form if vault token is ok and charge is success, if it fails form will show. This is not same as /chargeRequest althought request body is same. /chargeRequest is backend-op only)</span></label>
+    <input type="text" id="vault_token_uid" name="vault_token_uid" value="">
+    <span class="input-description">pay_request.vault_token_uid</span>
+  </div>
+
+<h2>STEP 1</h2>
+<p>*fetch available payment methods (you can also just fix this someware in config of your site if you don't intend to change payment methods frekvently)</p>
+  <div class="form-group">
+	<button id="btnGetPaymentMethods">Fetch available payment...</button>
+	<br/>
+	
+<pre>
+<script style="display:block">
+btnGetPaymentMethods.addEventListener("click", function(e){
+	e.preventDefault();
+	HPayInit( merchant_site_uid.value , hpaylang.value || "en", HPayIsSandbox === true ? "sandbox" : "production" ).then(client => {
+		payment_method.innerHTML = "<option value='select'>SELECT - let buyer choose himself</option>";
+		client.POS.payment.forEach(pmeth => {
+			if(!pmeth.Hidden){
+				let opt = document.createElement("option");
+				opt.innerHTML = pmeth.Name;
+				opt.setAttribute("value", pmeth.HPaySiteMethodId);
+				payment_method.appendChild(opt);
+			}
+		});
+		generate_req_code.style.display = 'block';
+	});
+},false);
+</script>
+</pre>
+	
+    <label for="payment_method">Payment Method:<span class="optional-label">(select one of payment methods you configured on HPay panel)</span></label>
+  	<select id="payment_method" name="payment_method" >
+	</select>
+	<span class="input-description">pay_request.payment_method</span>
+	<br/>
+	<p><b>Display payment input in on-page dock (if supported, eg. for redirect methods not possible) <input id="usePayInputDock" type='checkbox' /></b><p>
+	
+  </div>
+  
+</form>
+
+
+<div id="generated-ins"></div> 
+
+<h2>STEP 2</h2>
+<button id="generate_req_code" style="display:none" type="submit">Generate request HTML</button>  
+
+
+<h2 id="generated-code-title">Generated Request Data:</h2>
+<div id="generated-code"></div>
+<h2>STEP 3</h2>
+<div id="paymentMethodDock" style="max-width:460px;"><!--DOCK IS OPTIONAL--></div>
+<button id="do-pay" style="display:none;" >Pay...</button> 
+
+<div>
+<h3>RESPONSE</h3>
+<pre id="resp_container" style="background: beige;">
+</pre>
+</div>
+
+
+<button id="do-init-admin" style="display:none;" type="submit">Init admin to perform admin opertaions</button>
+
+<div>
+<p>IN SITE BAKEND FOR ORDER</p>
+<div id="admin_toolbox" >
+
+</div>
+</div>
+
+<div>
+<h3>ORDER DATA (HPay.getOrder(pay_request.order_uid).then(ord => { ... }))</h3>
+<pre id="order_data" style="background: beige;">
+</pre>
+</div>
+
+<script src="https://sandbox.pay.holest.com/clientpay/cscripts/hpay.js"></script>
+<script>
+  document.getElementById('show_billing_info').addEventListener('change', function() {
+    const billingFields = document.getElementById('billing-fieldset');
+    billingFields.classList.toggle('hidden', !this.checked);
+  });
+
+  document.getElementById('show_items').addEventListener('change', function() {
+    const itemsFields = document.getElementById('items-fieldset');
+    itemsFields.classList.toggle('hidden', !this.checked);
+  });
+
+  document.getElementById('show_shipping_info').addEventListener('change', function() {
+    const shippingFields = document.getElementById('shipping-fieldset');
+    shippingFields.classList.toggle('hidden', !this.checked);
+  });
+
+
+  document.getElementById('add-item-button').addEventListener('click', function() {
+    const itemsTable = document.getElementById('items-table').querySelector('tbody');
+    const newRowIndex = itemsTable.querySelectorAll('tr').length;
+    const newRow = document.createElement('tr');
+    newRow.className = 'item-group';
+
+    newRow.innerHTML = `
+      <td><input type="text" name="Data[items][${newRowIndex}][posuid]" value="">
+        <span class="input-description">pay_request.order_items[${newRowIndex}].posuid</span>
+      </td>
+      <td><input type="text" name="Data[items][${newRowIndex}][type]" value="">
+        <span class="input-description">pay_request.order_items[${newRowIndex}].type</span>
+      </td>
+      <td><input type="text" name="Data[items][${newRowIndex}][name]" value="">
+        <span class="input-description">pay_request.order_items[${newRowIndex}].name</span>
+      </td>
+      <td><input type="text" name="Data[items][${newRowIndex}][sku]" value="">
+        <span class="input-description">pay_request.order_items[${newRowIndex}].sku</span>
+      </td>
+      <td><input type="number" name="Data[items][${newRowIndex}][qty]" value="">
+        <span class="input-description">pay_request.order_items[${newRowIndex}].qty</span>
+      </td>
+      <td><input type="number" name="Data[items][${newRowIndex}][price]" value="">
+        <span class="input-description">pay_request.order_items[${newRowIndex}].price</span>
+      </td>
+      <td><input type="number" name="Data[items][${newRowIndex}][subtotal]" value="">
+        <span class="input-description">pay_request.order_items[${newRowIndex}].subtotal</span>
+      </td>
+      <td><input type="number" name="Data[items][${newRowIndex}][refunded]" value="">
+        <span class="input-description">pay_request.order_items[${newRowIndex}].refunded</span>
+      </td>
+      <td><input type="number" name="Data[items][${newRowIndex}][refunded_qty]" value="">
+        <span class="input-description">pay_request.order_items[${newRowIndex}].refunded_qty</span>
+      </td>
+      <td><input type="text" name="Data[items][${newRowIndex}][tax_label]" value="">
+        <span class="input-description">pay_request.order_items[${newRowIndex}].tax_label</span>
+      </td>
+      <td><input type="number" name="Data[items][${newRowIndex}][tax_amount]" value="">
+        <span class="input-description">pay_request.order_items[${newRowIndex}].tax_amount</span>
+      </td>
+       <td><input type="text" name="Data[items][${newRowIndex}][length]" value="">
+        <span class="input-description">pay_request.order_items[${newRowIndex}].length</span>
+      </td>
+      <td><input type="text" name="Data[items][${newRowIndex}][width]" value="">
+        <span class="input-description">pay_request.order_items[${newRowIndex}].width</span>
+      </td>
+      <td><input type="text" name="Data[items][${newRowIndex}][height]" value="">
+        <span class="input-description">pay_request.order_items[${newRowIndex}].height</span>
+      </td>
+      <td><input type="text" name="Data[items][${newRowIndex}][weight]" value="">
+        <span class="input-description">pay_request.order_items[${newRowIndex}].weight</span>
+      </td>
+      <td><input type="text" name="Data[items][${newRowIndex}][split_pay_uid]" value="">
+        <span class="input-description">pay_request.order_items[${newRowIndex}].split_pay_uid</span>
+      </td>
+      <td>
+        <select name="Data[items][${newRowIndex}][virtual]">
+          <option value="false">False</option>
+          <option value="true">True</option>
+        </select>
+        <span class="input-description">pay_request.order_items[${newRowIndex}].virtual</span>
+      </td>
+      <td><input type="text" name="Data[items][${newRowIndex}][warehouse]" value="">
+        <span class="input-description">pay_request.order_items[${newRowIndex}].warehouse</span>
+      </td>
+      <td><button type="button" class="remove-item-button">Remove</button></td>
+    `;
+    itemsTable.appendChild(newRow);
+
+    const removeButton = newRow.querySelector('.remove-item-button');
+    removeButton.addEventListener('click', function() {
+      newRow.remove();
+    });
+  });
+  
+  var pay_request = null;
+  
+  const generatePOSRequestSignatureJavascript = async (merchant_site_uid, secretkey, request) => {
+	let amt_for_signature = parseFloat(request.order_amount || 0).toFixed(8);
+	let cstr = String(request.transaction_uid || "").trim() + "|";
+	cstr += String(request.status || "").trim() + "|";
+	cstr += String(request.order_uid || "").trim()    + "|";
+	cstr += String(amt_for_signature || "").trim()   + "|";
+	cstr += String(request.order_currency || "").trim()     + "|";
+	cstr += String(request.vault_token_uid  || "").trim() + "|";
+	cstr += String(request.subscription_uid || "").trim();
+	cstr += String(request.rand || "").trim();
+	let cstrmd5 = hpay_md5(cstr + merchant_site_uid);//hpay_md5 comes from hpay.js
+	return await ((str) => {
+	  return crypto.subtle.digest("SHA-512", new TextEncoder("utf-8").encode(str)).then(buf => {
+		let res = Array.prototype.map.call(new Uint8Array(buf), x=>(('00'+x.toString(16)).slice(-2))).join('');
+		return res;
+	  });
+	})(cstrmd5 + secretkey);
+  };
+  
+  const generatePOSRequestSignatureNodeJS = (merchant_site_uid, secretkey, result) => {
+	let amt_for_signature = parseFloat(result.order_amount || 0).toFixed(8);
+	let cstr = String(result.transaction_uid || "").trim() + "|";
+	cstr += String(result.status || "").trim() + "|";
+	cstr += String(result.order_uid || "").trim()    + "|";
+	cstr += String(amt_for_signature || "").trim()   + "|";
+	cstr += String(result.order_currency || "").trim()     + "|";
+	cstr += String(result.vault_token_uid  || "").trim() + "|";
+	cstr += String(result.subscription_uid || "").trim();
+	cstr += String(result.rand || "").trim();
+	let cstrmd5 = md5(cstr + merchant_site_uid);
+	let sha512calc = crypto.createHash('sha512').update(cstrmd5 + secretkey);
+	return sha512calc.digest('hex').toLowerCase();
+  };
+  
+  function encodeHTML(str) {
+	  return str.replaceAll(/&/g, '&amp;')
+				.replaceAll(/</g, '&lt;')
+				.replaceAll(/>/g, '&gt;');
+	}
+	
+	
+  let current_time = new Date();
+  
+  document.getElementById('order_uid').value = current_time.toISOString().replace(/-/g,'').slice(0,8) + "-" + ((new Date()).getTime() + "").slice(-6);
+  localStorage.horder_name_inc = parseInt(localStorage.horder_name_inc || 0) + 1;
+  document.getElementById('order_name').value = "#Order " + localStorage.horder_name_inc;
+  
+  
+  document.getElementById('generated-ins').innerHTML = '<p><a target="_blank" href="https://github.com/holest-ecommerce/HolestPayPHP/blob/main/class/HolestPaySign.php">How to do PHP Signature/Verify signature ... </a></p><pre><code class="language-javascript">SIGNATURE:\n//IN JAVASCRIPT:\nconst generatePOSRequestSignatureJavascript = ' + 
+	  String(generatePOSRequestSignatureJavascript) + "\n" +
+	  '\n//IN NODEJS:\nconst generatePOSRequestSignatureNodeJS = ' + 
+	  String(generatePOSRequestSignatureNodeJS) + 
+	  
+	  `\n\n//if you init HPay with secretKey (usualy in site admin area) as this: \n//HPayInit(merchantUid, language, environment, secretkey).then(client => { ... })\n//then there will be method HPay.generatePOSRequestSignature(request) and HPay.verifyPOSResultSignature(request) \n` +
+	  
+	  "\n</code></pre>";
+
+
+  document.getElementById('generate_req_code').addEventListener('click', function(event) {
+    event.preventDefault();
+	
+	const formData = new FormData(document.getElementById('paymentForm'));
+    const requestData = {};
+
+    for (let [name, value] of formData.entries()) {
+      // Transform flat form data to the expected nested structure
+      const parts = name.split('[');
+      if (parts.length === 1) {
+        requestData[name] = value;
+      } else {
+        let current = requestData;
+        for (let i = 0; i < parts.length - 1; i++) {
+          let part = parts[i].replace(']', '');
+           if (!part) { //handle  "Data[items][0][name]"
+             current = current[current.length] = {};
+          }
+          else {
+            if (!current[part]) {
+              current[part] = {};
+            }
+            current = current[part];
+          }
+        }
+        const lastPart = parts[parts.length - 1].replace(']', '');
+        current[lastPart] = value;
+      }
+    }
+	
+	if(requestData.Data){
+		for(var dprop in requestData.Data){
+			if(requestData.Data.hasOwnProperty(dprop)){
+				requestData["order_" + dprop] = dprop == "items" ? Object.values(requestData.Data[dprop]) : requestData.Data[dprop];
+			}
+		}
+	}
+	
+	if(!document.getElementById('show_billing_info').checked){
+		delete requestData.order_billing;
+	}
+	
+	if(!document.getElementById('show_shipping_info').checked){
+		delete requestData.order_shipping;
+	}
+	
+	if(!document.getElementById('show_items').checked){
+		delete requestData.order_items;
+	}
+	
+	delete requestData.Data;
+	
+	Object.keys(requestData).forEach(prop => {
+		if(requestData[prop] == ""){
+			delete requestData[prop];
+		}
+	});
+	
+	const generatedCodeDiv = document.getElementById('generated-code');
+	const generatedCodeTitle = document.getElementById('generated-code-title');
+	
+	pay_request = requestData;
+	
+	
+	if(!pay_request.payment_method){
+		alert("Set payment method first!");
+		return;
+	}
+	
+	if(usePayInputDock.checked){
+		HPay.setPaymentMethodDock(pay_request.payment_method, {
+				order_amount: pay_request.order_amount,//may be element, selector or actual value. Selector may contain {$pmid} replace makro 
+				order_currency: pay_request.order_currency,//may be element, selector or actual value. Selector may contain {$pmid} replace makro 
+				monthly_installments: null,//may be element, selector or actual value. Selector may contain {$pmid} replace makro 
+				vault_token_uid: null,//may be element, selector or actual value. Selector may contain {$pmid} replace makro,
+				hpaylang: pay_request.hpaylang,
+				cof: pay_request.cof	
+			},paymentMethodDock // cnt - element or selector. Defaults to first visible div element with data-hpay-dock-payment attribute. Selector may contain {$pmid} replace makro  
+			);
+	}
+
+	let generatedHTML = '<pre><code class="language-javascript">\n\n&lt;div id="paymentMethodDock" style="max-width:460px;"&gt;&lt;!--DOCK IS OPTIONAL--&gt;&lt;/div&gt;\n\n\n\n&lt;button id="do-pay" &gt;Pay...&lt;/button&gt;\n\n&ltscript src="https://sandbox.pay.holest.com/clientpay/cscripts/hpay.js"&gt;&lt/script&gt;\n&lt;script type=\'text/javascript\'&gt;\n' +
+					  
+					  encodeHTML(`\nconst pay_request = ` + JSON.stringify(requestData, null, 2)  ) + 
+					  "\n\n" +
+					  String(setDock) + 
+					  "\n\n if(usePayInputDock.checked) setDock();\n\n" +
+					  String(clientDoPayment) + 
+					  "\n\n" +
+					  `document.getElementById('do-pay').addEventListener("click", function(e){
+	clientDoPayment();
+  }, true);` +
+  
+`\n\ndocument.addEventListener("onHPayPanelClose", function(e){
+	setTimeout(function(){
+		if(retry && e && e.hpay_response && e.hpay_response.reason == ""){
+			setTimeout(clientDoPayment,300);//maybe retry?
+		}else{
+			//something else
+		}	
+	},150);
+})` +	
+  
+`\n\ndocument.addEventListener("onHPayResult", function(e){
+	  last_resp = e.hpay_response || null;
+	  if(last_resp){
+		  if(last_resp.error && last_resp.error.code){
+			  retry = true;
+		  }else{
+			  retry = false;
+			  //SHOW RESPONSE
+			  
+			  if(/PAID|RESERVED|SUCCESS|PAYING|OBLIGATED/i.test(last_resp.status)){
+				//TO REDIRECT TO THANKYOU
+				//window.location.href = last_resp.order_user_url;
+			  }
+			  
+		  }
+	  }else{
+		//error
+	  }
+});
+` +
+  
+  
+                      '\n&lt;/script&gt;\n</code></pre>';
+    generatedCodeDiv.innerHTML = generatedHTML;
+	
+	
+	document.getElementById('do-pay').style.display = '';
+  
+    if (typeof Prism !== 'undefined') {
+      Prism.highlightElement(generatedCodeDiv.querySelector('code'));
+    }
+
+    
+  });
+
+  document.addEventListener('click', function(event) {
+    if (event.target.classList.contains('remove-item-button')) {
+      event.target.closest('tr').remove();
+    }
+  });
+  
+  var retry = null;
+  var last_resp = null;
+  
+  document.addEventListener("onHPayPanelClose", function(e){
+	setTimeout(function(){
+		if(retry && e && e.hpay_response && e.hpay_response.reason == ""){
+			setTimeout(clientDoPayment,300);//maybe retry?
+		}else{
+		    //something else
+		}	
+	},150);
+  });	
+  
+  document.addEventListener("onHPayResult", function(e){
+	  last_resp = e.hpay_response || null;
+	  if(last_resp){
+		  if(last_resp.error  && last_resp.error.code){
+			  retry = true;
+		  }else{
+			  retry = false;
+			  document.getElementById('resp_container').innerHTML = JSON.stringify(last_resp, null,7);
+			  document.getElementById('do-init-admin').style.display = '';
+		  }
+	  }
+  });
+ 
+  
+  function setDock(){
+	HPayInit( pay_request.merchant_site_uid, pay_request.hpaylang || "en", HPayIsSandbox === true ? "sandbox" : "production" ).then(client => {
+		HPay.setPaymentMethodDock(pay_request.payment_method, {
+				order_amount: pay_request.order_amount,//may be element, selector or actual value. Selector may contain {$pmid} replace makro 
+				order_currency: pay_request.order_currency,//may be element, selector or actual value. Selector may contain {$pmid} replace makro 
+				monthly_installments: null,//may be element, selector or actual value. Selector may contain {$pmid} replace makro 
+				vault_token_uid: null,//may be element, selector or actual value. Selector may contain {$pmid} replace makro,
+				hpaylang: pay_request.hpaylang,
+				cof: pay_request.cof 	
+			},paymentMethodDock // cnt - element or selector. Defaults to first visible div element with data-hpay-dock-payment attribute. Selector may contain {$pmid} replace makro  
+			);
+	});		
+  }
+  
+  function clientDoPayment(){
+	HPayInit( pay_request.merchant_site_uid, pay_request.hpaylang || "en", HPayIsSandbox === true ? "sandbox" : "production" ).then(client => {
+		//client is same thing as window.HPay
+		
+		//THIS IS FOR DEMONSTRATION PURPHOSES. SIGNATURE SHOULD BE CACLULATED ON SERVER SIDE!!!
+		generatePOSRequestSignatureJavascript(pay_request.merchant_site_uid, document.getElementById('secret_key').value, pay_request).then(sighash => {
+			pay_request.verificationhash = sighash;
+			presentHPayPayForm(pay_request); // function may also accept form element. You don need this javascript if form action points to https://sandbox.pay.holest.com/clientpay/pay but you need verificationhash input in that case
+		});
+	});
+  }	
+  
+  document.getElementById('do-pay').addEventListener("click", function(e){
+	clientDoPayment();
+  }, true);
+  
+  
+  //MUST be _orders, you can scope it
+  var _orders = {};
+  
+  
+  function refreshAdminOrderToolbox(){
+        let order_toolbox = document.getElementById('admin_toolbox'); 
+	    order_toolbox.innerHTML = '';
+	  
+		HPay.getOrder(pay_request.order_uid).then(ord => {
+				_orders[ord.Uid] = ord;
+				
+				document.getElementById('order_data').innerHTML = JSON.stringify(ord, null, 7);
+				
+				if(HPay.POS.payment && HPay.POS.payment.length){
+					HPay.POS.payment.forEach(pm => {
+						try{
+							
+							if(pm.initActions){
+								if(typeof pm.initActions === "string"){
+									eval('pm.initActions = ' + pm.initActions);
+								}
+								pm.initActions();
+							}
+							
+							if(pm.orderActions){
+								if(typeof pm.orderActions === "string"){
+									eval('pm.orderActions = ' + pm.orderActions);
+								}
+								let oactions = pm.orderActions(_orders[ord.Uid]);
+								
+								if(oactions && oactions.length){
+									jQuery("<h6></h6>").css("margin","5px 0px 0px 0px").html(pm.SystemTitle).appendTo(order_toolbox);
+									oactions.forEach(item => {
+										if(item.Run){
+											
+											jQuery("<button class='button button-primary'></button>").html(item.Caption).click(function(e){
+												e.preventDefault();
+												item.Run(_orders[ord.Uid]);
+											}).appendTo(order_toolbox);
+											
+										}else if(item.actions){
+											let p = jQuery("<p></p>").html(item.Caption).appendTo(order_toolbox);	
+											
+											item.actions.forEach(subitem => {
+												jQuery("<button class='button button-primary'></button>").html(subitem.Caption).click(function(e){
+													e.preventDefault();
+													subitem.Run(_orders[ord.Uid]);
+												}).appendTo(p);
+											});
+											
+										}
+									});
+								}
+							}
+						}catch(ex){
+							console.error(ex);
+						}
+					});
+				}
+			});
+  
+  }
+  
+  function adminInit(){
+		
+      //RE-INIT WITH ADMIN CAPABILITIES
+	  HPayInit(pay_request.merchant_site_uid, pay_request.hpaylang || "en", HPayIsSandbox === true ? "sandbox" : "production", document.getElementById('secret_key').value).then(client => client.loadHPayUI()).then(ui_loaded => {
+			refreshAdminOrderToolbox();
+	  });
+  }
+  
+  document.addEventListener("onHPayOrderOpExecuted", function(evt){
+	   //evt.order?
+	   //evt.order_op_response
+	   refreshAdminOrderToolbox();
+  });
+  
+  
+  document.getElementById('do-init-admin').addEventListener("click", function(e){
+		adminInit();
+  }, true);
+  
+  if(/file/i.test(window.location.protocol)){
+	alert("YOU ARE TRYING TO RUN SAMPLE FROM FILE. PAYMENT WILL NOT BE POSSIBLE - PLEASE RUN THIS SAMPLE FROM WEBSERVER ON HTTPS!!!");
+  }else if (location.protocol !== 'https:') {
+    alert("YOU ARE TRYING TO RUN SAMPLE FROM NON-HTTPS PAGE. PAYMENT WILL NOT BE POSSIBLE - PLEASE RUN THIS SAMPLE FROM WEBSERVER ON HTTPS!!!");
+  }
+  
+  
+</script>
+
+</body>
+</html>

@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Config/etc/config.xsd">
+    <default>
+        <payment>
+            <holestpay>
+                <active>1</active>
+                <title>HolestPay</title>
+                <sort_order>100</sort_order>
+                <allowspecific>0</allowspecific>
+                <model>HEC\HolestPay\Model\Payment\HolestPay</model>
+                <payment_action>authorize</payment_action>
+                <can_use_checkout>1</can_use_checkout>
+                <can_use_internal>1</can_use_internal>
+                <can_use_for_multishipping>0</can_use_for_multishipping>
+                <is_gateway>1</is_gateway>
+                <can_authorize>1</can_authorize>
+                <can_capture>1</can_capture>
+                <can_refund>1</can_refund>
+                <can_void>1</can_void>
+                <can_cancel>1</can_cancel>
+                <can_review_payment>0</can_review_payment>
+                <environment>sandbox</environment>
+                <merchant_site_uid/>
+                <secret_key/>
+                
+                <manage_all_orders>0</manage_all_orders>
+                <configuration>{}</configuration>
+                <min_order_total/>
+                <max_order_total/>
+                <order_status>pending</order_status>
+            </holestpay>
+        </payment>
+        
+        <carriers>
+            <holestpay>
+                <active>1</active>
+                <title>HolestPay Shipping</title>
+                <sort_order>30</sort_order>
+                <sallowspecific>0</sallowspecific>
+                <showmethod>1</showmethod>
+                <model>HEC\HolestPay\Model\Carrier\HolestPayCarrier</model>
+                <allowed_methods></allowed_methods>
+                <specificerrmsg>This shipping method is not available. To use this shipping method, please contact us.</specificerrmsg>
+            </holestpay>
+        </carriers>
+    </default>
+</config>
+
+

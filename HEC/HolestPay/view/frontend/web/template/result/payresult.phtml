@@ -1,0 +1,313 @@
+<?php
+/**
+ * HolestPay Payment Result Page - Unified Success/Failure Template
+ * Simple PHP template - no Magento blocks needed!
+ */
+?>
+<?php
+
+// Debug output (remove in production)
+if (isset($_GET['debug']) && $_GET['debug'] === '1') {
+    echo '<div style="background: #f0f0f0; padding: 10px; margin: 10px; border: 1px solid #ccc;">';
+    echo '<strong>Debug Info:</strong><br>';
+    echo 'Order: ' . ($order ? 'Found (ID: ' . $order->getIncrementId() . ')' : 'Not found') . '<br>';
+    echo 'Status: ' . ($status ?: 'Not set') . '<br>';
+    echo 'isSuccess: ' . ($isSuccess ? 'true' : 'false') . '<br>';
+    echo 'isError: ' . ($isError ? 'true' : 'false') . '<br>';
+    echo '</div>';
+}
+?>
+<div class="holestpay-payresult-page">
+    <div class="result-header <?= $isSuccess ? 'success' : ($isError ? 'error' : 'failure') ?>">
+        <div class="result-icon">
+            <?php if ($isSuccess) { ?>
+                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2001/svg">
+                    <circle cx="12" cy="12" r="10" stroke="#4CAF50" stroke-width="2"/>
+                    <path d="M8 12L11 15L16 9" stroke="#4CAF50" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            <?php } elseif ($isError) { ?>
+                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2001/svg">
+                    <circle cx="12" cy="12" r="10" stroke="#FF9800" stroke-width="2"/>
+                    <path d="M12 8v4M12 16h.01" stroke="#FF9800" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            <?php } else { ?>
+                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2001/svg">
+                    <circle cx="12" cy="12" r="10" stroke="#F44336" stroke-width="2"/>
+                    <path d="M15 9L9 15M9 9L15 15" stroke="#F44336" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            <?php } ?>
+        </div>
+        <h1 class="result-title">
+            <?php if ($isSuccess) { ?>
+                <?= $__('Payment Successful!') ?>
+            <?php } elseif ($isError) { ?>
+                <?= $__('Error') ?>
+            <?php } else { ?>
+                <?= $__('Payment Failed') ?>
+            <?php } ?>
+        </h1>
+        <p class="result-message">
+            <?php if ($isSuccess) { ?>
+                <?= $__('Thank you for your order. Your payment has been processed successfully.') ?>
+            <?php } elseif ($isError) { ?>
+                <?= $__('An error occurred while processing your request.') ?>
+            <?php } else { ?>
+                <?= $__('We\'re sorry, but your payment could not be processed. Please review the details below and try again.') ?>
+            <?php } ?>
+        </p>
+    </div>
+
+    <?php if ($order && $order->getId()) { ?>
+        <div class="order-details">
+            <div class="order-summary">
+                <h2><?= $__('Order Summary') ?></h2>
+                <div class="order-info-grid">
+                    <div class="order-info-item">
+                        <span class="label"><?= $__('Order Number:') ?></span>
+                        <span class="value">#<?= ($order->getIncrementId() ?: 'N/A') ?></span>
+                    </div>
+                    <div class="order-info-item">
+                        <span class="label"><?= $__('Order Date:') ?></span>
+                        <span class="value"><?= ($order->getCreatedAtFormatted('M d, Y') ?: 'N/A') ?></span>
+                    </div>
+                    <div class="order-info-item">
+                        <span class="label"><?= $__('Payment Method:') ?></span>
+                        <span class="value"><?= ($order->getPayment() && $order->getPayment()->getMethodInstance() ? $order->getPayment()->getMethodInstance()->getTitle() : 'N/A') ?></span>
+                    </div>
+                    <div class="order-info-item">
+                        <span class="label"><?= $__('Order Status:') ?></span>
+                        <span class="value status-<?= (strtolower($order->getStatus() ?: 'unknown')) ?>">
+                            <?= ($order->getStatusLabel() ?: 'Unknown') ?>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <?php if ($order->getAllVisibleItems() && count($order->getAllVisibleItems()) > 0) { ?>
+            <div class="order-items">
+                <h3><?= $__('Order Items') ?></h3>
+                <table class="items-table">
+                    <thead>
+                        <tr>
+                            <th class="item-name"><?= $__('Product') ?></th>
+                            <th class="item-sku"><?= $__('SKU') ?></th>
+                            <th class="item-qty"><?= $__('Qty') ?></th>
+                            <th class="item-price"><?= $__('Price') ?></th>
+                            <th class="item-total"><?= $__('Total') ?></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($order->getAllVisibleItems() as $item) { ?>
+                            <?php if ($item && $item->getId()) { ?>
+                                <tr>
+                                    <td class="item-name">
+                                        <strong><?= ($item->getName() ?: 'N/A') ?></strong>
+                                        <?php if ($item->getOptions()) { ?>
+                                            <div class="item-options">
+                                                <?php foreach ($item->getOptions() as $option) { ?>
+                                                    <small><?= (($option['label'] ?? '') . ': ' . ($option['value'] ?? '')) ?></small>
+                                                <?php } ?>
+                                            </div>
+                                        <?php } ?>
+                                    </td>
+                                    <td class="item-sku"><?= ($item->getSku() ?: 'N/A') ?></td>
+                                    <td class="item-qty"><?= (int)($item->getQtyOrdered() ?: 0) ?></td>
+                                    <td class="item-price"><?= ($order->formatPrice($item->getPrice() ?: 0)) ?></td>
+                                    <td class="item-total"><?= ($order->formatPrice($item->getRowTotal() ?: 0)) ?></td>
+                                </tr>
+                            <?php } ?>
+                        <?php } ?>
+                    </tbody>
+                </table>
+            </div>
+        <?php } ?>
+
+            <div class="order-totals">
+                <h3><?= $__('Order Totals') ?></h3>
+                <div class="totals-table">
+                    <div class="total-row">
+                        <span class="label"><?= $__('Subtotal:') ?></span>
+                        <span class="value"><?= ($order->formatPrice($order->getSubtotal() ?: 0)) ?></span>
+                    </div>
+                    <?php if (($order->getShippingAmount() ?: 0) > 0) { ?>
+                        <div class="total-row">
+                            <span class="label"><?= $__('Shipping:') ?></span>
+                            <span class="value"><?= ($order->formatPrice($order->getShippingAmount() ?: 0)) ?></span>
+                        </div>
+                    <?php } ?>
+                    <?php if (($order->getTaxAmount() ?: 0) > 0) { ?>
+                        <div class="total-row">
+                            <span class="label"><?= $__('Tax:') ?></span>
+                            <span class="value"><?= ($order->formatPrice($order->getTaxAmount() ?: 0)) ?></span>
+                        </div>
+                    <?php } ?>
+                    <?php if (($order->getDiscountAmount() ?: 0) > 0) { ?>
+                        <div class="total-row discount">
+                            <span class="label"><?= $__('Discount:') ?></span>
+                            <span class="value">-<?= ($order->formatPrice($order->getDiscountAmount() ?: 0)) ?></span>
+                        </div>
+                    <?php } ?>
+                    <div class="total-row grand-total">
+                        <span class="label"><?= $__('Grand Total:') ?></span>
+                        <span class="value"><?= ($order->formatPrice($order->getGrandTotal() ?: 0)) ?></span>
+                    </div>
+                </div>
+            </div>
+
+            <?php if ($order->getBillingAddress()) { ?>
+                <div class="order-addresses" style="display: flex;width: 100%;justify-content: space-evenly;">
+                    <div class="address-section" style="width: 100%;">
+                        <h3><?= $__('Billing Address') ?></h3>
+                        <div class="address-content">
+                            <?php $billingAddress = $order->getBillingAddress(); ?>
+                            <p>
+                                <strong><?= (($billingAddress->getFirstname() ?: '') . ' ' . ($billingAddress->getLastname() ?: '')) ?></strong><br>
+                                <?php if ($billingAddress->getCompany()) { ?>
+                                    <?= ($billingAddress->getCompany()) ?><br>
+                                <?php } ?>
+                                <?= ($billingAddress->getStreetLine(1) ?: '') ?><br>
+                                <?php if ($billingAddress->getStreetLine(2)) { ?>
+                                    <?= ($billingAddress->getStreetLine(2)) ?><br>
+                                <?php } ?>
+                                <?= (($billingAddress->getCity() ?: '') . ', ' . ($billingAddress->getRegion() ?: '') . ' ' . ($billingAddress->getPostcode() ?: '')) ?><br>
+                                <?= ($billingAddress->getCountryModel() ? $billingAddress->getCountryModel()->getName() : 'N/A') ?><br>
+                                <?php if ($billingAddress->getTelephone()) { ?>
+                                    <?= $__('Phone: ') ?><?= ($billingAddress->getTelephone()) ?><br>
+                                <?php } ?>
+                                <?php if ($billingAddress->getEmail()) { ?>
+                                    <?= ($billingAddress->getEmail()) ?>
+                                <?php } ?>
+                            </p>
+                        </div>
+                    </div>
+
+                    <?php if ($order->getShippingAddress()) { ?>
+                        <div class="address-section" style="width: 100%;">
+                            <h3><?= $__('Shipping Address') ?></h3>
+                            <div class="address-content">
+                                <?php $shippingAddress = $order->getShippingAddress(); ?>
+                                <p>
+                                    <strong><?= (($shippingAddress->getFirstname() ?: '') . ' ' . ($shippingAddress->getLastname() ?: '')) ?></strong><br>
+                                    <?php if ($shippingAddress->getCompany()) { ?>
+                                        <?= ($shippingAddress->getCompany()) ?><br>
+                                    <?php } ?>
+                                    <?= ($shippingAddress->getStreetLine(1) ?: '') ?><br>
+                                    <?php if ($shippingAddress->getStreetLine(2)) { ?>
+                                        <?= ($shippingAddress->getStreetLine(2)) ?><br>
+                                    <?php } ?>
+                                    <?= (($shippingAddress->getCity() ?: '') . ', ' . ($shippingAddress->getRegion() ?: '') . ' ' . ($shippingAddress->getPostcode() ?: '')) ?><br>
+                                    <?= ($shippingAddress->getCountryModel() ? $shippingAddress->getCountryModel()->getName() : 'N/A') ?><br>
+                                    <?php if ($shippingAddress->getTelephone()) { ?>
+                                        <?= $__('Phone: ') ?><?= ($shippingAddress->getTelephone()) ?><br>
+                                    <?php } ?>
+                                </p>
+                            </div>
+                        </div>
+                    <?php } ?>
+                </div>
+            <?php } ?>
+
+            <?php 
+            // Get HolestPay data from order
+            $hpayData = null;
+            try {
+                if ($order && $order->getData('hpay_data')) {
+                    $orderHpayData = $order->getData('hpay_data');
+                    if ($orderHpayData) {
+                        if (is_string($orderHpayData)) {
+                            $hpayData = json_decode($orderHpayData, true);
+                        } else {
+                            $hpayData = $orderHpayData;
+                        }
+                    } else {
+                        // Fallback: try to get from payment additional information
+                        $payment = $order->getPayment();
+                        if ($payment) {
+                            $hpayData = $payment->getAdditionalInformation('hpay_data');
+                            if (is_string($hpayData)) {
+                                $hpayData = json_decode($hpayData, true);
+                            }
+                        }
+                    }
+                }
+            } catch (\Exception $e) {
+                $hpayData = null;
+            }
+            ?>
+
+            <?php if ($hpayData && is_array($hpayData)) { ?>
+                <div class="payment-details">
+                    <h3><?= $__('Payment Details') ?></h3>
+                    <div class="payment-info">
+                        <?php if (isset($hpayData['transaction_user_info']) && is_array($hpayData['transaction_user_info']) && !empty($hpayData['transaction_user_info'])) { ?>
+                            <?php foreach ($hpayData['transaction_user_info'] as $key => $value) { ?>
+                                <?php if ($value && $value !== '--') { ?>
+                                    <div class="payment-info-item">
+                                        <span class="label"><?= ($__($key ?: 'Unknown')) ?>:</span>
+                                        <span class="value"><?= ($value ?: '') ?></span>
+                                    </div>
+                                <?php } ?>
+                            <?php } ?>
+                        <?php } ?>
+                    </div>
+                </div>
+
+                <?php if (isset($hpayData['fiscal_html']) && $hpayData['fiscal_html'] && is_string($hpayData['fiscal_html'])) { ?>
+                    <div class="fiscal-details">
+                        <h3><?= $__('Fiscal Information') ?></h3>
+                        <div class="fiscal-content">
+                            <?= $hpayData['fiscal_html'] ?>
+                        </div>
+                    </div>
+                <?php } ?>
+
+                <?php if (isset($hpayData['shipping_html']) && $hpayData['shipping_html'] && is_string($hpayData['shipping_html'])) { ?>
+                    <div class="shipping-details">
+                        <h3><?= $__('Shipping Information') ?></h3>
+                        <div class="shipping-content">
+                            <?= $hpayData['shipping_html'] ?>
+                        </div>
+                    </div>
+                <?php } ?>
+            <?php } ?>
+        </div>
+
+        <div class="order-actions">
+            <?php if ($isSuccess) { ?>
+                <a href="/customer/account" class="action primary">
+                    <?= $__('View My Orders') ?>
+                </a>
+                <a href="/" class="action secondary">
+                    <?= $__('Continue Shopping') ?>
+                </a>
+            <?php } else { ?>
+                <a href="/checkout" class="action primary">
+                    <?= $__('Try Payment Again') ?>
+                </a>
+                <a href="/customer/account" class="action secondary">
+                    <?= $__('View My Orders') ?>
+                </a>
+                <a href="/" class="action secondary">
+                    <?= $__('Continue Shopping') ?>
+                </a>
+            <?php } ?>
+        </div>
+    <?php } else { ?>
+        <div class="no-order">
+            <?php if ($error_message) { ?>
+                <div class="error-message">
+                    <p><?= ($error_message) ?></p>
+                </div>
+            <?php } else { ?>
+                <p><?= ($__('Order information is not available.')) ?></p>
+            <?php } ?>
+            <a href="/" class="action primary">
+                <?= $__('Return to Homepage') ?>
+            </a>
+        </div>
+    <?php } ?>
+    <script type="text/javascript">
+        delete sessionStorage.holestpay_order_id;
+        delete localStorage.holestpay_order_id;
+    </script>    
+</div>

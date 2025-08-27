@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <script src="HEC_HolestPay::js/holestpay-admin.js"/>
+    </head>
+    <body>
+        <referenceContainer name="after.body.start">
+            <block class="HEC\HolestPay\Block\Adminhtml\AdminContext" name="holestpay.admin.inject" template="HEC_HolestPay::inject/admin.phtml" />
+        </referenceContainer>
+    </body>
+</page>
+
+
