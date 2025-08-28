@@ -6,9 +6,13 @@ use Magento\Framework\Event\Observer;
 use Magento\Sales\Api\Data\OrderInterface;
 use HEC\HolestPay\Model\OrderSyncService;
 use Psr\Log\LoggerInterface;
+use Magento\Framework\App\Config\ScopeConfigInterface;
+use HEC\HolestPay\Model\Trait\DebugLogTrait;
 
 class OrderUpdateSync implements ObserverInterface
 {
+    use DebugLogTrait;
+
     /**
      * @var OrderSyncService
      */
@@ -20,15 +24,23 @@ class OrderUpdateSync implements ObserverInterface
     private $logger;
 
     /**
+     * @var ScopeConfigInterface
+     */
+    private $scopeConfig;
+
+    /**
      * @param OrderSyncService $orderSyncService
      * @param LoggerInterface $logger
+     * @param ScopeConfigInterface $scopeConfig
      */
     public function __construct(
         OrderSyncService $orderSyncService,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        ScopeConfigInterface $scopeConfig
     ) {
         $this->orderSyncService = $orderSyncService;
         $this->logger = $logger;
+        $this->scopeConfig = $scopeConfig;
     }
 
     /**
@@ -64,7 +76,7 @@ class OrderUpdateSync implements ObserverInterface
 
             // Check if order should be synced
             if ($this->orderSyncService->shouldSyncOrder($order, $isStatusChange)) {
-                $this->logger->warning('HolestPay: Order update sync triggered', [
+                $this->debugWarning('Order update sync triggered', [
                     'order_id' => $order->getId(),
                     'increment_id' => $order->getIncrementId(),
                     'status_change' => $isStatusChange
@@ -73,21 +85,21 @@ class OrderUpdateSync implements ObserverInterface
                 $result = $this->orderSyncService->syncOrder($order, null, $isStatusChange);
                 
                 if ($result) {
-                    $this->logger->warning('HolestPay: Order update sync completed successfully', [
+                    $this->debugWarning('Order update sync completed successfully', [
                         'order_id' => $order->getId(),
                         'increment_id' => $order->getIncrementId()
                     ]);
                 }
             } else {
                 // Log why sync was skipped
-                $this->logger->warning('HolestPay: Order update sync skipped - conditions not met', [
+                $this->debugWarning('Order update sync skipped - conditions not met', [
                     'order_id' => $order->getId(),
                     'increment_id' => $order->getIncrementId()
                 ]);
             }
 
         } catch (\Exception $e) {
-            $this->logger->error('HolestPay: Error in order update sync observer', [
+            $this->debugError('Error in order update sync observer', [
                 'error' => $e->getMessage(),
                 'file' => $e->getFile(),
                 'line' => $e->getLine(),

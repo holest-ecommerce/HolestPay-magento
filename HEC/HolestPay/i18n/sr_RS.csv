@@ -113,3 +113,5 @@
 "error_contact_us","Greška, molimo kontaktirajte nas za pomoć."
 "remove_token_confirm","Molimo potvrdite da želite da uklonite referencu tokena za plaćanje. Ako imate pretplate kod nas, mogu biti prekinute ako ne uspemo da vam naplatimo za sledeći period naplate."
 "result","Rezultat"
+"Debug Mode","Debug Režim"
+"Enable detailed logging for debugging purposes. When disabled, only errors will be logged.","Omogući detaljno logovanje za debugovanje. Kada je onemogućeno, samo greške će biti logovane."

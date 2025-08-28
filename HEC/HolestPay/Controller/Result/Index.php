@@ -41,6 +41,8 @@ use Magento\Sales\Api\OrderRepositoryInterface;
 use Magento\Sales\Model\OrderFactory;
 use Magento\Framework\Event\ManagerInterface;
 use HEC\HolestPay\Model\Order\StatusManager;
+use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Store\Model\ScopeInterface;
 
 class Index implements HttpGetActionInterface, HttpPostActionInterface, CsrfAwareActionInterface
 {
@@ -99,6 +101,10 @@ class Index implements HttpGetActionInterface, HttpPostActionInterface, CsrfAwar
      */
     protected $statusManager;
 
+    /**
+     * @var ScopeConfigInterface
+     */
+    protected $scopeConfig;
 
 
     /**
@@ -111,6 +117,7 @@ class Index implements HttpGetActionInterface, HttpPostActionInterface, CsrfAwar
      * @param OrderRepositoryInterface $orderRepository
      * @param OrderFactory $orderFactory
      * @param ManagerInterface $eventManager
+     * @param ScopeConfigInterface $scopeConfig
      */
     public function __construct(
         Context $context,
@@ -123,7 +130,8 @@ class Index implements HttpGetActionInterface, HttpPostActionInterface, CsrfAwar
         LoggerInterface $logger,
         OrderRepositoryInterface $orderRepository,
         OrderFactory $orderFactory,
-        ManagerInterface $eventManager
+        ManagerInterface $eventManager,
+        ScopeConfigInterface $scopeConfig
     ) {
         $this->resultFactory = $resultFactory;
         $this->url = $url;
@@ -136,6 +144,48 @@ class Index implements HttpGetActionInterface, HttpPostActionInterface, CsrfAwar
         $this->orderRepository = $orderRepository;
         $this->orderFactory = $orderFactory;
         $this->eventManager = $eventManager;
+        $this->scopeConfig = $scopeConfig;
+    }
+
+    /**
+     * Check if debug logging is enabled
+     *
+     * @return bool
+     */
+    protected function isDebugEnabled()
+    {
+        return (bool) $this->scopeConfig->getValue(
+            'payment/holestpay/debug',
+            ScopeInterface::SCOPE_STORE
+        );
+    }
+
+    /**
+     * Log message only if debug is enabled (except for errors)
+     *
+     * @param string $level
+     * @param string $message
+     * @param array $context
+     * @return void
+     */
+    protected function debugLog($level, $message, array $context = [])
+    {
+        if ($this->isDebugEnabled() || $level === 'error') {
+            switch ($level) {
+                case 'warning':
+                    $this->logger->warning($message, $context);
+                    break;
+                case 'info':
+                    $this->logger->info($message, $context);
+                    break;
+                case 'error':
+                    $this->logger->error($message, $context);
+                    break;
+                default:
+                    $this->logger->debug($message, $context);
+                    break;
+            }
+        }
     }
 
     /**
@@ -211,7 +261,7 @@ class Index implements HttpGetActionInterface, HttpPostActionInterface, CsrfAwar
                         $orderUid = $forwardedResponse['order_uid'];
                     }
 
-                    $this->logger->warning('HolestPay: Processing POST request with forwarded payment response');
+                    $this->debugLog('warning', 'HolestPay: Processing POST request with forwarded payment response');
                     $this->handleForwardedResponse($forwardedResponse);
                 } 
             }
@@ -234,7 +284,7 @@ class Index implements HttpGetActionInterface, HttpPostActionInterface, CsrfAwar
             return $this->handleDirectResponse($orderUid);
 
         } catch (\Exception $e) {
-            $this->logger->error('HolestPay Result Controller Error: ' . $e->getMessage(), [
+            $this->debugLog('error', 'HolestPay Result Controller Error: ' . $e->getMessage(), [
                 'exception' => $e,
                 'params' => $this->request->getParams()
             ]);
@@ -253,29 +303,29 @@ class Index implements HttpGetActionInterface, HttpPostActionInterface, CsrfAwar
     protected function handleForwardedResponse($forwardedResponse)
     {
         try {
-            $this->logger->warning('HolestPay: Processing forwarded response');
+            $this->debugLog('warning', 'HolestPay: Processing forwarded response');
             
             // Parse the forwarded response
             $responseData = is_string($forwardedResponse) ? $this->json->unserialize($forwardedResponse) : $forwardedResponse;
             if (!$responseData) {
-                $this->logger->error('HolestPay: Failed to parse forwarded response');
+                $this->debugLog('error', 'HolestPay: Failed to parse forwarded response');
                 return $this->displayResultPage(null, 'failure');
             }
 
-            $this->logger->warning('HolestPay: Forwarded response data', ['data' => $responseData]);
+            $this->debugLog('warning', 'HolestPay: Forwarded response data', ['data' => $responseData]);
 
             // Find the order
             $order = $this->findOrderByIncrementId($responseData['order_uid']);
             
             if (!$order) {
-                $this->logger->error('HolestPay: Order not found for forwarded response', [
+                $this->debugLog('error', 'HolestPay: Order not found for forwarded response', [
                     'order_uid' => $order_uid ?? 'unknown',
                     'response_data' => $responseData
                 ]);
                 return $this->displayOrderNotFoundError();
             }
 
-            $this->logger->warning('HolestPay: Order found for forwarded response', [
+            $this->debugLog('warning', 'HolestPay: Order found for forwarded response', [
                 'order_id' => $order->getId(),
                 'increment_id' => $order->getIncrementId()
             ]);
@@ -289,7 +339,7 @@ class Index implements HttpGetActionInterface, HttpPostActionInterface, CsrfAwar
             // Set holestpay_uid if not already set
             if (!$order->getData('holestpay_uid')) {
                 $order->setData('holestpay_uid', $responseData['order_uid'] ?? null);
-                $this->logger->warning('HolestPay: Set holestpay_uid for order', [
+                $this->debugLog('warning', 'HolestPay: Set holestpay_uid for order', [
                     'holestpay_uid' => $responseData['order_uid'] ?? 'unknown',
                     'order_id' => $order->getId()
                 ]);
@@ -305,24 +355,24 @@ class Index implements HttpGetActionInterface, HttpPostActionInterface, CsrfAwar
             $this->triggerGridSync($order);
             $this->triggerOrderSync($order);
 
-            $this->logger->warning('HolestPay: Successfully processed forwarded response', [
+            $this->debugLog('warning', 'HolestPay: Successfully processed forwarded response', [
                 'order_id' => $order->getId(),
                 'increment_id' => $order->getIncrementId()
             ]);
 
             // Check HPay status to determine redirect
-            $this->logger->warning('HolestPay: Checking HPay status for redirect decision', [
+            $this->debugLog('warning', 'HolestPay: Checking HPay status for redirect decision', [
                 'hpay_status' => $order->getData('hpay_status')
             ]);
 
             if ($this->isPaymentSuccessfulByHPayStatus($order->getData('hpay_status'))) {
-                $this->logger->warning('HolestPay: Payment successful, displaying success page', [
+                $this->debugLog('warning', 'HolestPay: Payment successful, displaying success page', [
                     'order_id' => $order->getId(),
                     'hpay_status' => $order->getData('hpay_status')
                 ]);
                 return $this->displayResultPage($order, 'success');
         } else {
-                $this->logger->warning('HolestPay: Payment failed, displaying failure page', [
+                $this->debugLog('warning', 'HolestPay: Payment failed, displaying failure page', [
                     'order_id' => $order->getId(),
                     'hpay_status' => $order->getData('hpay_status')
                 ]);
@@ -330,7 +380,7 @@ class Index implements HttpGetActionInterface, HttpPostActionInterface, CsrfAwar
             }
 
         } catch (\Exception $e) {
-            $this->logger->error('HolestPay: Error processing forwarded response', [
+            $this->debugLog('error', 'HolestPay: Error processing forwarded response', [
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString()
             ]);
@@ -348,22 +398,22 @@ class Index implements HttpGetActionInterface, HttpPostActionInterface, CsrfAwar
         try {
             $order = $this->findOrderByIncrementId($orderId);
             if (!$order) {
-                $this->logger->warning('HolestPay: Order not found for direct access', ['order_id' => $orderId]);
+                $this->debugLog('warning', 'HolestPay: Order not found for direct access', ['order_id' => $orderId]);
                 return $this->displayOrderNotFoundError();
             }
             
             // Check HPay status to determine redirect
             $hpayStatus = $order->getData('hpay_status');
             if ($this->isPaymentSuccessfulByHPayStatus($hpayStatus)) {
-                $this->logger->warning('HolestPay: Payment successful for direct access, displaying success page');
+                $this->debugLog('warning', 'HolestPay: Payment successful for direct access, displaying success page');
                 return $this->displayResultPage($order, 'success');
             } else {
-                $this->logger->warning('HolestPay: Payment failed for direct access, displaying failure page');
+                $this->debugLog('warning', 'HolestPay: Payment failed for direct access, displaying failure page');
                 return $this->displayResultPage($order, 'failure');
             }
 
         } catch (\Exception $e) {
-            $this->logger->error('HolestPay: Error processing direct response', [
+            $this->debugLog('error', 'HolestPay: Error processing direct response', [
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString()
             ]);
@@ -412,7 +462,7 @@ class Index implements HttpGetActionInterface, HttpPostActionInterface, CsrfAwar
         
         foreach ($successKeywords as $keyword) {
             if (stripos($hpayStatus, $keyword) !== false) {
-                $this->logger->warning('isPaymentSuccessfulByHPayStatus: Found success status', [
+                $this->debugLog('warning', 'isPaymentSuccessfulByHPayStatus: Found success status', [
                     'hpay_status' => $hpayStatus,
                     'success_keyword' => $keyword
                 ]);
@@ -420,7 +470,7 @@ class Index implements HttpGetActionInterface, HttpPostActionInterface, CsrfAwar
             }
         }
 
-        $this->logger->warning('isPaymentSuccessfulByHPayStatus: No success status found', [
+        $this->debugLog('warning', 'isPaymentSuccessfulByHPayStatus: No success status found', [
             'hpay_status' => $hpayStatus
         ]);
         return false;
@@ -537,7 +587,7 @@ class Index implements HttpGetActionInterface, HttpPostActionInterface, CsrfAwar
             // Extract status from response data
             $hpayStatus = $responseData['status'] ?? null;
             if (!$hpayStatus) {
-                $this->logger->warning('updateMagentoOrderStatus: No status found in response data');
+                $this->debugLog('warning', 'updateMagentoOrderStatus: No status found in response data');
                 return;
             }
 
@@ -549,7 +599,7 @@ class Index implements HttpGetActionInterface, HttpPostActionInterface, CsrfAwar
             // Parse HPay status to extract payment status
             $paymentStatus = $this->extractPaymentStatus($hpayStatus);
             
-            $this->logger->warning("updateMagentoOrderStatus: Status parsing", [
+            $this->debugLog('warning', "updateMagentoOrderStatus: Status parsing", [
                 'order_id' => $order->getId(),
                 'increment_id' => $order->getIncrementId(),
                 'full_hpay_status' => $hpayStatus,
@@ -557,7 +607,7 @@ class Index implements HttpGetActionInterface, HttpPostActionInterface, CsrfAwar
             ]);
             
             if (!$paymentStatus) {
-                $this->logger->warning("updateMagentoOrderStatus: Could not extract payment status from HPay status", [
+                $this->debugLog('warning', "updateMagentoOrderStatus: Could not extract payment status from HPay status", [
                     'order_id' => $order->getId(),
                     'hpay_status' => $hpayStatus
                 ]);
@@ -575,7 +625,7 @@ class Index implements HttpGetActionInterface, HttpPostActionInterface, CsrfAwar
                     $order->setStatus($magentoStatus);
                     $order->setState($this->getStateFromStatus($magentoStatus));
                     
-                    $this->logger->warning("updateMagentoOrderStatus: Updated Magento order status", [
+                    $this->debugLog('warning', "updateMagentoOrderStatus: Updated Magento order status", [
                         'order_id' => $order->getId(),
                         'increment_id' => $order->getIncrementId(),
                         'old_status' => $currentStatus,
@@ -587,7 +637,7 @@ class Index implements HttpGetActionInterface, HttpPostActionInterface, CsrfAwar
                     ]);
                 } else {
                     // Status is the same, log for debugging
-                    $this->logger->warning("updateMagentoOrderStatus: Status already up to date", [
+                    $this->debugLog('warning', "updateMagentoOrderStatus: Status already up to date", [
                         'order_id' => $order->getId(),
                         'increment_id' => $order->getIncrementId(),
                         'current_status' => $currentStatus,
@@ -597,7 +647,7 @@ class Index implements HttpGetActionInterface, HttpPostActionInterface, CsrfAwar
                     ]);
                 }
             } else {
-                $this->logger->warning("updateMagentoOrderStatus: No Magento status mapping found for HPay status", [
+                $this->debugLog('warning', "updateMagentoOrderStatus: No Magento status mapping found for HPay status", [
                     'order_id' => $order->getId(),
                     'hpay_payment_status' => $paymentStatus,
                     'full_hpay_status' => $hpayStatus
@@ -605,7 +655,7 @@ class Index implements HttpGetActionInterface, HttpPostActionInterface, CsrfAwar
             }
 
         } catch (\Exception $e) {
-            $this->logger->error("updateMagentoOrderStatus: Error updating Magento order status", [
+            $this->debugLog('error', "updateMagentoOrderStatus: Error updating Magento order status", [
                 'order_id' => $order->getId(),
                 'response_data' => $responseData,
                 'error' => $e->getMessage()
@@ -700,7 +750,7 @@ class Index implements HttpGetActionInterface, HttpPostActionInterface, CsrfAwar
             // This prevents circular references and keeps the data clean
             if (isset($responseData['order'])) {
                 unset($responseData['order']);
-                $this->logger->warning("mergeHPayData: Removed 'order' property from forwarded response data");
+                $this->debugLog('warning', "mergeHPayData: Removed 'order' property from forwarded response data");
             }
 
             // Merge the data (new data takes precedence)
@@ -710,7 +760,7 @@ class Index implements HttpGetActionInterface, HttpPostActionInterface, CsrfAwar
             $serializedData = $this->json->serialize($mergedData);
             $order->setData('hpay_data', $serializedData);
             
-            $this->logger->warning("mergeHPayData: Successfully merged hpay_data", [
+            $this->debugLog('warning', "mergeHPayData: Successfully merged hpay_data", [
                 'order_id' => $order->getId(),
                 'existing_keys' => array_keys($existingArray),
                 'new_keys' => array_keys($responseData),
@@ -718,7 +768,7 @@ class Index implements HttpGetActionInterface, HttpPostActionInterface, CsrfAwar
             ]);
 
         } catch (\Exception $e) {
-            $this->logger->error('mergeHPayData: Error merging hpay_data', [
+            $this->debugLog('error', 'mergeHPayData: Error merging hpay_data', [
                 'error' => $e->getMessage(),
                 'order_id' => $order->getId()
             ]);
@@ -768,13 +818,13 @@ class Index implements HttpGetActionInterface, HttpPostActionInterface, CsrfAwar
             // Trigger grid sync to update sales_order_grid table
             $order->save();
             
-            $this->logger->warning("triggerGridSync: Successfully synced grid table", [
+            $this->debugLog('warning', "triggerGridSync: Successfully synced grid table", [
                 'order_id' => $order->getId(),
                 'increment_id' => $order->getIncrementId()
             ]);
 
         } catch (\Exception $e) {
-            $this->logger->error('triggerGridSync: Error syncing grid table', [
+            $this->debugLog('error', 'triggerGridSync: Error syncing grid table', [
                 'error' => $e->getMessage(),
                 'order_id' => $order->getId()
             ]);
@@ -809,7 +859,7 @@ class Index implements HttpGetActionInterface, HttpPostActionInterface, CsrfAwar
         try {
             // Check if we should sync this order
             if ($this->shouldSyncOrder($order)) {
-                $this->logger->warning('triggerOrderSync: Order sync triggered', [
+                $this->debugLog('warning', 'triggerOrderSync: Order sync triggered', [
                     'order_id' => $order->getId(),
                     'increment_id' => $order->getIncrementId()
                 ]);
@@ -817,18 +867,18 @@ class Index implements HttpGetActionInterface, HttpPostActionInterface, CsrfAwar
                 // Trigger the order sync event
                 $this->eventManager->dispatch('sales_order_save_after', ['order' => $order]);
                 
-                $this->logger->warning('triggerOrderSync: Order sync completed successfully', [
+                $this->debugLog('warning', 'triggerOrderSync: Order sync completed successfully', [
                     'order_id' => $order->getId()
                 ]);
             } else {
-                $this->logger->warning('triggerOrderSync: Order sync skipped - conditions not met', [
+                $this->debugLog('warning', 'triggerOrderSync: Order sync skipped - conditions not met', [
                     'order_id' => $order->getId(),
                     'reason' => 'Processing flag set or other conditions not met'
                 ]);
             }
 
         } catch (\Exception $e) {
-            $this->logger->error('triggerOrderSync: Error triggering order sync', [
+            $this->debugLog('error', 'triggerOrderSync: Error triggering order sync', [
                 'error' => $e->getMessage(),
                 'order_id' => $order->getId()
             ]);
@@ -949,7 +999,7 @@ class Index implements HttpGetActionInterface, HttpPostActionInterface, CsrfAwar
             $order = $this->orderRepository->get($incrementId);
             return $order;
         } catch (\Exception $e) {
-            $this->logger->warning('HolestPay: Order not found by increment ID', [
+            $this->debugLog('warning', 'HolestPay: Order not found by increment ID', [
                 'increment_id' => $incrementId,
                 'error' => $e->getMessage()
             ]);
@@ -979,9 +1029,9 @@ class Index implements HttpGetActionInterface, HttpPostActionInterface, CsrfAwar
             // Add the block to the layout
             $resultPage->getLayout()->setChild('content','page_content', $contentBlock);
             
-            $this->logger->info('HolestPay: Content block created and content set successfully');
+            $this->debugLog('info', 'HolestPay: Content block created and content set successfully');
         } catch (\Exception $e) {
-            $this->logger->error('HolestPay: Error setting page content', [
+            $this->debugLog('error', 'HolestPay: Error setting page content', [
                 'error' => $e->getMessage()
             ]);
             // Fallback: try to set content directly on the page

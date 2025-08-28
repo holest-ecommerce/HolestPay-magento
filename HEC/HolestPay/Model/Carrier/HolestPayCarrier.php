@@ -12,9 +12,12 @@ use Magento\Shipping\Model\Carrier\CarrierInterface;
 use Magento\Shipping\Model\Rate\Result;
 use Magento\Shipping\Model\Rate\ResultFactory;
 use Psr\Log\LoggerInterface;
+use HEC\HolestPay\Model\Trait\DebugLogTrait;
 
 class HolestPayCarrier extends AbstractCarrier implements CarrierInterface
 {
+    use DebugLogTrait;
+
     /**
      * Code of the carrier
      *
@@ -45,7 +48,12 @@ class HolestPayCarrier extends AbstractCarrier implements CarrierInterface
     /**
      * @var LoggerInterface
      */
-    private $logger;
+    protected $logger;
+
+    /**
+     * @var ScopeConfigInterface
+     */
+    protected $scopeConfig;
 
     /**
      * @param ScopeConfigInterface $scopeConfig
@@ -67,11 +75,13 @@ class HolestPayCarrier extends AbstractCarrier implements CarrierInterface
         $this->rateMethodFactory = $objectManager->get(MethodFactory::class);
         $this->json = $objectManager->get(Json::class);
         $this->logger = $logger;
+        $this->scopeConfig = $scopeConfig;
         
-        $this->logger->warning('HolestPay: Carrier constructed successfully', [
-            'active' => $this->getConfigFlag('active'),
-            'title' => $this->getConfigData('title')
-        ]);
+        // Don't log during construction to avoid dependency injection issues
+        // $this->debugWarning('Carrier constructed successfully', [
+        //     'active' => $this->getConfigFlag('active'),
+        //     'title' => $this->getConfigData('title')
+        // ]);
     }
 
     /**
@@ -81,11 +91,11 @@ class HolestPayCarrier extends AbstractCarrier implements CarrierInterface
      */
     public function getAllowedMethods()
     {
-        $this->logger->warning('HolestPay: getAllowedMethods called');
+        $this->debugWarning('getAllowedMethods called');
         
         try {
             $shippingMethods = $this->getHolestPayShippingMethods();
-            $this->logger->warning('HolestPay: Raw shipping methods from database', [
+            $this->debugWarning('Raw shipping methods from database', [
                 'count' => count($shippingMethods),
                 'methods' => $shippingMethods
             ]);
@@ -93,7 +103,7 @@ class HolestPayCarrier extends AbstractCarrier implements CarrierInterface
             $methods = [];
             
             foreach ($shippingMethods as $methodId => $methodData) {
-                $this->logger->warning('HolestPay: Processing method', [
+                $this->debugWarning('Processing method', [
                     'method_id' => $methodId,
                     'method_data' => $methodData,
                     'enabled' => isset($methodData['enabled']) ? $methodData['enabled'] : 'NOT_SET'
@@ -103,19 +113,19 @@ class HolestPayCarrier extends AbstractCarrier implements CarrierInterface
                     $methodName = $methodData['name'] ?? $methodData['uid'];
                     $methods[$methodId] = $methodName;
                     
-                    $this->logger->warning('HolestPay: Method added to allowed methods', [
+                    $this->debugWarning('Method added to allowed methods', [
                         'method_id' => $methodId,
                         'method_name' => $methodName
                     ]);
                 } else {
-                    $this->logger->warning('HolestPay: Method skipped (not enabled)', [
+                    $this->debugWarning('Method skipped (not enabled)', [
                         'method_id' => $methodId,
                         'enabled' => $methodData['enabled'] ?? 'NOT_SET'
                     ]);
                 }
             }
             
-            $this->logger->warning('HolestPay: getAllowedMethods final result', [
+            $this->log('warning', 'getAllowedMethods final result', [
                 'final_count' => count($methods),
                 'final_methods' => $methods
             ]);
@@ -123,7 +133,7 @@ class HolestPayCarrier extends AbstractCarrier implements CarrierInterface
             return $methods;
             
         } catch (\Exception $e) {
-            $this->logger->error('HolestPay: Error in getAllowedMethods', [
+            $this->log('error', 'Error in getAllowedMethods', [
                 'error' => $e->getMessage(),
                 'file' => $e->getFile(),
                 'line' => $e->getLine(),
@@ -141,14 +151,14 @@ class HolestPayCarrier extends AbstractCarrier implements CarrierInterface
     public function canCollectRates()
     {
         $active = $this->getConfigFlag('active');
-        $this->logger->warning('HolestPay: canCollectRates check', [
+        $this->log('warning', 'canCollectRates check', [
             'active' => $active,
             'config_path' => 'carriers/holestpay/active',
             'config_value' => $this->getConfigData('active')
         ]);
         
         if (!$active) {
-            $this->logger->warning('HolestPay: Carrier is not active in configuration');
+            $this->log('warning', 'Carrier is not active in configuration');
             return false;
         }
         
@@ -156,7 +166,7 @@ class HolestPayCarrier extends AbstractCarrier implements CarrierInterface
         $shippingMethods = $this->getHolestPayShippingMethods();
         $hasMethods = !empty($shippingMethods);
         
-        $this->logger->warning('HolestPay: Shipping methods check', [
+        $this->log('warning', 'Shipping methods check', [
             'has_methods' => $hasMethods,
             'method_count' => count($shippingMethods)
         ]);
@@ -173,12 +183,12 @@ class HolestPayCarrier extends AbstractCarrier implements CarrierInterface
     public function collectRates(RateRequest $request)
     {
         if (!$this->canCollectRates()) {
-            $this->logger->warning('HolestPay: Cannot collect rates - carrier not active');
+            $this->log('warning', 'Cannot collect rates - carrier not active');
             return false;
         }
 
         try {
-            $this->logger->warning('HolestPay: Starting rate collection', [
+            $this->log('warning', 'Starting rate collection', [
                 'request_weight' => $request->getPackageWeight(),
                 'request_value' => $request->getPackageValue(),
                 'request_currency' => $request->getPackageCurrency(),
@@ -214,18 +224,18 @@ class HolestPayCarrier extends AbstractCarrier implements CarrierInterface
                     
                     $result->append($rate);
                     
-                    $this->logger->warning('HolestPay: Added shipping rate', [
-                        'method_id' => $methodId,
-                        'method_code' => $methodCode,
-                        'name' => $methodData['name'] ?? $methodData['uid'],
-                        'cost' => $cost,
-                        'carrier' => $this->_code,
-                        'carrier_title' => $this->getConfigData('title')
-                    ]);
+                                         $this->log('warning', 'Added shipping rate', [
+                         'method_id' => $methodId,
+                         'method_code' => $methodCode,
+                         'name' => $methodData['name'] ?? $methodData['uid'],
+                         'cost' => $cost,
+                         'carrier' => $this->_code,
+                         'carrier_title' => $this->getConfigData('title')
+                     ]);
                 }
             }
 
-            $this->logger->warning('HolestPay: Rate collection completed', [
+            $this->log('warning', 'Rate collection completed', [
                 'total_rates' => count($result->getAllRates()),
                 'available_methods' => $this->getAllowedMethods()
             ]);
@@ -233,7 +243,7 @@ class HolestPayCarrier extends AbstractCarrier implements CarrierInterface
             return $result;
 
         } catch (\Exception $e) {
-            $this->logger->error('HolestPay: Error collecting rates', [
+            $this->log('error', 'Error collecting rates', [
                 'error' => $e->getMessage(),
                 'file' => $e->getFile(),
                 'line' => $e->getLine()
@@ -257,7 +267,7 @@ class HolestPayCarrier extends AbstractCarrier implements CarrierInterface
             $tableName = $connection->getTableName('holestpay_shipping_methods');
             
             if (!$connection->isTableExists($tableName)) {
-                $this->logger->warning('HolestPay: Shipping methods table does not exist yet');
+                $this->log('warning', 'Shipping methods table does not exist yet');
                 return [];
             }
             
@@ -287,7 +297,7 @@ class HolestPayCarrier extends AbstractCarrier implements CarrierInterface
                 ];
             }
             
-            $this->logger->warning('HolestPay: Loaded shipping methods from custom table', [
+            $this->log('warning', 'Loaded shipping methods from custom table', [
                 'count' => count($methods),
                 'method_ids' => array_keys($methods)
             ]);
@@ -295,7 +305,7 @@ class HolestPayCarrier extends AbstractCarrier implements CarrierInterface
             return $methods;
             
         } catch (\Exception $e) {
-            $this->logger->error('HolestPay: Error loading shipping methods from custom table', [
+            $this->log('error', 'Error loading shipping methods from custom table', [
                 'error' => $e->getMessage(),
                 'file' => $e->getFile(),
                 'line' => $e->getLine()
@@ -372,7 +382,7 @@ class HolestPayCarrier extends AbstractCarrier implements CarrierInterface
             return round($cost, 2);
 
         } catch (\Exception $e) {
-            $this->logger->error('HolestPay: Error calculating shipping cost', [
+            $this->log('error', 'Error calculating shipping cost', [
                 'error' => $e->getMessage(),
                 'method_data' => $methodData
             ]);

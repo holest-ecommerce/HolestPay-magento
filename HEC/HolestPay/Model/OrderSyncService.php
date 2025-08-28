@@ -8,9 +8,12 @@ use Magento\Sales\Api\Data\OrderInterface;
 use Psr\Log\LoggerInterface;
 use Magento\Framework\App\ResourceConnection;
 use HEC\HolestPay\Model\SignatureHelper;
+use HEC\HolestPay\Model\Trait\DebugLogTrait;
 
 class OrderSyncService
 {
+    use DebugLogTrait;
+
     /**
      * @var ScopeConfigInterface
      */
@@ -114,7 +117,7 @@ class OrderSyncService
     {
         try {
             if (!$this->shouldSyncOrder($order)) {
-                $this->logger->warning('HolestPay: Order sync skipped - conditions not met', [
+                $this->debugWarning('Order sync skipped - conditions not met', [
                     'order_id' => $order->getId(),
                     'increment_id' => $order->getIncrementId(),
                     'reason' => 'Processing flag set or other conditions not met'
@@ -137,7 +140,7 @@ class OrderSyncService
             }
 
             if (isset($response['error'])) {
-                $this->logger->error('HolestPay: Order sync error', $response);
+                $this->debugError('Order sync error', $response);
                 return false;
             }
 
@@ -148,7 +151,7 @@ class OrderSyncService
                 return false;
             }
 
-            $this->logger->warning('HolestPay: Order synced successfully', [
+            $this->debugWarning('Order synced successfully', [
                 'order_id' => $order->getId(),
                 'increment_id' => $order->getIncrementId(),
                 'response' => $response
@@ -315,7 +318,7 @@ class OrderSyncService
                 $methodId = str_replace('holestpay_', '', $shippingMethod);
                 if (is_numeric($methodId)) {
                     $requestData['shipping_method'] = (int)$methodId;
-                    $this->logger->warning('HolestPay: Added shipping_method to order sync request', [
+                    $this->debugWarning('Added shipping_method to order sync request', [
                         'order_id' => $order->getId(),
                         'shipping_method' => $shippingMethod,
                         'hpay_method_id' => $methodId
@@ -447,7 +450,7 @@ class OrderSyncService
             // Copy the signed data back to our array
             $data['verificationhash'] = $signedData['verificationhash'];
             
-            $this->logger->warning('HolestPay: Request data signed successfully using SignatureHelper', [
+            $this->debugWarning('Request data signed successfully using SignatureHelper', [
                 'order_id' => $data['order_sitedata']['id'],
                 'signature_length' => strlen($signedData['verificationhash'])
             ]);

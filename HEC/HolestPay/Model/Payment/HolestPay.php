@@ -3,8 +3,12 @@ namespace HEC\HolestPay\Model\Payment;
 
 use Magento\Payment\Model\Method\AbstractMethod;
 use Psr\Log\LoggerInterface;
+use HEC\HolestPay\Model\Trait\DebugLogTrait;
+
 class HolestPay extends AbstractMethod
 {
+    use DebugLogTrait;
+
     const PAYMENT_METHOD_CODE = 'holestpay';
     
     protected $_code = 'holestpay';
@@ -26,6 +30,11 @@ class HolestPay extends AbstractMethod
      * @var LoggerInterface
      */
     protected $_logger;
+
+    /**
+     * @var \Magento\Framework\App\Config\ScopeConfigInterface
+     */
+    protected $scopeConfig;
 
     public function __construct(
         \Magento\Framework\Model\Context $context,
@@ -52,12 +61,10 @@ class HolestPay extends AbstractMethod
             $data
         );
         $this->_logger = $logger;
+        $this->scopeConfig = $scopeConfig;
         
-        // Always log that the payment method is being constructed
-        error_log('HolestPay payment method constructed with code: ' . $this->_code);
-        
-        $this->_logger->debug([
-            'message' => 'HolestPay payment method constructed',
+        // Log that the payment method is being constructed (only if debug enabled)
+        $this->debugInfo('Payment method constructed', [
             'code' => $this->_code,
             'isActive' => $this->isActive()
         ]);
@@ -70,8 +77,7 @@ class HolestPay extends AbstractMethod
     {
         // TODO: replace with your authorize API call
         // Example: $payment->setTransactionId('auth-xxx')->setIsTransactionClosed(false);
-        $this->_logger->debug([
-            'message' => 'HolestPay: Authorizing payment',
+        $this->debugDebug('Authorizing payment', [
             'amount' => $amount
         ]);
         return $this;
@@ -84,8 +90,7 @@ class HolestPay extends AbstractMethod
     {
         // TODO: replace with your capture API call; set transaction info
         // Example: $payment->setTransactionId('capture-xxx')->setIsTransactionClosed(false);
-        $this->_logger->debug([
-            'message' => 'HolestPay: Capturing payment',
+        $this->debugDebug('Capturing payment', [
             'amount' => $amount
         ]);
         return $this;
@@ -98,8 +103,7 @@ class HolestPay extends AbstractMethod
     {
         // TODO: replace with your refund API call
         // Example: $payment->setTransactionId('refund-xxx')->setIsTransactionClosed(false);
-        $this->_logger->debug([
-            'message' => 'HolestPay: Refunding payment',
+        $this->debugDebug('Refunding payment', [
             'amount' => $amount
         ]);
         return $this;
@@ -112,9 +116,7 @@ class HolestPay extends AbstractMethod
     {
         // TODO: replace with your void API call
         // Example: $payment->setTransactionId('void-xxx')->setIsTransactionClosed(true);
-        $this->_logger->debug([
-            'message' => 'HolestPay: Voiding payment'
-        ]);
+        $this->debugDebug('Voiding payment');
         return $this;
     }
 
@@ -124,9 +126,7 @@ class HolestPay extends AbstractMethod
     public function cancelInvoice(\Magento\Payment\Model\InfoInterface $payment)
     {
         // TODO: replace with your cancel API call
-        $this->_logger->debug([
-            'message' => 'HolestPay: Canceling invoice'
-        ]);
+        $this->debugDebug('Canceling invoice');
         return $this;
     }
 
@@ -154,33 +154,28 @@ class HolestPay extends AbstractMethod
 
     public function isAvailable(\Magento\Quote\Api\Data\CartInterface $quote = null)
     {
-        $this->_logger->debug([
-            'message' => 'HolestPay isAvailable called',
+        $this->debugDebug('isAvailable called', [
             'quote_id' => $quote ? $quote->getId() : 'no_quote',
             'store_id' => $quote ? $quote->getStoreId() : 'no_store'
         ]);
         
         // Check if the method is active
         $isActive = $this->isActive($quote ? $quote->getStoreId() : null);
-        $this->_logger->debug([
-            'message' => 'HolestPay isActive check',
+        $this->debugDebug('isActive check', [
             'isActive' => $isActive,
             'method_code' => $this->_code,
             'config_path' => 'payment/' . $this->_code . '/active'
         ]);
         
         if (!$isActive) {
-            $this->_logger->debug([
-                'message' => 'HolestPay is not available: Method is not active.'
-            ]);
+            $this->debugDebug('is not available: Method is not active.');
             return false;
         }
 
         // Check minimum order total
         $minTotal = $this->getConfigData('min_order_total');
         if ($minTotal && $quote && $quote->getGrandTotal() < $minTotal) {
-            $this->_logger->debug([
-                'message' => 'HolestPay is not available: Grand total is less than minimum.',
+            $this->debugDebug('is not available: Grand total is less than minimum.', [
                 'grand_total' => $quote->getGrandTotal(),
                 'min_total' => $minTotal
             ]);
@@ -190,8 +185,7 @@ class HolestPay extends AbstractMethod
         // Check maximum order total
         $maxTotal = $this->getConfigData('max_order_total');
         if ($maxTotal && $quote && $quote->getGrandTotal() > $maxTotal) {
-            $this->_logger->debug([
-                'message' => 'HolestPay is not available: Grand total is more than maximum.',
+            $this->debugDebug('is not available: Grand total is more than maximum.', [
                 'grand_total' => $quote->getGrandTotal(),
                 'max_total' => $maxTotal
             ]);
@@ -203,8 +197,7 @@ class HolestPay extends AbstractMethod
         if ($allowedCountries && $quote && $quote->getBillingAddress()) {
             $countryId = $quote->getBillingAddress()->getCountryId();
             if (!in_array($countryId, explode(',', $allowedCountries))) {
-                $this->_logger->debug([
-                    'message' => 'HolestPay is not available: Country is not allowed.',
+                $this->debugDebug('is not available: Country is not allowed.', [
                     'country_id' => $countryId,
                     'allowed_countries' => $allowedCountries
                 ]);
@@ -213,9 +206,7 @@ class HolestPay extends AbstractMethod
         }
 
         // All checks passed
-        $this->_logger->debug([
-            'message' => 'HolestPay is available!'
-        ]);
+        $this->debugDebug('is available!');
         return true;
     }
 
@@ -225,9 +216,7 @@ class HolestPay extends AbstractMethod
     public function getTitle()
     {
         $title = $this->getConfigData('title');
-        $this->_logger->debug([
-            'message' => 'HolestPay getTitle called, returning: ' . $title
-        ]);
+        $this->debugDebug('getTitle called, returning: ' . $title);
         return $title;
     }
 }

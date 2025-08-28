@@ -10,21 +10,33 @@ use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Event\Observer;
 use Magento\Sales\Api\Data\OrderInterface;
 use Psr\Log\LoggerInterface;
+use Magento\Framework\App\Config\ScopeConfigInterface;
+use HEC\HolestPay\Model\Trait\DebugLogTrait;
 
 class OrderCreated implements ObserverInterface
 {
+    use DebugLogTrait;
+
     /**
      * @var LoggerInterface
      */
     private $logger;
 
     /**
+     * @var ScopeConfigInterface
+     */
+    private $scopeConfig;
+
+    /**
      * @param LoggerInterface $logger
+     * @param ScopeConfigInterface $scopeConfig
      */
     public function __construct(
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        ScopeConfigInterface $scopeConfig
     ) {
         $this->logger = $logger;
+        $this->scopeConfig = $scopeConfig;
     }
 
     /**
@@ -51,19 +63,19 @@ class OrderCreated implements ObserverInterface
                     // Store the quote ID as the HolestPay UID in the direct database column
                     $order->setData('holestpay_uid', (string)$quoteId);
                     
-                    $this->logger->warning('HolestPay: Stored HolestPay UID in order metadata', [
+                    $this->debugWarning('Stored HolestPay UID in order metadata', [
                         'order_id' => $order->getId(),
                         'holestpay_uid' => (string)$quoteId
                     ]);
                 } else {
-                    $this->logger->warning('HolestPay: Could not store HolestPay UID - quote ID not found', [
+                    $this->debugWarning('Could not store HolestPay UID - quote ID not found', [
                         'order_id' => $order->getId(),
                         'order_increment_id' => $order->getIncrementId()
                     ]);
                 }
             }
         } catch (\Exception $e) {
-            $this->logger->error('HolestPay: Error in OrderCreated observer', [
+            $this->debugError('Error in OrderCreated observer', [
                 'error' => $e->getMessage(),
                 'file' => $e->getFile(),
                 'line' => $e->getLine()

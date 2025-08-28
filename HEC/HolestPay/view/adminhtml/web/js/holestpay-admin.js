@@ -102,7 +102,7 @@
                 info.innerHTML = "On https://" + (HolestPayAdmin.settings.environment == "production" ? "" : "sandbox.") + "pay.holest.com set <i>Notifications I|P|F|S|N url</i> to: <b>" + HolestPayAdmin.frontend_base_url + "holestpay/result/webhook</b> for webhooks to work.";
                 
                 if(configurationObject[HolestPayAdmin.settings.environment + "POS"]){
-                    info.innerHTML += ("<br/>-- configuration set --");
+                    info.innerHTML += ("<br/>Configuration connected: " + HolestPayAdmin.settings.environment + ": " + HolestPayAdmin.settings.merchant_site_uid);
                     info.style.color = "#045404";
                 }else{
                     info.style.color = "#FF0000";

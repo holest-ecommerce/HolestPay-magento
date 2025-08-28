@@ -12,9 +12,15 @@ use Magento\Sales\Api\OrderRepositoryInterface;
 use Magento\Sales\Model\OrderFactory;
 use HEC\HolestPay\Model\Order\StatusManager;
 use HEC\HolestPay\Model\ConfigurationManager;
+use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Store\Model\ScopeInterface;
+use HEC\HolestPay\Model\Trait\DebugLogTrait;
+use Psr\Log\LoggerInterface;
 
 class Webhook extends Action implements CsrfAwareActionInterface
 {
+    use DebugLogTrait;
+
     /** @var OrderRepositoryInterface */
     private $orderRepository;
 
@@ -27,51 +33,53 @@ class Webhook extends Action implements CsrfAwareActionInterface
     /** @var ConfigurationManager */
     private $configurationManager;
 
+    /** @var ScopeConfigInterface */
+    private $scopeConfig;
+
+    /** @var LoggerInterface */
+    private $logger;
+
     public function __construct(
         Context $context,
         OrderRepositoryInterface $orderRepository,
         StatusManager $statusManager,
         OrderFactory $orderFactory,
-        ConfigurationManager $configurationManager
+        ConfigurationManager $configurationManager,
+        ScopeConfigInterface $scopeConfig,
+        LoggerInterface $logger
     ) {
         parent::__construct($context);
         $this->orderRepository = $orderRepository;
         $this->statusManager = $statusManager;
         $this->orderFactory = $orderFactory;
         $this->configurationManager = $configurationManager;
+        $this->scopeConfig = $scopeConfig;
+        $this->logger = $logger;
     }
 
     public function createCsrfValidationException(RequestInterface $request): ?InvalidRequestException { return null; }
     public function validateForCsrf(RequestInterface $request): ?bool { return true; }
 
     /**
-     * Log error message to system.log
+     * Log error message to system.log (always logs regardless of debug setting)
      *
      * @param string $message
      * @param array $context
      */
     private function logError(string $message, array $context = [])
     {
-        $logger = \Magento\Framework\App\ObjectManager::getInstance()
-            ->get(\Psr\Log\LoggerInterface::class);
-        
-        $contextString = !empty($context) ? ' Context: ' . json_encode($context) : '';
-        $logger->error('[HolestPay Webhook] ' . $message . $contextString);
+        $this->debugError($message, $context, 'HolestPay Webhook');
     }
 
     /**
-     * Log warning message to system.log
+     * Log warning message to system.log (only if debug enabled)
      *
      * @param string $message
      * @param array $context
      */
     private function logWarning(string $message, array $context = [])
     {
-        $logger = \Magento\Framework\App\ObjectManager::getInstance()
-            ->get(\Psr\Log\LoggerInterface::class);
-        
-        $contextString = !empty($context) ? ' Context: ' . json_encode($context) : '';
-        $logger->warning('[HolestPay Webhook] ' . $message . $contextString);
+        $this->debugWarning($message, $context, 'HolestPay Webhook');
     }
 
 

@@ -24,9 +24,13 @@ namespace HEC\HolestPay\Model;
 use Magento\Framework\App\ResourceConnection;
 use Magento\Framework\Exception\LocalizedException;
 use Psr\Log\LoggerInterface;
+use Magento\Framework\App\Config\ScopeConfigInterface;
+use HEC\HolestPay\Model\Trait\DebugLogTrait;
 
 class OrderLockManager
 {
+    use DebugLogTrait;
+
     /**
      * @var ResourceConnection
      */
@@ -38,6 +42,11 @@ class OrderLockManager
     protected $logger;
 
     /**
+     * @var ScopeConfigInterface
+     */
+    protected $scopeConfig;
+
+    /**
      * @var string
      */
     protected $lockTableName;
@@ -45,13 +54,16 @@ class OrderLockManager
     /**
      * @param ResourceConnection $resourceConnection
      * @param LoggerInterface $logger
+     * @param ScopeConfigInterface $scopeConfig
      */
     public function __construct(
         ResourceConnection $resourceConnection,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        ScopeConfigInterface $scopeConfig
     ) {
         $this->resourceConnection = $resourceConnection;
         $this->logger = $logger;
+        $this->scopeConfig = $scopeConfig;
         $this->lockTableName = $this->resourceConnection->getTableName('holestpay_order_locks');
     }
 
@@ -70,14 +82,14 @@ class OrderLockManager
             // First, try to insert the lock
             $locked = $this->tryInsertLock($connection, $orderUid, $timestamp);
             if ($locked) {
-                $this->logger->warning('HolestPay: Order lock acquired', ['order_uid' => $orderUid]);
+                $this->debugWarning('Order lock acquired', ['order_uid' => $orderUid]);
                 return true;
             }
 
             // Check if existing lock is expired (older than 16 seconds)
             $existingLock = $this->getExistingLock($connection, $orderUid);
             if ($existingLock && ($existingLock + 16) < $timestamp) {
-                $this->logger->warning('HolestPay: Existing lock expired, acquiring', ['order_uid' => $orderUid]);
+                $this->debugWarning('Existing lock expired, acquiring', ['order_uid' => $orderUid]);
                 return true;
             }
 
@@ -88,7 +100,7 @@ class OrderLockManager
 
                 $locked = $this->tryInsertLock($connection, $orderUid, $timestamp);
                 if ($locked) {
-                    $this->logger->warning('HolestPay: Order lock acquired after retry', [
+                    $this->debugWarning('Order lock acquired after retry', [
                         'order_uid' => $orderUid,
                         'attempts' => $i + 1
                     ]);
@@ -99,11 +111,11 @@ class OrderLockManager
                 $this->cleanupExpiredLocks($connection, $timestamp - 30);
             }
 
-            $this->logger->warning('HolestPay: Failed to acquire order lock after all retries', ['order_uid' => $orderUid]);
+            $this->debugWarning('Failed to acquire order lock after all retries', ['order_uid' => $orderUid]);
             return false;
 
         } catch (\Exception $e) {
-            $this->logger->error('HolestPay: Error acquiring order lock: ' . $e->getMessage(), [
+            $this->debugError('Error acquiring order lock: ' . $e->getMessage(), [
                 'order_uid' => $orderUid,
                 'exception' => $e
             ]);
@@ -128,15 +140,15 @@ class OrderLockManager
             );
 
             if ($result) {
-                $this->logger->warning('HolestPay: Order lock released', ['order_uid' => $orderUid]);
+                $this->debugWarning('Order lock released', ['order_uid' => $orderUid]);
                 return true;
             }
 
-            $this->logger->warning('HolestPay: No lock found to release', ['order_uid' => $orderUid]);
+            $this->debugWarning('No lock found to release', ['order_uid' => $orderUid]);
             return false;
 
         } catch (\Exception $e) {
-            $this->logger->error('HolestPay: Error releasing order lock: ' . $e->getMessage(), [
+            $this->debugError('Error releasing order lock: ' . $e->getMessage(), [
                 'order_uid' => $orderUid,
                 'exception' => $e
             ]);
@@ -207,7 +219,7 @@ class OrderLockManager
             );
         } catch (\Exception $e) {
             // Log but don't fail the main operation
-            $this->logger->warning('HolestPay: Error cleaning up expired locks: ' . $e->getMessage());
+            $this->debugWarning('Error cleaning up expired locks: ' . $e->getMessage());
         }
     }
 
@@ -231,7 +243,7 @@ class OrderLockManager
             return (time() - $existingLock) < 30;
 
         } catch (\Exception $e) {
-            $this->logger->error('HolestPay: Error checking order lock status: ' . $e->getMessage(), [
+            $this->debugError('Error checking order lock status: ' . $e->getMessage(), [
                 'order_uid' => $orderUid,
                 'exception' => $e
             ]);

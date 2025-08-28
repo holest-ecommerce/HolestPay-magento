@@ -15,6 +15,7 @@ use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Quote\Api\CartManagementInterface;
 use Magento\Sales\Api\OrderManagementInterface;
+use Magento\Framework\App\RequestInterface;
 
 class Createorder implements HttpPostActionInterface
 {
@@ -59,6 +60,11 @@ class Createorder implements HttpPostActionInterface
     protected $orderManagement;
 
     /**
+     * @var RequestInterface
+     */
+    protected $request;
+
+    /**
      * @param Context $context
      * @param ResultFactory $resultFactory
      * @param Json $json
@@ -67,6 +73,7 @@ class Createorder implements HttpPostActionInterface
      * @param ScopeConfigInterface $scopeConfig
      * @param CartManagementInterface $cartManagement
      * @param OrderManagementInterface $orderManagement
+     * @param RequestInterface $request
      */
     public function __construct(
         Context $context,
@@ -76,7 +83,8 @@ class Createorder implements HttpPostActionInterface
         OrderRepositoryInterface $orderRepository,
         ScopeConfigInterface $scopeConfig,
         CartManagementInterface $cartManagement,
-        OrderManagementInterface $orderManagement
+        OrderManagementInterface $orderManagement,
+        RequestInterface $request
     ) {
         $this->context = $context;
         $this->resultFactory = $resultFactory;
@@ -86,6 +94,7 @@ class Createorder implements HttpPostActionInterface
         $this->scopeConfig = $scopeConfig;
         $this->cartManagement = $cartManagement;
         $this->orderManagement = $orderManagement;
+        $this->request = $request;
     }
 
     /**
@@ -100,7 +109,7 @@ class Createorder implements HttpPostActionInterface
 
         try {
             // Get request data
-            $rawContent = $this->context->getRequest()->getContent();
+            $rawContent = $this->request->getContent();
             $debug['raw_request_content'] = $rawContent;
             
             $requestData = [];
@@ -142,7 +151,9 @@ class Createorder implements HttpPostActionInterface
 
             // Create the order from the quote
             $debug['order_creation_start'] = 'Attempting to create order from quote...';
+            
             $order = $this->createOrderFromQuote($quote, $newOrderStatus);
+
             $debug['order_creation_result'] = $order ? 'ID: ' . $order->getId() : 'NULL';
 
             if (!$order || !$order->getId()) {
@@ -188,7 +199,6 @@ class Createorder implements HttpPostActionInterface
             if ($order && $order->getId()) {
                 return $order;
             }
-            
             // No existing order, use Magento's standard order placement (same as Check/Money Order)
             $order = $this->placeOrderUsingStandardMagentoProcess($quote, $status);
             
@@ -212,16 +222,30 @@ class Createorder implements HttpPostActionInterface
             // This is the EXACT same process that Check/Money Order uses when you click "Place Order"
             // It will generate a real Magento order ID, increment ID, etc.
             
+            // Validate quote before proceeding
+            if (!$quote->getId()) {
+                error_log('HolestPay CreateOrder Error: Quote has no ID');
+                return null;
+            }
+            
+            if (!$quote->hasItems()) {
+                error_log('HolestPay CreateOrder Error: Quote has no items');
+                return null;
+            }
+            
             // Set the payment method to HolestPay
             $quote->getPayment()->setMethod('holestpay');
+            
             
             // Use Magento's standard order placement service
             $orderId = $this->cartManagement->placeOrder($quote->getId());
             
+            
             if (!$orderId) {
+                error_log('HolestPay CreateOrder Error: placeOrder returned no order ID');
                 return null;
             }
-            
+
             // Get the created order
             $order = $this->orderRepository->get($orderId);
             
@@ -233,7 +257,15 @@ class Createorder implements HttpPostActionInterface
             return $order;
 
         } catch (\Throwable $e) {
-            return null;
+           http_response_code(500); 
+           header('Content-Type: application/json');
+           echo json_encode(array(
+            "error" => $e->getMessage(),
+            "file" => $e->getFile(),
+            "line" => $e->getLine(),
+            "trace" => $e->getTraceAsString()
+           ));
+           die;  
         }
     }
     

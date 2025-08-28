@@ -11,9 +11,13 @@ use Magento\Framework\Event\Observer;
 use Magento\Framework\App\Response\Http;
 use Magento\Framework\App\RequestInterface;
 use Laminas\Http\Header\GenericHeader;
+use Magento\Framework\App\Config\ScopeConfigInterface;
+use HEC\HolestPay\Model\Trait\DebugLogTrait;
 
 class AddCspHeaders implements ObserverInterface
 {
+    use DebugLogTrait;
+
     /**
      * @var Http
      */

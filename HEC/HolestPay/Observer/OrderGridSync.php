@@ -3,11 +3,17 @@ namespace HEC\HolestPay\Observer;
 
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Event\Observer;
-use Magento\Framework\App\ResourceConnection;
+use Magento\Sales\Api\Data\OrderInterface;
+use HEC\HolestPay\Model\OrderSyncService;
 use Psr\Log\LoggerInterface;
+use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\App\ResourceConnection;
+use HEC\HolestPay\Model\Trait\DebugLogTrait;
 
 class OrderGridSync implements ObserverInterface
 {
+    use DebugLogTrait;
+
     /**
      * @var ResourceConnection
      */
@@ -19,15 +25,23 @@ class OrderGridSync implements ObserverInterface
     private $logger;
 
     /**
+     * @var ScopeConfigInterface
+     */
+    private $scopeConfig;
+
+    /**
      * @param ResourceConnection $resourceConnection
      * @param LoggerInterface $logger
+     * @param ScopeConfigInterface $scopeConfig
      */
     public function __construct(
         ResourceConnection $resourceConnection,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        ScopeConfigInterface $scopeConfig
     ) {
         $this->resourceConnection = $resourceConnection;
         $this->logger = $logger;
+        $this->scopeConfig = $scopeConfig;
     }
 
     /**
@@ -75,7 +89,7 @@ class OrderGridSync implements ObserverInterface
                         ['entity_id = ?' => $order->getId()]
                     );
 
-                    $this->logger->warning('HolestPay: Synced order grid data', [
+                    $this->debugWarning('Synced order grid data', [
                         'order_id' => $order->getId(),
                         'increment_id' => $order->getIncrementId()
                     ]);
@@ -83,7 +97,7 @@ class OrderGridSync implements ObserverInterface
             }
 
         } catch (\Exception $e) {
-            $this->logger->error('HolestPay: Error syncing order grid data', [
+            $this->debugError('Error syncing order grid data', [
                 'error' => $e->getMessage(),
                 'file' => $e->getFile(),
                 'line' => $e->getLine()

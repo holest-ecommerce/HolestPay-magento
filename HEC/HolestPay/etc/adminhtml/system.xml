@@ -26,10 +26,12 @@
                     <label>Secret Key</label>
                 </field>
                 
+                <field id="debug" translate="label" type="select" sortOrder="63" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Debug Mode</label>
+                    <comment>Enable detailed logging for debugging purposes. When disabled, only errors will be logged.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
 
-                
-
-                
                 <field id="manage_all_orders" translate="label" type="select" sortOrder="64" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Manage All Orders</label>
                     <comment>Sync all orders to HolestPay, not just those with HolestPay UID</comment>

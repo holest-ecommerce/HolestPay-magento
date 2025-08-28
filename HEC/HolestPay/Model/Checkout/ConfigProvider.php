@@ -7,9 +7,12 @@ use Magento\Framework\App\Config\ScopeConfigInterface;
 use HEC\HolestPay\Model\Payment\HolestPay as HolestPayMethod;
 use Magento\Store\Model\StoreManagerInterface;
 use Psr\Log\LoggerInterface;
+use HEC\HolestPay\Model\Trait\DebugLogTrait;
 
 class ConfigProvider implements ConfigProviderInterface
 {
+    use DebugLogTrait;
+
 	protected $methodCode = 'holestpay';
     /**
      * @var ScopeConfigInterface
@@ -49,7 +52,7 @@ class ConfigProvider implements ConfigProviderInterface
     public function getConfig()
     {
         // Force log this being called
-        error_log('=== HolestPay ConfigProvider: getConfig() called ===');
+        $this->debugLog('=== HolestPay ConfigProvider: getConfig() called ===');
         
         // Return a simple hardcoded configuration for testing
         $config = [
@@ -66,7 +69,7 @@ class ConfigProvider implements ConfigProviderInterface
             ]
         ];
         
-        error_log('=== HolestPay ConfigProvider: Returning: ' . json_encode($config) . ' ===');
+        $this->debugLog('=== HolestPay ConfigProvider: Returning: ' . json_encode($config) . ' ===');
         
         return $config;
     }

@@ -7,6 +7,7 @@ use Magento\Framework\App\RequestInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Serialize\Serializer\Json;
 use HEC\HolestPay\Model\SignatureHelper;
+use Psr\Log\LoggerInterface;
 
 class Payment implements HttpPostActionInterface
 {
@@ -31,21 +32,29 @@ class Payment implements HttpPostActionInterface
     protected $scopeConfig;
 
     /**
+     * @var LoggerInterface
+     */
+    protected $logger;
+
+    /**
      * @param JsonFactory $resultJsonFactory
      * @param RequestInterface $request
      * @param Json $json
      * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
+     * @param LoggerInterface $logger
      */
     public function __construct(
         JsonFactory $resultJsonFactory,
         RequestInterface $request,
         Json $json,
-        \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
+        \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
+        LoggerInterface $logger
     ) {
         $this->resultJsonFactory = $resultJsonFactory;
         $this->request = $request;
         $this->json = $json;
         $this->scopeConfig = $scopeConfig;
+        $this->logger = $logger;
     }
 
     /**
@@ -66,17 +75,17 @@ class Payment implements HttpPostActionInterface
             }
 
             // Debug: Log the received data
-            error_log('HolestPay AJAX Payment - Received data: ' . json_encode($requestData));
+            $this->logger->info('HolestPay AJAX Payment - Received data: ' . json_encode($requestData));
             
             // Log shipping method if present
             if (isset($requestData['shipping_method'])) {
-                error_log('HolestPay AJAX Payment - Shipping method included: ' . $requestData['shipping_method']);
+                $this->logger->info('HolestPay AJAX Payment - Shipping method included: ' . $requestData['shipping_method']);
             }
             
             // Check if request_data wrapper exists (common in AJAX requests)
             if (isset($requestData['request_data']) && is_array($requestData['request_data'])) {
                 $requestData = $requestData['request_data'];
-                error_log('HolestPay AJAX Payment - Extracted from request_data: ' . json_encode($requestData));
+                $this->logger->info('HolestPay AJAX Payment - Extracted from request_data: ' . json_encode($requestData));
             }
             
             // Validate that required fields are present
@@ -93,7 +102,7 @@ class Payment implements HttpPostActionInterface
             // Sign the payment request
             $signedRequest = $this->signPaymentRequest($requestData);
             
-            error_log('HolestPay AJAX Payment - Successfully signed request: ' . json_encode($signedRequest));
+            $this->logger->info('HolestPay AJAX Payment - Successfully signed request: ' . json_encode($signedRequest));
             
             return $result->setData([
                 'success' => true,
@@ -101,7 +110,7 @@ class Payment implements HttpPostActionInterface
             ]);
             
         } catch (\Exception $e) {
-            error_log('HolestPay AJAX Payment - Error: ' . $e->getMessage());
+            $this->logger->error('HolestPay AJAX Payment - Error: ' . $e->getMessage());
             return $result->setData([
                 'success' => false,
                 'error' => $e->getMessage()

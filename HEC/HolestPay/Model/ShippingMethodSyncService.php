@@ -5,9 +5,12 @@ use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Framework\App\ResourceConnection;
 use Psr\Log\LoggerInterface;
+use HEC\HolestPay\Model\Trait\DebugLogTrait;
 
 class ShippingMethodSyncService
 {
+    use DebugLogTrait;
+
     /**
      * @var ScopeConfigInterface
      */
@@ -56,7 +59,7 @@ class ShippingMethodSyncService
     public function syncShippingMethods(array $shippingMethods): bool
     {
         try {
-            $this->logger->warning('HolestPay: Starting shipping methods sync', [
+            $this->debugWarning('Starting shipping methods sync', [
                 'count' => count($shippingMethods)
             ]);
 
@@ -75,11 +78,11 @@ class ShippingMethodSyncService
             // Store shipping methods in custom table (not core_config_data)
             $this->storeShippingMethods($shippingMethods);
 
-            $this->logger->warning('HolestPay: Shipping methods sync completed successfully');
+            $this->debugWarning('Shipping methods sync completed successfully');
             return true;
 
         } catch (\Exception $e) {
-            $this->logger->error('HolestPay: Error syncing shipping methods', [
+            $this->debugError('Error syncing shipping methods', [
                 'error' => $e->getMessage(),
                 'file' => $e->getFile(),
                 'line' => $e->getLine()
@@ -114,13 +117,13 @@ class ShippingMethodSyncService
             $this->updateConfigValue($connection, $configTable, 'carriers/holestpay/showmethod', '1');
             $this->updateConfigValue($connection, $configTable, 'carriers/holestpay/specificerrmsg', 'This shipping method is not available. To use this shipping method, please contact us.');
 
-            $this->logger->warning('HolestPay: Updated shipping carrier configuration', [
+            $this->debugWarning('Updated shipping carrier configuration', [
                 'active' => $hasEnabledMethods ? '1' : '0',
                 'has_enabled_methods' => $hasEnabledMethods
             ]);
 
         } catch (\Exception $e) {
-            $this->logger->error('HolestPay: Error updating shipping carrier config', [
+            $this->debugError('Error updating shipping carrier config', [
                 'error' => $e->getMessage()
             ]);
         }
@@ -168,12 +171,12 @@ class ShippingMethodSyncService
                 }
             }
 
-            $this->logger->warning('HolestPay: Stored shipping methods in custom table', [
+            $this->debugWarning('Stored shipping methods in custom table', [
                 'count' => count($shippingMethods)
             ]);
 
         } catch (\Exception $e) {
-            $this->logger->error('HolestPay: Error storing shipping methods', [
+            $this->debugError('Error storing shipping methods', [
                 'error' => $e->getMessage()
             ]);
         }
@@ -464,7 +467,7 @@ class ShippingMethodSyncService
             return round($cost, 2);
 
         } catch (\Exception $e) {
-            $this->logger->error('HolestPay: Error calculating shipping cost', [
+            $this->debugError('Error calculating shipping cost', [
                 'error' => $e->getMessage(),
                 'method_data' => $methodData
             ]);
@@ -508,7 +511,7 @@ class ShippingMethodSyncService
             return $result;
 
         } catch (\Exception $e) {
-            $this->logger->error('HolestPay: Error getting available shipping methods', [
+            $this->debugError('Error getting available shipping methods', [
                 'error' => $e->getMessage()
             ]);
             return [];
