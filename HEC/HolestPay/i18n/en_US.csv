@@ -146,5 +146,9 @@
 "error_contact_us","Error, please contact us for assistance."
 "remove_token_confirm","Please confirm you want to remove payment token vault reference. If you have subscriptions with us, they might get terminated if we fail to charge you for the next billing period."
 "result","Result"
+"Custom Frontend CSS","Custom Frontend CSS"
+"Add custom CSS code that will be rendered in the frontend template","Add custom CSS code that will be rendered in the frontend template"
+"Custom Frontend JS","Custom Frontend JS"
+"Add custom JavaScript code that will be rendered in the frontend template","Add custom JavaScript code that will be rendered in the frontend template"
 
 

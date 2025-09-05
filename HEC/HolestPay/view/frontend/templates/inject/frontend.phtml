@@ -55,4 +55,22 @@ require(['jquery'], function ($) {
 });
 </script>
 
+<?php
+// Render custom CSS if configured
+$customCss = $block->getChildBlock('holestpay.checkout.context')->getCustomFrontendCss();
+if (!empty($customCss)): ?>
+<style nonce="<?= $block->getNonce() ?>">
+<?= /* @noEscape */ $customCss ?>
+</style>
+<?php endif; ?>
+
+<?php
+// Render custom JS if configured
+$customJs = $block->getChildBlock('holestpay.checkout.context')->getCustomFrontendJs();
+if (!empty($customJs)): ?>
+<script nonce="<?= $block->getNonce() ?>">
+<?= /* @noEscape */ $customJs ?>
+</script>
+<?php endif; ?>
+
 

@@ -4,7 +4,17 @@
         <section id="payment">
             <group id="holestpay" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>HolestPay</label>
-                <field id="active" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+				<field id="environment" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Environment</label>
+                    <source_model>HEC\HolestPay\Model\Config\Source\Environment</source_model>
+                </field>
+                <field id="merchant_site_uid" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Merchant Site UID</label>
+                </field>
+                <field id="secret_key" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Secret Key</label>
+                </field>
+				<field id="active" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Enabled</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
@@ -15,23 +25,11 @@
 					<label>New Order Status</label>
 					<source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
 				</field>
-                <field id="environment" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Environment</label>
-                    <source_model>HEC\HolestPay\Model\Config\Source\Environment</source_model>
-                </field>
-                <field id="merchant_site_uid" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Merchant Site UID</label>
-                </field>
-                <field id="secret_key" translate="label" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Secret Key</label>
-                </field>
-                
                 <field id="debug" translate="label" type="select" sortOrder="63" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Debug Mode</label>
                     <comment>Enable detailed logging for debugging purposes. When disabled, only errors will be logged.</comment>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-
                 <field id="manage_all_orders" translate="label" type="select" sortOrder="64" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Manage All Orders</label>
                     <comment>Sync all orders to HolestPay, not just those with HolestPay UID</comment>
@@ -41,6 +39,14 @@
                     <label>Insert Footer Logotypes</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>If enabled, HolestPay logotypes (cards, banks, 3DS) will be displayed in the footer on all frontend pages</comment>
+                </field>
+                <field id="custom_frontend_css" translate="label" type="textarea" sortOrder="999" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Custom Frontend CSS</label>
+                    <comment>Add custom CSS code that will be rendered in the frontend template</comment>
+                </field>
+                <field id="custom_frontend_js" translate="label" type="textarea" sortOrder="999" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Custom Frontend JS</label>
+                    <comment>Add custom JavaScript code that will be rendered in the frontend template</comment>
                 </field>
 
 				<field id="allowspecific" translate="label" type="select" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="0">

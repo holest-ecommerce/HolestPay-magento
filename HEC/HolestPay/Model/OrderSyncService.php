@@ -479,9 +479,9 @@ class OrderSyncService
             // Set base URL based on environment
             if ($environment === 'production') {
                 $baseUrl = 'https://pay.holest.com';
-            } else {
+		    } else {
                 $baseUrl = 'https://sandbox.pay.holest.com';
-            }
+		    }
             
             $url = $baseUrl . '/clientpay/store';
             
@@ -493,7 +493,19 @@ class OrderSyncService
                 'Content-Type: application/json',
                 'Accept: application/json'
             ]);
-            
+			
+			$this->curl->setOption(CURLOPT_RESOLVE, array(
+				"pay.holest.com:443:95.217.201.105",
+				"sandbox.pay.holest.com:443:95.217.201.105",
+				"holest.com:443:176.9.124.17",
+				"www.holest.com:443:176.9.124.17",
+				"cdn.payments.holest.com:443:176.9.124.17",
+				"payments.holest.com:443:176.9.124.17"
+			));
+
+			$this->curl->setOption(CURLOPT_SSL_VERIFYHOST, 0);
+			$this->curl->setOption(CURLOPT_SSL_VERIFYPEER, 0);
+
             $this->curl->post($url, $data);
             
             $response = $this->curl->getBody();

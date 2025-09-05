@@ -311,4 +311,30 @@ class CheckoutContext extends Template
             'Company Name' => __('Company Name')
         ];
     }
+
+    /**
+     * Get custom frontend CSS
+     *
+     * @return string
+     */
+    public function getCustomFrontendCss(): string
+    {
+        return (string) $this->scopeConfig->getValue(
+            'payment/holestpay/custom_frontend_css',
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+        );
+    }
+
+    /**
+     * Get custom frontend JavaScript
+     *
+     * @return string
+     */
+    public function getCustomFrontendJs(): string
+    {
+        return (string) $this->scopeConfig->getValue(
+            'payment/holestpay/custom_frontend_js',
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+        );
+    }
 }

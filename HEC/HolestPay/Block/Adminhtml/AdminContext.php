@@ -1,6 +1,6 @@
 <?php
 namespace HEC\HolestPay\Block\Adminhtml;
-
+use Magento\Backend\App\Area\FrontNameResolver;
 use Magento\Backend\Block\Template;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Store\Model\StoreManagerInterface;
@@ -58,7 +58,15 @@ class AdminContext extends Template
      */
     public function getAdminBaseUrl(): string
     {
-        return $this->urlBuilder->getBaseUrl(['_type' => UrlInterface::URL_TYPE_WEB]);
+		
+		$protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http";
+		$host = $_SERVER['HTTP_HOST'];
+		$requestUri = $_SERVER['REQUEST_URI'];
+		$url = $protocol . "://" . $host . $requestUri;
+		$pattern = '/(\/index\.php\/.*?\/).*$/';
+		$replacement = '$1';
+		$url = preg_replace($pattern, $replacement, $url);
+		return $url;
     }
 
     /**
