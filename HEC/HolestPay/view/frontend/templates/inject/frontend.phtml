@@ -1,16 +1,37 @@
+<?php
+// Get order ID and customer email context data
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+/** @var \Magento\Checkout\Model\Session $checkoutSession */
+$checkoutSession = $objectManager->get(\Magento\Checkout\Model\Session::class);
+$incrementId = $checkoutSession->getLastRealOrderId();
+$orderId = null;
+if ($incrementId) {
+    $order = $objectManager->create(\Magento\Sales\Model\Order::class)->loadByIncrementId($incrementId);
+    if ($order && $order->getId()) {
+        $orderId = (int)$order->getId();
+    }
+}
+/** @var \Magento\Customer\Model\Session $customerSession */
+$customerSession = $objectManager->get(\Magento\Customer\Model\Session::class);
+$customerEmail = $customerSession->isLoggedIn() ? (string)$customerSession->getCustomer()->getEmail() : null;
+?>
+
 <div id="holestpay-frontend-area" style="display:none"></div>
 <!-- Add custom frontend script here if needed. HolestPayCheckout is available globally. -->
 <script nonce="<?= $block->getNonce() ?>">
 require(['jquery'], function ($) {
     $(function () {
         try {
-            var dataEl = document.getElementById('holestpay-context-data');
-            if (dataEl) {
-                var context = JSON.parse(dataEl.textContent || '{}');
-                window.HolestPayCheckout = window.HolestPayCheckout || {};
-                window.HolestPayCheckout.context = Object.assign({ orderId: null, customerEmail: null }, window.HolestPayCheckout.context || {}, context);
-                
-            }
+            // Set context data directly from PHP variables
+            window.HolestPayCheckout = window.HolestPayCheckout || {};
+            window.HolestPayCheckout.context = Object.assign({ 
+                orderId: null, 
+                customerEmail: null 
+            }, window.HolestPayCheckout.context || {}, {
+                orderId: <?= $orderId ? (int)$orderId : 'null' ?>,
+                customerEmail: <?= $customerEmail ? ('"' . $block->escapeHtml($customerEmail) . '"') : 'null' ?>
+            });
+            
 
             // Add all required properties
             window.HolestPayCheckout = window.HolestPayCheckout || {};
@@ -23,6 +44,7 @@ require(['jquery'], function ($) {
             window.HolestPayCheckout.POS = <?= json_encode($block->getChildBlock('holestpay.checkout.context')->getPosConfiguration()) ?>;
             window.HolestPayCheckout.environment = '';
             window.HolestPayCheckout.merchant_site_uid = '';
+            window.HolestPayCheckout.insert_footer_logotypes = <?= json_encode($block->getChildBlock('holestpay.checkout.context')->getInsertFooterLogotypes()) ?>;
             
             if(window.HolestPayCheckout.POS){
                 window.HolestPayCheckout.environment = window.HolestPayCheckout.POS.Environment;
@@ -45,9 +67,14 @@ require(['jquery'], function ($) {
             // Translated labels
             window.HolestPayCheckout.labels = <?= json_encode($block->getChildBlock('holestpay.checkout.context')->getLabels()) ?>;
 
+            if(window.HolestPayCheckout.init){
+                window.HolestPayCheckout.init();
+            }
+
             if(window.checkoutConfig && window.checkoutConfig.payment)
 				window.checkoutConfig.payment.holestpay = window.HolestPayCheckout.POS;
             
+
         } catch (e) { 
             console.error('HolestPayCheckout initialization error:', e);
         }

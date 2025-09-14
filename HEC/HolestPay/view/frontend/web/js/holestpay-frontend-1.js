@@ -22,15 +22,19 @@
         return false;
     };
     
-    var obj = window.HolestPayCheckout || {
+    var obj = Object.assign({
         // Place your global frontend JavaScript here. This object is available on all pages.
         version: '1.0.0',
         POS: null,
         hpaylang: 'en',
         init: function () {
+            if(this.__init_done) return;
             // Initialize POS data from window.HolestPayCheckout.POS if available
             if (window.HolestPayCheckout && window.HolestPayCheckout.POS) {
                 this.POS = window.HolestPayCheckout.POS;
+                if(this.POS){
+                    this.__init_done = true;
+                }
                 console.log('HolestPayCheckout POS data loaded:', this.POS);
             }
             
@@ -40,7 +44,9 @@
             }
             
             // Initialize footer logotypes if enabled
-            this.initFooterLogotypes();
+            if(window.HolestPayCheckout && window.HolestPayCheckout.insert_footer_logotypes){
+                this.initFooterLogotypes();
+            }   
         },
         
         /**
@@ -48,10 +54,8 @@
          */
         initFooterLogotypes: function() {
             // Check if footer logotypes are enabled in checkout config
-            if (window.checkoutConfig && 
-                window.checkoutConfig.payment && 
-                window.checkoutConfig.payment.holestpay && 
-                window.checkoutConfig.payment.holestpay.insertFooterLogotypes) {
+            if (window.HolestPayCheckout && 
+                window.HolestPayCheckout.insert_footer_logotypes) {
                 
                 console.log('HolestPay: Footer logotypes enabled');
                 this.setupFooterLogotypes();
@@ -64,9 +68,57 @@
          * Setup footer logotypes display
          */
         setupFooterLogotypes: function() {
-            // This will be handled by the FooterLogotypes block in PHP
-            // The block automatically renders the logotypes when enabled
-            console.log('HolestPay: Footer logotypes setup complete');
+            setTimeout(function(){
+                if(typeof HolestPayCheckout !== 'undefined' && HolestPayCheckout && HolestPayCheckout.POS && HolestPayCheckout.POS.pos_parameters){
+                    
+                    let card_images_html = '';
+                    let banks_html = '';
+                    let threes_html = '';
+                
+                    if(HolestPayCheckout.POS.pos_parameters['Logotypes Card Images']){
+                        let card_images = HolestPayCheckout.POS.pos_parameters['Logotypes Card Images'].split("\n");
+                        for(let i = 0; i < card_images.length; i++){
+                            card_images_html += '<img style="height:22px;" src="' + card_images[i] + '" alt="Card" />';
+                        }
+                    }
+                    
+                    if(HolestPayCheckout.POS.pos_parameters['Logotypes Banks']){
+                        let banks = HolestPayCheckout.POS.pos_parameters['Logotypes Banks'].split("\n");
+                        for(let i = 0; i < banks.length; i++){
+                            let t = banks[i].replace(/https:/gi,'-PS-').replace(/http:/gi,'-P-').split(":").map(r=>r.replace("-P-","http:").replace("-PS-","https:"));
+                            if(t.length > 1){
+                                banks_html += '<a href="' + t[1] + '" target="_blank"><img style="height:22px;" src="' + t[0] + '" alt="Bank" /></a>';
+                            }else{
+                                banks_html += '<img style="height:22px;" src="' + t[0] + '" alt="Bank" />';
+                            }
+                        }
+                    }
+                
+                    if(HolestPayCheckout.POS.pos_parameters['Logotypes 3DS']){
+                        let threes = HolestPayCheckout.POS.pos_parameters['Logotypes 3DS'].split("\n");
+                        for(let i = 0; i < threes.length; i++){
+                            let t = threes[i].replace(/https:/gi,'-PS-').replace(/http:/gi,'-P-').split(":").map(r=>r.replace("-P-","http:").replace("-PS-","https:"));
+                            if(t.length > 1){
+                                threes_html += '<a href="' + t[1] + '" target="_blank"><img style="height:22px;" src="' + t[0] + '" alt="3DS" /></a>';
+                            }else{
+                                threes_html += '<img style="height:22px;" src="' + t[0] + '" alt="3DS" />';
+                            }
+                        }
+                    }		
+                    
+                    let logotypes_footer_html = '<div class="hpay-footer-branding-cards">' + card_images_html + '</div><div style="padding: 0 30px;" class="hpay-footer-branding-bank">' + banks_html + '</div><div class="hpay-footer-branding-3ds">' + threes_html + '</div>';
+                    let logotypes_div = document.createElement("div");
+                    logotypes_div.style.display = 'flex';
+                    logotypes_div.style.justifyContent = 'center';
+                    logotypes_div.style.padding = '4px 0';
+                    logotypes_div.style.background = '#ededed';
+                    logotypes_div.className = 'hpay_footer_branding';
+                    logotypes_div.innerHTML = logotypes_footer_html;
+                    
+                    (document.querySelector('footer') || document.querySelector('body')).appendChild(logotypes_div); 
+                        
+                }
+            },150);
         },
         
         /**
@@ -174,7 +226,7 @@
         },
         
 
-    };
+    }, window.HolestPayCheckout || {}); 
     
     // Ensure a mutable context to store order/customer info
     obj.context = obj.context || { 

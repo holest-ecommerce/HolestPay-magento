@@ -312,6 +312,14 @@ class CheckoutContext extends Template
         ];
     }
 
+    public function getInsertFooterLogotypes(): bool
+    {
+        return (bool) $this->scopeConfig->getValue(
+            'payment/holestpay/insert_footer_logotypes',
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+        );
+    }
+
     /**
      * Get custom frontend CSS
      *
