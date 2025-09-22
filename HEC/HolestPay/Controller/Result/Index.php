@@ -231,8 +231,10 @@ class Index implements HttpGetActionInterface, HttpPostActionInterface, CsrfAwar
     public function execute()
     {
         try {
+			
             // Get order ID from either order_uid or order_id parameter
             $orderUid = $this->request->getParam('order_uid') ?: $this->request->getParam('order_id');
+
 
             //CLEAR CHECKOUT SESSION
             // Force create a completely new quote by clearing session and creating fresh
@@ -269,16 +271,17 @@ class Index implements HttpGetActionInterface, HttpPostActionInterface, CsrfAwar
             // Note: Old success/failure path handling removed - now handled via status parameter
 
             // Check if we have a status parameter for success/failure display
+			
+			
+			
+			$order = $this->findOrderByIncrementId($orderUid);
             $status = $this->request->getParam('status');
-            if ($status && $orderUid) {
-                $order = $this->findOrderByIncrementId($orderUid);
-                if ($order) {
-                    if ($status === 'success') {
-                        return $this->displayResultPage($order, 'success');
-                    } elseif ($status === 'failure') {
-                        return $this->displayResultPage($order, 'failure');
-                    }
-                }
+            if ($order && $orderUid) {
+            	if ($status === 'success' || $this->isPaymentSuccessfulByHPayStatus($order->getData('hpay_status'))) {
+					return $this->displayResultPage($order, 'success');
+				}else{
+					return $this->displayResultPage($order, 'failure');
+				}
             }
             
             return $this->handleDirectResponse($orderUid);
@@ -995,8 +998,11 @@ class Index implements HttpGetActionInterface, HttpPostActionInterface, CsrfAwar
             if (!$incrementId) {
                 return null;
             }
-
-            $order = $this->orderRepository->get($incrementId);
+			$orderModel = $this->orderFactory->create();
+			$order = $orderModel->loadByIncrementId($incrementId);
+			if (!$order || !$order->getId()) {
+				throw new \RuntimeException('Order not found');
+			}
             return $order;
         } catch (\Exception $e) {
             $this->debugLog('warning', 'HolestPay: Order not found by increment ID', [
