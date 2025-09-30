@@ -185,7 +185,6 @@
 "Transaction Time","Време на трансакција"
 "Amount in order currency","Износ во валута на нарачка"
 "Amount in payment currency","Износ во валута на плаќање"
-
 "Production","Production"
 "HolestPay user AJAX endpoint working","HolestPay user AJAX endpoint working"
 "HolestPay admin AJAX endpoint working","HolestPay admin AJAX endpoint working"
@@ -278,3 +277,4 @@
 "VOIDED","VOIDED"
 "AWAITING","AWAITING"
 "Email:","Email:"
+"Don't Send Default Order Mail","Не испраќај стандарден емаил за нарачка"

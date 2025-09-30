@@ -40,6 +40,11 @@
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>If enabled, HolestPay logotypes (cards, banks, 3DS) will be displayed in the footer on all frontend pages</comment>
                 </field>
+                <field id="dont_send_default_order_mail" translate="label" type="select" sortOrder="66" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Don't Send Default Order Mail</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>If enabled, the default Magento order confirmation email will not be sent for HolestPay orders</comment>
+                </field>
                 <field id="custom_frontend_css" translate="label" type="textarea" sortOrder="999" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Custom Frontend CSS</label>
                     <comment>Add custom CSS code that will be rendered in the frontend template</comment>

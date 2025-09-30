@@ -336,7 +336,7 @@ define([
          */
         createPendingOrder: function() {
             var self = this;
-            
+
             return new Promise(function(resolve, reject) {
                 // Check if we already have a pending order ID stored
                 var existingOrderId = self.getStoredOrderId();
@@ -347,9 +347,14 @@ define([
                 }
                 
                 console.log('HolestPay: Creating new pending order...');
+
+                require(['Magento_Checkout/js/checkout-data'], function (checkoutData) {
+                    // Access customer data
+                    self.createOrderViaAjax(checkoutData.getValidatedEmailValue()).then(resolve).catch(reject);
+                });
                 
                 // Create order via AJAX
-                self.createOrderViaAjax().then(resolve).catch(reject);
+                
             });
         },
         
@@ -435,7 +440,7 @@ define([
         /**
          * Create order via AJAX using Magento's standard order placement
          */
-        createOrderViaAjax: function() {
+        createOrderViaAjax: function(email) {
             var self = this;
             
             return new Promise(function(resolve, reject) {
@@ -448,7 +453,8 @@ define([
                     },
                     body: JSON.stringify({
                         // Minimal data - Magento will get everything else from the checkout session
-                        create_pending: true
+                        create_pending: true,
+                        email: email
                     })
                 })
                 .then(response => {

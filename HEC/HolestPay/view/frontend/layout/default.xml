@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <head>
-        <script src="HEC_HolestPay::js/holestpay-frontend-1.js"/>
+        <script src="HEC_HolestPay::js/holestpay-frontend-2.js"/>
         <css src="HEC_HolestPay::css/holestpay-1.css"/>
         <css src="HEC_HolestPay::css/footer-logotypes-1.css"/>
     </head>

@@ -177,7 +177,7 @@ class OrderSyncService
      * @param string|null $withStatus
      * @return array|false
      */
-    private function generateOrderRequest(OrderInterface $order, ?string $withStatus = null)
+    public function generateOrderRequest(OrderInterface $order, ?string $withStatus = null)
     {
         try {
             $requestData = [

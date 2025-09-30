@@ -16,6 +16,13 @@ interface ConfigManagerInterface
      * @param array $configData
      */
     public function setHPayConfig(array $configData): void;
+
+    /**
+     * Check if default order mail should be disabled
+     *
+     * @return bool
+     */
+    public function isDefaultOrderMailDisabled(): bool;
 }
 
 

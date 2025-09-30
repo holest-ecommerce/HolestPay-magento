@@ -308,7 +308,8 @@ class CheckoutContext extends Template
             'Ordering as a company?' => __('Ordering as a company?'),
             'Company Tax ID' => __('Company Tax ID'),
             'Company Register ID' => __('Company Register ID'),
-            'Company Name' => __('Company Name')
+            'Company Name' => __('Company Name'),
+            'Pay' => __('Pay')
         ];
     }
 

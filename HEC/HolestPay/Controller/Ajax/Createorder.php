@@ -16,6 +16,7 @@ use Magento\Store\Model\ScopeInterface;
 use Magento\Quote\Api\CartManagementInterface;
 use Magento\Sales\Api\OrderManagementInterface;
 use Magento\Framework\App\RequestInterface;
+use HEC\HolestPay\Api\ConfigManagerInterface;
 
 class Createorder implements HttpPostActionInterface
 {
@@ -65,6 +66,11 @@ class Createorder implements HttpPostActionInterface
     protected $request;
 
     /**
+     * @var ConfigManagerInterface
+     */
+    protected $configManager;
+
+    /**
      * @param Context $context
      * @param ResultFactory $resultFactory
      * @param Json $json
@@ -74,6 +80,7 @@ class Createorder implements HttpPostActionInterface
      * @param CartManagementInterface $cartManagement
      * @param OrderManagementInterface $orderManagement
      * @param RequestInterface $request
+     * @param ConfigManagerInterface $configManager
      */
     public function __construct(
         Context $context,
@@ -84,7 +91,8 @@ class Createorder implements HttpPostActionInterface
         ScopeConfigInterface $scopeConfig,
         CartManagementInterface $cartManagement,
         OrderManagementInterface $orderManagement,
-        RequestInterface $request
+        RequestInterface $request,
+        ConfigManagerInterface $configManager
     ) {
         $this->context = $context;
         $this->resultFactory = $resultFactory;
@@ -95,6 +103,7 @@ class Createorder implements HttpPostActionInterface
         $this->cartManagement = $cartManagement;
         $this->orderManagement = $orderManagement;
         $this->request = $request;
+        $this->configManager = $configManager;
     }
 
     /**
@@ -111,11 +120,18 @@ class Createorder implements HttpPostActionInterface
             // Get request data
             $rawContent = $this->request->getContent();
             $debug['raw_request_content'] = $rawContent;
+
+            $passed_checkout_email = null;
             
             $requestData = [];
             if ($rawContent) {
                 try {
                     $requestData = $this->json->unserialize($rawContent);
+
+                    if($requestData && isset($requestData['email']) && strpos($requestData['email'], '@') !== false){
+                        $passed_checkout_email = $requestData['email'];
+                    }
+
                     $debug['request_data_parsed'] = $requestData;
                 } catch (\Exception $jsonError) {
                     $debug['json_parsing_error'] = $jsonError->getMessage();
@@ -126,6 +142,19 @@ class Createorder implements HttpPostActionInterface
             // No need to validate quote_data anymore since we get everything from the session
             if (!$requestData) {
                 $requestData = [];
+            }
+
+            try{
+                //if checkoutSession email is empty or null and thate is value for $passed_checkout_email
+                if(!$this->checkoutSession->getQuote()->getBillingAddress()->getEmail() && $passed_checkout_email){
+                    $this->checkoutSession->getQuote()->getBillingAddress()->setEmail($passed_checkout_email);
+                }
+
+            }catch(\Throwable $e){
+                $debug['error_message'] = $e->getMessage();
+                $debug['error_file'] = $e->getFile();
+                $debug['error_line'] = $e->getLine();
+                $debug['error_trace'] = $e->getTraceAsString();
             }
 
             // Get the current quote from checkout session
@@ -248,10 +277,14 @@ class Createorder implements HttpPostActionInterface
 
             // Get the created order
             $order = $this->orderRepository->get($orderId);
-            
+            // Check if default order mail should be disabled
+            if ($this->configManager->isDefaultOrderMailDisabled()) {
+                $order->setCanSendNewEmailFlag(false);
+            }
             // Update the order status to our configured status
             $order->setStatus($status);
             $order->setState($this->getStateFromStatus($status));
+            
             $this->orderRepository->save($order);
             
             return $order;

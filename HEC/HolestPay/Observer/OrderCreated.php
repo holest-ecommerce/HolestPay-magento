@@ -12,6 +12,7 @@ use Magento\Sales\Api\Data\OrderInterface;
 use Psr\Log\LoggerInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use HEC\HolestPay\Model\Trait\DebugLogTrait;
+use HEC\HolestPay\Api\ConfigManagerInterface;
 
 class OrderCreated implements ObserverInterface
 {
@@ -28,15 +29,23 @@ class OrderCreated implements ObserverInterface
     private $scopeConfig;
 
     /**
+     * @var ConfigManagerInterface
+     */
+    private $configManager;
+
+    /**
      * @param LoggerInterface $logger
      * @param ScopeConfigInterface $scopeConfig
+     * @param ConfigManagerInterface $configManager
      */
     public function __construct(
         LoggerInterface $logger,
-        ScopeConfigInterface $scopeConfig
+        ScopeConfigInterface $scopeConfig,
+        ConfigManagerInterface $configManager
     ) {
         $this->logger = $logger;
         $this->scopeConfig = $scopeConfig;
+        $this->configManager = $configManager;
     }
 
     /**
@@ -69,6 +78,16 @@ class OrderCreated implements ObserverInterface
                     ]);
                 } else {
                     $this->debugWarning('Could not store HolestPay UID - quote ID not found', [
+                        'order_id' => $order->getId(),
+                        'order_increment_id' => $order->getIncrementId()
+                    ]);
+                }
+
+                // Check if default order mail should be disabled
+                if ($this->configManager->isDefaultOrderMailDisabled()) {
+                    $order->setCanSendNewEmailFlag(false);
+                    
+                    $this->debugWarning('Disabled default order email for HolestPay order', [
                         'order_id' => $order->getId(),
                         'order_increment_id' => $order->getIncrementId()
                     ]);

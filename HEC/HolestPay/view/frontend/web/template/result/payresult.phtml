@@ -281,7 +281,7 @@ if (isset($_GET['debug']) && $_GET['debug'] === '1') {
                     <?= $__('Continue Shopping') ?>
                 </a>
             <?php } else { ?>
-                <a href="/checkout" class="action primary">
+                <a href="javascript:void(0)" onclick="window.hpay_do_order_pay('<?= $order->getIncrementId() ?>')" class="action primary">
                     <?= $__('Try Payment Again') ?>
                 </a>
                 <a href="/customer/account" class="action secondary">

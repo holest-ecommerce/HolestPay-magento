@@ -56,7 +56,7 @@ require(['jquery'], function ($) {
             
             // Current language
             window.HolestPayCheckout.lang = <?= json_encode($block->getChildBlock('holestpay.checkout.context')->getCurrentLanguage()) ?> || 'en';
-            window.HolestPayCheckout.hpaylang = window.HolestPayCheckout.lang.substring(0,2);
+            window.HolestPayCheckout.hpaylang = window.HolestPayCheckout.lang.substring(0,2).replace('sr', 'rs');
 
             // Cart data
             window.HolestPayCheckout.cart = <?= json_encode($block->getChildBlock('holestpay.checkout.context')->getCartData()) ?>;

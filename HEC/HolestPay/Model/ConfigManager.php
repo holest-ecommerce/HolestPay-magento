@@ -15,6 +15,7 @@ class ConfigManager implements ConfigManagerInterface
     private const PATH_MERCHANT_SITE_UID = 'payment/holestpay/merchant_site_uid';
     private const PATH_SECRET_KEY = 'payment/holestpay/secret_key';
     private const PATH_CONFIGURATION = 'payment/holestpay/configuration';
+    private const PATH_DONT_SEND_DEFAULT_ORDER_MAIL = 'payment/holestpay/dont_send_default_order_mail';
 
     /** @var ScopeConfigInterface */
     private $scopeConfig;
@@ -80,6 +81,11 @@ class ConfigManager implements ConfigManagerInterface
             return null;
         }
         try { return $this->json->unserialize($raw); } catch (\Throwable $e) { return null; }
+    }
+
+    public function isDefaultOrderMailDisabled(): bool
+    {
+        return (bool)$this->getValue(self::PATH_DONT_SEND_DEFAULT_ORDER_MAIL);
     }
 }
 

@@ -245,9 +245,43 @@
     let adapted_checkout_destroy = null;
 	let prev_hpay_shipping_method = null;
 
-   
+   window.load_hpay_js = function(callback) {
+    if(typeof HPayInit !== 'undefined'){
+        setTimeout(callback,30);
+    }else{
+        setTimeout(function(){
+            let scriptUrl = 'https://' + (window.HolestPayCheckout.environment == 'sandbox' ? 'sandbox.' : '') + 'pay.holest.com/clientpay/cscripts/hpay.js';
+            let script = document.createElement('script');
+            script.src = scriptUrl;
+            script.async = true;
+            script.onload = function() {
 
-    window.setup_checkout_address_input = (is_script_loaded) => {
+                setTimeout(callback,30);
+                // Listen for HolestPay result
+                document.addEventListener('onHPayResult', function(e) {
+                    
+                    var response = e.hpay_response || null;
+                    if (!response) {
+                        console.error('HolestPay: No response received');
+                        return;
+                    }
+                    
+                    // Check if we have a transaction UID
+                    if (!response.transaction_uid) {
+                        console.warn('HolestPay: No transaction UID in response');
+                        return;
+                    }
+
+                    window.location.href = response.order_user_url;
+                });
+
+            };
+            document.head.appendChild(script);
+        }, 100);
+    }
+   };
+
+   window.setup_checkout_address_input = (is_script_loaded) => {
         if(!is_script_loaded && window.setup_checkout_address_input_done) return;
         window.setup_checkout_address_input_done = true;
 
@@ -309,14 +343,10 @@
             });
 
         }else{
-            let scriptUrl = 'https://' + (window.HolestPayCheckout.environment == 'sandbox' ? 'sandbox.' : '') + 'pay.holest.com/clientpay/cscripts/hpay.js';
-            let script = document.createElement('script');
-            script.src = scriptUrl;
-            script.async = true;
-            script.onload = function() {
+            window.load_hpay_js(function(){
                 window.setup_checkout_address_input(true);
-            };
-            document.head.appendChild(script);
+            });
+            
         }
     };
 
@@ -375,6 +405,109 @@
 
 
       });
+
+    /**
+     * Execute order payment with given order_uid
+     * @param {string} order_uid - The order increment ID
+     */
+    window.hpay_do_order_pay = function(order_uid) {
+        if (!order_uid) {
+            console.error('HolestPay: doOrderPay called without order_uid');
+            return;
+        }
+
+        console.log('HolestPay: doOrderPay called with order_uid:', order_uid);
+
+        // Ensure hpay.js is loaded (similar to setup_checkout_address_input)
+        if (typeof HPayInit === 'undefined') {
+            window.load_hpay_js(function(){
+                window.hpay_do_order_pay(order_uid);
+            });
+            return;
+        }
+
+        // Initialize HolestPay client
+        HPayInit().then(function(client) {
+            console.log('HolestPay: Client initialized for doOrderPay');
+            
+            // Get signed payment request from server with only order_uid
+            getSignedPaymentRequest({order_uid: order_uid}).then(function(signedRequest) {
+                if (!signedRequest) {
+                    console.error('HolestPay: Failed to get signed payment request from server');
+                    return;
+                }
+                
+                console.log('HolestPay: Got signed payment request for doOrderPay');
+                
+                // Execute the payment using presentHPayPayForm
+                if (typeof presentHPayPayForm === 'function') {
+                    signedRequest.payment_method = 'select';
+                    signedRequest.order_user_url = window.HolestPayCheckout.site_base_url + 'holestpay/result?order_uid=' + order_uid;
+                    presentHPayPayForm(signedRequest);
+                } else {
+                    console.error('HolestPay: presentHPayPayForm function not available');
+                }
+                
+            }).catch(function(error) {
+                console.error('HolestPay: Failed to get signed payment request for doOrderPay:', error);
+            });
+            
+        }).catch(function(error) {
+            console.error('HolestPay: Failed to initialize client for doOrderPay:', error);
+        });
+    };
+
+    /**
+     * Get signed payment request from server (similar to holestpay.js)
+     * @param {Object} payRequest - Payment request data
+     * @returns {Promise} Promise that resolves with signed request
+     */
+    function getSignedPaymentRequest(payRequest) {
+        return new Promise(function(resolve, reject) {
+            // Add additional fields needed for signature
+            var requestData = {
+                ...payRequest,
+                transaction_uid: '', // Will be set by server
+                status: '', // Will be set by server
+                subscription_uid: '', // Will be set by server
+                rand: Math.random().toString(36).substring(2, 15) // Random string for signature
+            };
+            
+            // Debug: Log what we're sending
+            console.log('HolestPay: Sending payment request data:', requestData);
+            console.log('HolestPay: order_uid in request:', requestData.order_uid);
+            
+            // Make AJAX call to server to get signed request
+            fetch('/holestpay/ajax/payment', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                body: JSON.stringify(requestData)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok: ' + response.status);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success && data.signed_request) {
+                    console.log('HolestPay: Got signed payment request from server');
+                    resolve(data.signed_request);
+                } else {
+                    console.error('HolestPay: Server returned error:', data.error || 'Unknown error');
+                    reject(new Error(data.error || 'Failed to get signed request'));
+                }
+            })
+            .catch(error => {
+                console.error('HolestPay: Error getting signed payment request:', error);
+                reject(error);
+            });
+        });
+    }
+
 })();
 
 
